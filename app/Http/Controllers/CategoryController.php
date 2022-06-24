@@ -43,13 +43,8 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        
-
         Category::create($request->validated());
-
         return redirect('admin/category')->with('message', 'Category created successfully.');
-
-
     }
 
     /**
@@ -71,7 +66,9 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        //
+        return view('admin.category.edit', [
+            'category' => $category
+        ]);
     }
 
     /**
@@ -83,7 +80,9 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $validated = $request->validated();
+        $category->update($validated);
+        return redirect('admin/category')->with('message', 'Category updated successfully.');
     }
 
     /**
@@ -94,6 +93,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return redirect('admin/category')->with('message', 'Category deleted successfully.');
     }
 }

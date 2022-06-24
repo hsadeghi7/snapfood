@@ -13,8 +13,9 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->is_admin;
     }
+    
 
     /**
      * Get the validation rules that apply to the request.
@@ -24,7 +25,8 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|unique:categories,name|min:4|max:20|alpha',
+            'type'=> 'required|in:restaurant,food'
         ];
     }
 }
