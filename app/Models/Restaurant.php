@@ -2,18 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Restaurant extends Model
 {
     use HasFactory;
 
 
-
-    /**Relations */
+    /**
+     * Get all of the category for the post.
+     */
     public function categories()
     {
-        return $this->morphMany(Restaurant::class, 'categoryable');
+        return $this->morphToMany(Category::class, 'categorizeable');
     }
 }

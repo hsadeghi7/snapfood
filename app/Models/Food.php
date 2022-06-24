@@ -13,9 +13,11 @@ class Food extends Model
 
 
 
-/**Relations */
+    /**
+     * Get all of the category for the post.
+     */
     public function categories()
     {
-        return $this->morphMany(Category::class, 'categoryable');
+        return $this->morphToMany(Category::class, 'categorizeable');
     }
 }

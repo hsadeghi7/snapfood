@@ -20,7 +20,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index') ;
+        return view('admin.category.index', [
+            'categories' => Category::paginate(5)
+        ]);
     }
 
     /**
@@ -41,10 +43,11 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        dd($request);
-        if($request->categoryType == 'food'){
-                // \app\Models\Food;
-        }
+        
+
+        Category::create($request->validated());
+
+        return redirect('admin/category')->with('message', 'Category created successfully.');
 
 
     }

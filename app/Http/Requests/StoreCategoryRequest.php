@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCategoryRequest extends FormRequest
@@ -24,7 +26,8 @@ class StoreCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|unique:categories,name',
+            'type'=>'required' 
         ];
     }
 }
