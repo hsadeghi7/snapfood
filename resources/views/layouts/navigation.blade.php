@@ -18,11 +18,11 @@
                         </x-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('coupon.index')" :active="request()->routeIs('coupon.index')">
                             {{ __('Coupons') }}
                         </x-nav-link>
                     </div>
-                @else
+                @elseif (auth()->user()->role == 'seller')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                             {{ __('Create Food') }}

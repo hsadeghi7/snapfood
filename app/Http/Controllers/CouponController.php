@@ -8,6 +8,12 @@ use App\Http\Requests\UpdateCouponRequest;
 
 class CouponController extends Controller
 {
+
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Coupon::class, 'coupon');
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,8 @@ class CouponController extends Controller
      */
     public function index()
     {
-        //
+        $coupons = Coupon::paginate(5);
+        return view('admin.coupon.index', compact('coupons'));
     }
 
     /**
@@ -25,7 +32,7 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.coupon.create');
     }
 
     /**
@@ -36,7 +43,8 @@ class CouponController extends Controller
      */
     public function store(StoreCouponRequest $request)
     {
-        //
+        Coupon::create($request->validated());
+        return redirect('admin/coupon')->with('message', 'Coupon created successfully.');
     }
 
     /**
@@ -58,7 +66,9 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        //
+        return view('admin.coupon.edit', [
+            'coupon' => $coupon
+        ]);
     }
 
     /**
@@ -70,7 +80,9 @@ class CouponController extends Controller
      */
     public function update(UpdateCouponRequest $request, Coupon $coupon)
     {
-        //
+        $validated = $request->validated();
+        $coupon->update($validated);
+        return redirect('admin/coupon')->with('message', 'Coupon updated successfully.');
     }
 
     /**
@@ -81,6 +93,7 @@ class CouponController extends Controller
      */
     public function destroy(Coupon $coupon)
     {
-        //
+        $coupon->delete();
+        return redirect('admin/coupon')->with('message', 'Coupon deleted successfully.');
     }
 }

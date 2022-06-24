@@ -13,7 +13,7 @@ class UpdateCouponRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->is_admin;
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateCouponRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'percentage'=>'required|numeric|min:0|max:100',
         ];
     }
 }

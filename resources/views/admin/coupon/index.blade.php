@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -10,20 +9,20 @@
                             {{ session('message') }}
                         </div>
                     @endif
-                    {{-- Create new Category --}}
-                    <a href="{{ route('category.create') }}">
+                    {{-- Create new coupon --}}
+                    <a href="{{ route('coupon.create') }}">
                         <div class="flex items-center mb-3 gap-1">
                             <p class="text-green-500 font-bold ">
-                                Add Category
+                                Add Discount
                             </p>
                         </div>
                     </a>
 
-                    {{-- Category Table --}}
-                    @if (empty($categories->first()))
+                    {{-- Coupon list --}}
+                    @if (empty($coupons->first()))
                         <div
                             class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
-                            No Category Found
+                            No Coupons Found
                         </div>
                     @else
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -32,10 +31,10 @@
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
-                                            Category Name
+                                            Coupon Name
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Category Type
+                                            Discount percentage
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Edit
@@ -46,24 +45,24 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($categories as $category)
+                                    @foreach ($coupons as $coupon)
                                         <tr>
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="flex items-center">
                                                 </div>
                                                 <div class="ml-2">
                                                     <div class="text-sm font-medium  text-gray-900">
-                                                        {{ $category->name }}
+                                                        {{ $coupon->name }}
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="text-sm font-medium  text-gray-900">
-                                                    {{ $category->type }}
+                                                    {{ $coupon->percentage }}
                                                 </div>
                                             </td>
                                             <td class="px-6 py-2 whitespace-no-wrap">
-                                                <a href="{{ route('category.edit', $category->id) }}"
+                                                <a href="{{ route('coupon.edit', $coupon->id) }}"
                                                     class="text-sm font-bold  text-green-700  ">
                                                     <svg class="h-5 w-5 text-blue-500" viewBox="0 0 24 24"
                                                         stroke-width="2" stroke="currentColor" fill="none"
@@ -78,7 +77,7 @@
                                                 </a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-no-wrap">
-                                                <form action="{{ route('category.destroy', $category->id) }}"
+                                                <form action="{{ route('coupon.destroy', $coupon->id) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -97,12 +96,9 @@
                                 </tbody>
                             </table>
                             <div class="p-5">
-
-                                {{ $categories->links() }}
+                                {{ $coupons->links() }}
                             </div>
                         </div>
-
-
                     @endif
                 </div>
             </div>

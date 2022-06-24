@@ -13,7 +13,7 @@ class StoreCouponRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->is_admin;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreCouponRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|unique:coupons,name|min:5|max:20',
+            'percentage'=>'required|numeric|min:0|max:100',
         ];
     }
 }
