@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProfileRequest extends FormRequest
@@ -24,7 +25,11 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|max:255',
+            'address'=>'required|max:255',
+            'phone'=>'phone:IR',
+            'account_number'=>'required|numeric',
+            'type'=>'required|in:'.implode(',', Category::getRestaurantCategories()),
         ];
     }
 }

@@ -29,7 +29,8 @@ class FoodController extends Controller
      */
     public function create()
     {
-        //
+        $foodCategories = Category::where('type', 'food')->get();
+        return view('seller.foods.create', compact('foodCategories'));
     }
 
     /**

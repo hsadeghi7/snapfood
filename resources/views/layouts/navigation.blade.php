@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Logo -->
+                <!-- Home -->
                 <div class="shrink-0 flex items-center">
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex font-bold">
                         <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
@@ -12,7 +12,7 @@
                     </div>
                 </div>
 
-                <!-- Navigation Links -->
+                <!-- Navigation Links for Admin -->
                 @if (auth()->user()->is_admin)
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
@@ -24,9 +24,17 @@
                             {{ __('Coupons') }}
                         </x-nav-link>
                     </div>
+
+                <!-- Navigation Links for Seller -->
                 @elseif (auth()->user()->role == 'seller')
+
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('profiles.edit', app\models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
+                        {{ __('Edit Profile') }}
+                    </x-nav-link>
+                </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('foods.create')" :active="request()->routeIs('foods.create')">
                             {{ __('Create Food') }}
                         </x-nav-link>
                     </div>

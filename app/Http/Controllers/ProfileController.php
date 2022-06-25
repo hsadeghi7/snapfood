@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\Category;
+use Illuminate\Auth\Events\Validated;
 use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
-use Illuminate\Auth\Events\Validated;
 
 class ProfileController extends Controller
 {
@@ -45,7 +46,7 @@ class ProfileController extends Controller
             'account_number' => $request->account_number,
             'type' => $request->type,
         ]);
-        return back();
+        return back()->with('massage', 'Profile create successfully');
     }
 
     /**
@@ -67,7 +68,8 @@ class ProfileController extends Controller
      */
     public function edit(Profile $profile)
     {
-        //
+        $restaurantCategories =  Category::where('type', 'restaurant')->get();
+        return view('seller.profiles.edit', compact('profile','restaurantCategories'));
     }
 
     /**
@@ -79,7 +81,15 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
-        //
+        // dd($request->all());
+        $profile->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'account_number' => $request->account_number,
+            'type' => $request->type,
+        ]);
+        return redirect('/')->with('message', 'Profile updated successfully');
     }
 
     /**

@@ -1,37 +1,66 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Discount') }}
-        </h2>
-    </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+    <x-guest-layout>
+        <x-auth-card>
 
-                    <form action="{{ route('coupon.update', $coupon) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="flex gap-3">
-                            <div class="mb-6">
-                                <input type="text" name="name"  value="{{ $coupon->name }}" hidden >
-                            </div>
-                            <div class="mb-6">
-                                <label
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Percentage
-                                </label>
-                                <input type="text" name="percentage"
-                                    value="{{ request()->input('percentage', old('percentage')) ?? $coupon->percentage }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <div class="text-sm text-red-500"> {{ $errors->first('percentage') }} </div>
-                            </div>
-                        </div>
-                        <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">Update</button>
-                    </form>
+            <!-- Validation Errors -->
+            <x-auth-validation-errors class="mb-4" :errors="$errors" />
+
+            <form method="POST" action="{{ route('profiles.update', $profile) }}">
+                @csrf
+                @method('PUT')
+                <!-- Restaurant Name -->
+                <div>
+                    <x-label for="name" :value="__('Restaurant Name')" />
+
+                    <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')??$profile->name" required autofocus />
                 </div>
-            </div>
-        </div>
-    </div>
+
+                <!-- Restaurant Name -->
+                <div class="mt-4">
+                    <x-label for="address" :value="__('Restaurant Address') " />
+
+                    <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address') ?? $profile->address"
+                        required autofocus />
+                </div>
+
+                <!-- Phone -->
+                <div class="mt-4">
+                    <x-label for="phone" :value="__('Phone')" />
+
+                    <x-input id="phone" class="block mt-1 w-full" type="text" name="phone" :value="old('phone') ?? $profile->phone"
+                        required />
+                </div>
+
+                <!-- Account Number -->
+                <div class="mt-4">
+                    <x-label for="account_number" :value="__('Account Number')" />
+
+                    <x-input id="account_number" class="block mt-1 w-full" type="text" name="account_number" :value="old('account_number') ?? $profile->account_number"
+                        required />
+                </div>
+
+                <!-- Restaurant Type -->
+                <div class="mt-4">
+                    <x-label for="type" :value="__('Restaurant Type')" />
+
+                    <select id="type" name="type"
+                        class="mt-2 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option selected >Choose a Type</option>
+                        @foreach ($restaurantCategories as $category )
+                        <option value="{{ $category->name }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+
+                <div class="flex items-center justify-end mt-4">
+
+                    <x-button class="ml-4">
+                        {{ __('update restaurant INFO') }}
+                    </x-button>
+                </div>
+            </form>
+        </x-auth-card>
+    </x-guest-layout>
 </x-app-layout>

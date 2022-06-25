@@ -25,7 +25,7 @@
                         required autofocus />
                 </div>
 
-                <!-- Email Address -->
+                <!-- Phone -->
                 <div class="mt-4">
                     <x-label for="phone" :value="__('Phone')" />
 
@@ -33,7 +33,7 @@
                         required />
                 </div>
 
-                <!-- Password -->
+                <!-- Account Number -->
                 <div class="mt-4">
                     <x-label for="account_number" :value="__('Account Number')" />
 
