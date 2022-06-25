@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index', [
+        return view('admin.categories.index', [
             'categories' => Category::paginate(5)
         ]);
     }
@@ -32,7 +32,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return View('admin.category.create');
+        return View('admin.categories.create');
     }
 
     /**
@@ -44,7 +44,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         Category::create($request->validated());
-        return redirect('admin/category')->with('message', 'Category created successfully.');
+        return redirect('admin/categories')->with('message', 'Category created successfully.');
     }
 
     /**
@@ -66,7 +66,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.category.edit', [
+        return view('admin.categories.edit', [
             'category' => $category
         ]);
     }
@@ -82,7 +82,7 @@ class CategoryController extends Controller
     {
         $validated = $request->validated();
         $category->update($validated);
-        return redirect('admin/category')->with('message', 'Category updated successfully.');
+        return redirect('admin/categories')->with('message', 'Category updated successfully.');
     }
 
     /**
@@ -94,6 +94,6 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect('admin/category')->with('message', 'Category deleted successfully.');
+        return redirect('admin/categories')->with('message', 'Category deleted successfully.');
     }
 }

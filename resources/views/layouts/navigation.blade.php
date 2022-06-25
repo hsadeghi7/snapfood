@@ -5,20 +5,22 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
-                    </a>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex font-bold">
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Home') }}
+                        </x-nav-link>
+                    </div>
                 </div>
 
                 <!-- Navigation Links -->
                 @if (auth()->user()->is_admin)
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('category.index')" :active="request()->routeIs('category.index')">
+                        <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                             {{ __('Category Managment') }}
                         </x-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('coupon.index')" :active="request()->routeIs('coupon.index')">
+                        <x-nav-link :href="route('coupons.index')" :active="request()->routeIs('coupons.index')">
                             {{ __('Coupons') }}
                         </x-nav-link>
                     </div>

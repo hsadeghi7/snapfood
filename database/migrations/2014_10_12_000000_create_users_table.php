@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('role');
             $table->boolean('is_admin')->default(false);
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

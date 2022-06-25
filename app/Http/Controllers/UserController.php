@@ -14,15 +14,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-
-        if ($user->is_admin) {
-            return view('admin.index');
+        $users = '';
+        if (auth()->user()->role === 'superAdmin') {
+            $users = User::withTrashed()->paginate(5);
         }
-        if ($user->role == 'seller') {
-            return view('seller');
-        }
-        return view('dashboard');
+        return view('dashboard', compact('users'));
     }
 
     /**
@@ -65,7 +61,13 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        if ($user->is_admin) {
+            $user->is_admin = false;
+        } else {
+            $user->is_admin = true;
+        }
+        $user->save();
+        return back();
     }
 
     /**
@@ -77,7 +79,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        dd('update');
     }
 
     /**
@@ -88,6 +90,18 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        dd('destroy');
     }
+
+    public function activityToggle( Request $request)
+    {
+        $user = User::withTrashed()->find($request->id);
+        if(!$user->deleted_at) {
+            $user->delete();
+        }else{
+            $user->restore();
+        }
+        return back();
+    }
+
 }

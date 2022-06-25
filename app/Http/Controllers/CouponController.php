@@ -22,7 +22,7 @@ class CouponController extends Controller
     public function index()
     {
         $coupons = Coupon::paginate(5);
-        return view('admin.coupon.index', compact('coupons'));
+        return view('admin.coupons.index', compact('coupons'));
     }
 
     /**
@@ -32,7 +32,7 @@ class CouponController extends Controller
      */
     public function create()
     {
-        return view('admin.coupon.create');
+        return view('admin.coupons.create');
     }
 
     /**
@@ -44,7 +44,7 @@ class CouponController extends Controller
     public function store(StoreCouponRequest $request)
     {
         Coupon::create($request->validated());
-        return redirect('admin/coupon')->with('message', 'Coupon created successfully.');
+        return redirect('admin/coupons')->with('message', 'Coupon created successfully.');
     }
 
     /**
@@ -66,7 +66,7 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        return view('admin.coupon.edit', [
+        return view('admin.coupons.edit', [
             'coupon' => $coupon
         ]);
     }
@@ -82,7 +82,7 @@ class CouponController extends Controller
     {
         $validated = $request->validated();
         $coupon->update($validated);
-        return redirect('admin/coupon')->with('message', 'Coupon updated successfully.');
+        return redirect('admin/coupons')->with('message', 'Coupon updated successfully.');
     }
 
     /**
@@ -94,6 +94,6 @@ class CouponController extends Controller
     public function destroy(Coupon $coupon)
     {
         $coupon->delete();
-        return redirect('admin/coupon')->with('message', 'Coupon deleted successfully.');
+        return redirect('admin/coupons')->with('message', 'Coupon deleted successfully.');
     }
 }
