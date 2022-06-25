@@ -19,7 +19,8 @@ Route::get('/', function () {
 });
 
 Route::get('/', [UserController::class, 'index'])
-    ->middleware(['auth'])->name('dashboard');
+    ->middleware(['auth'])->middleware('hasProfile')->name('dashboard');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
+require __DIR__ . '/seller.php';

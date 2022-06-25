@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use Illuminate\Auth\Events\Validated;
 
 class ProfileController extends Controller
 {
@@ -36,7 +37,15 @@ class ProfileController extends Controller
      */
     public function store(StoreProfileRequest $request)
     {
-        //
+        Profile::create([
+            'user_id' => auth()->id(),
+            'name' => $request->name,
+            'address' => $request->address,
+            'phone' => $request->phone,
+            'account_number' => $request->account_number,
+            'type' => $request->type,
+        ]);
+        return back();
     }
 
     /**

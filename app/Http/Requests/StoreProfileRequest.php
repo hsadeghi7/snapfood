@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Models\Category;
 
 class StoreProfileRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->role === 'seller';
     }
 
     /**
@@ -24,7 +25,11 @@ class StoreProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|max:255',
+            'address'=>'required|max:255',
+            'phone'=>'phone:IR',
+            'account_number'=>'required|numeric',
+            'type'=>'required|in:'.implode(',', Category::getRestaurantCategories()),
         ];
     }
 }

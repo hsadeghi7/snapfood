@@ -28,4 +28,14 @@ class Category extends Model
     {
         return $this->morphedByMany(Restaurant::class, 'categorizeable');
     }
+
+
+    public static function getRestaurantCategories()
+    {
+        $categories = Category::where('type', 'restaurant')->get();
+        foreach ($categories as $category) {
+            $restaurant[] = $category->name;
+        }
+        return $restaurant;
+    }
 }
