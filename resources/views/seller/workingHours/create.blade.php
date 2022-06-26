@@ -10,7 +10,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     <!-- Restaurant Store Form -->
-                    <form action="{{ route('restaurants.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('restaurants.store') }}" method="POST">
                         @csrf
                         <div class="flex justify-between gap-3">
 
@@ -19,7 +19,6 @@
                                 <x-label for="name" :value="__('Restaurant Name')" />
                                 <x-input id="name" class="block mt-1 w-full" type="text" name="name"
                                     :value="old('name')" required autofocus />
-                                    <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
                             </div>
 
                             <!-- Restaurant Type -->
@@ -32,7 +31,6 @@
                                         <option value="{{ $category }}">{{ $category }}</option>
                                     @endforeach
                                 </select>
-                                <div class="text-sm text-red-500"> {{ $errors->first('type') }} </div>
                             </div>
 
                             <!-- Phone -->
@@ -40,7 +38,6 @@
                                 <x-label for="phone" :value="__('Phone')" />
                                 <x-input id="phone" class="block mt-1 w-full" type="text" name="phone"
                                     :value="old('phone')" required />
-                                    <div class="text-sm text-red-500"> {{ $errors->first('phone') }} </div>
                             </div>
                         </div>
                         <!-- Restaurant Address -->
@@ -48,19 +45,46 @@
                             <x-label for="address" :value="__('Address')" />
                             <x-input id="address" class="block mt-1 w-full" type="text" name="address"
                                 :value="old('address')" required autofocus />
-                                <div class="text-sm text-red-500"> {{ $errors->first('address') }} </div>
-
-                            </div>
-
-                        <!-- Restaurant Image -->
+                        </div>
+                        <!-- Restaurant Working Date and Hours -->
                         <div class="my-4">
-                            <x-label for="image" :value="__('Image')" />
-                            <x-input id="image" class="block mt-1 w-full" type="file" name="image"
-                                :value="old('image')" required autofocus />
-                                <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
-
+                            <x-label for="working_hours" :value="__('Working Hours')" />
+                            <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                <table class="w-full text-sm text-left text-gray-700 dark:text-gray-400">
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
+                                        <tr>
+                                            <th class="px-4 py-2">Day</th>
+                                            <th class="px-4 py-2">Open</th>
+                                            <th class="px-4 py-2">Close</th>
+                                            <th class="px-4 py-2">Deactiv?</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($week as $day)
+                                            <tr class="text-xs text-gray-800">
+                                                <td class="px-4 py-1">{{ $day }}</td>
+                                                <td class="px-4 py-1">
+                                                    <x-input id="open_{{ $day }}" class="block mt-1 w-full"
+                                                        type="time" name="open_{{ $day }}"
+                                                        :value="old('open_' . $day)" />
+                                                </td>
+                                                <td class="px-4 py-1">
+                                                    <x-input id="close_{{ $day }}" class="block mt-1 w-full"
+                                                        type="time" name="close_{{ $day }}"
+                                                        :value="old('close_' . $day)" />
+                                                </td>
+                                                <td class="px-4 py-1">
+                                                    <x-input id="deactivate_{{ $day }}"
+                                                        class="block mt-1 w-6 h-6 " type="checkbox"
+                                                        name="deactivate_{{ $day }}" :value="old('deactivate_' . $day)" />
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                            
+
                             <!-- Add Restaurant  -->
                             <div class="flex items-center justify-start mt-4">
                                 <x-button class="ml-4">

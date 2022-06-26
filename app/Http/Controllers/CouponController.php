@@ -8,12 +8,12 @@ use App\Http\Requests\UpdateCouponRequest;
 
 class CouponController extends Controller
 {
-
-    // public function __construct()
-    // {
-    //     $this->authorizeResource(Coupon::class, 'coupon');
-    // }
-
+/*
+    public function __construct()
+    {
+        $this->authorizeResource(Coupon::class, 'coupon');
+    }
+*/
     /**
      * Display a listing of the resource.
      *

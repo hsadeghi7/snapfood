@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Restaurant;
+use App\Models\WorkingHour;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
-use App\Models\Category;
-use Carbon\Traits\Week;
+use Illuminate\Support\Facades\Request;
 
 class RestaurantController extends Controller
 {
@@ -17,8 +19,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::all();
-        return view('seller.restaurants.index',compact('restaurants'));
+        $restaurants = Restaurant::paginate(5);
+        return view('seller.restaurants.index', compact('restaurants'));
     }
 
     /**
@@ -29,9 +31,8 @@ class RestaurantController extends Controller
     public function create()
     {
         $restaurantCategories = Category::getRestaurantCategories();
-        $week = Restaurant::WEEK;
 
-       return view('seller.restaurants.create',compact('restaurantCategories','week'));
+        return view('seller.restaurants.create', compact('restaurantCategories'));
     }
 
     /**
@@ -42,7 +43,24 @@ class RestaurantController extends Controller
      */
     public function store(StoreRestaurantRequest $request)
     {
-        dd($request->all());
+        // dd($request->all());
+        $validated = $request->validated();
+        $imagePath = Storage::disk('public')->put('images/restaurants/', $validated['image']);
+        Restaurant::create(
+            [
+                'name' => $request->name,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'type' => $request->type,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'image' => $imagePath,
+                'user_id' => auth()->id(),
+                // 'categoryable_type'=>'food',
+                // 'categoryable_id'=>'8'
+            ]
+        );
+        return redirect('/')->with('message', 'Restaurant created successfully');
     }
 
     /**
@@ -53,7 +71,10 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        //
+        // dd($restaurant);
+        $timetable = WorkingHour::where('restaurant_id', $restaurant->id)->get();
+        $week = WorkingHour::WEEK;
+        return view('seller.restaurants.show', compact('restaurant', 'timetable', 'week'));
     }
 
     /**
@@ -64,7 +85,10 @@ class RestaurantController extends Controller
      */
     public function edit(Restaurant $restaurant)
     {
-        //
+      //  dd($restaurant);
+        $restaurantCategories = Category::getRestaurantCategories();
+
+       return view('seller.restaurants.edit', compact('restaurant', 'restaurantCategories'));
     }
 
     /**
@@ -87,6 +111,24 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        //
+        $restaurant->delete();
+        return back()->with('message', 'Restaurant deleted successfully');
+
+    }
+
+
+    public function statusToggle()
+    {
+        $restaurant = Restaurant::find($_POST['id']);
+
+        if ($restaurant->is_active) {
+            $restaurant->is_active = false;
+        } else {
+            $restaurant->is_active = true;
+        }
+
+        $restaurant->save();
+
+        return back()->with('message', 'Restaurant status updated successfully');
     }
 }

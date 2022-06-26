@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\WorkingHour;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreworkingHourRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreworkingHourRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,9 @@ class StoreworkingHourRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'day'=>'required|in:'.implode(',',WorkingHour::WEEK),
+            'open_time'=>'required|date_format:H:i|after:11:00|before:23:00',
+            'close_time'=>'required|date_format:H:i|after:open_time|after:11:00|before:23:00',
         ];
     }
 }

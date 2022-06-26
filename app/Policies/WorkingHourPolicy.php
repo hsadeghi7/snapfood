@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\workingHour;
+use App\Models\WorkingHour;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class WorkingHourPolicy
@@ -25,10 +25,10 @@ class WorkingHourPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\workingHour  $workingHour
+     * @param  \App\Models\WorkingHour  $workingHour
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, workingHour $workingHour)
+    public function view(User $user, WorkingHour $workingHour)
     {
         //
     }
@@ -48,10 +48,10 @@ class WorkingHourPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\workingHour  $workingHour
+     * @param  \App\Models\WorkingHour  $workingHour
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, workingHour $workingHour)
+    public function update(User $user, WorkingHour $workingHour)
     {
         //
     }
@@ -60,10 +60,10 @@ class WorkingHourPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\workingHour  $workingHour
+     * @param  \App\Models\WorkingHour  $workingHour
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, workingHour $workingHour)
+    public function delete(User $user, WorkingHour $workingHour)
     {
         //
     }
@@ -72,10 +72,10 @@ class WorkingHourPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\workingHour  $workingHour
+     * @param  \App\Models\WorkingHour  $workingHour
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, workingHour $workingHour)
+    public function restore(User $user, WorkingHour $workingHour)
     {
         //
     }
@@ -84,10 +84,10 @@ class WorkingHourPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\workingHour  $workingHour
+     * @param  \App\Models\WorkingHour  $workingHour
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, workingHour $workingHour)
+    public function forceDelete(User $user, WorkingHour $workingHour)
     {
         //
     }

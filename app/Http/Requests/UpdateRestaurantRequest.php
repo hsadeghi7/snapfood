@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRestaurantRequest extends FormRequest
@@ -13,7 +14,7 @@ class UpdateRestaurantRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,11 @@ class UpdateRestaurantRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|unique:restaurants,name|min:4|max:20',
+            'address' => 'required',
+            'phone' => 'required|phone:IR',
+            'type' => 'required|in:' . implode(',', Category::getRestaurantCategories()),
+            'image'=>'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }
