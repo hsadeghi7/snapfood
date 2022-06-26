@@ -18,7 +18,7 @@ class CouponPolicy
      */
     public function viewAny(User $user)
     {
-        //
+       return $user->is_admin;
     }
 
     /**
@@ -30,7 +30,7 @@ class CouponPolicy
      */
     public function view(User $user, Coupon $coupon)
     {
-        //
+        return $user->is_admin;
     }
 
     /**

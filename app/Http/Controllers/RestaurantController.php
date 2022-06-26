@@ -85,10 +85,10 @@ class RestaurantController extends Controller
      */
     public function edit(Restaurant $restaurant)
     {
-      //  dd($restaurant);
+        //    dd($restaurant);
         $restaurantCategories = Category::getRestaurantCategories();
 
-       return view('seller.restaurants.edit', compact('restaurant', 'restaurantCategories'));
+        return view('seller.restaurants.edit', compact('restaurant', 'restaurantCategories'));
     }
 
     /**
@@ -100,7 +100,24 @@ class RestaurantController extends Controller
      */
     public function update(UpdateRestaurantRequest $request, Restaurant $restaurant)
     {
-        //
+        $validated = $request->validated();
+        $imagePath = $restaurant->image;
+        if ($request->image) {
+            $imagePath = Storage::disk('public')->put('images/restaurants/', $validated['image']);
+        }
+        $restaurant->update(
+            [
+                'name' => $request->name,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'type' => $request->type,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'image' => $imagePath,
+                'user_id' => auth()->id(),
+            ]
+        );
+        return redirect('/')->with('message', 'Restaurant updated successfully');
     }
 
     /**
@@ -113,7 +130,6 @@ class RestaurantController extends Controller
     {
         $restaurant->delete();
         return back()->with('message', 'Restaurant deleted successfully');
-
     }
 
 

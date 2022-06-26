@@ -10,7 +10,8 @@
                 <div class="p-6 bg-white border-b border-gray-200">
 
                     <!-- Restaurant Store Form -->
-                    <form action="{{ route('restaurants.update',$restaurant) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('restaurants.update', $restaurant) }}" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="flex justify-between gap-3">
@@ -18,8 +19,9 @@
                             <!-- Restaurant Name -->
                             <div class="mt-4 w-full">
                                 <x-label for="name" :value="__('Restaurant Name')" />
-                                <x-input id="name" class="block mt-1 w-full" type="text" name="name"  :value=" old('name')" required autofocus/>
-                                    <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
+                                <x-input id="name" class="block mt-1 w-full" type="text" name="name"
+                                    :value="old('name') ?? $restaurant->name" required autofocus />
+                                <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
                             </div>
 
                             <!-- Restaurant Type -->
@@ -39,38 +41,37 @@
                             <div class="mt-4 w-full">
                                 <x-label for="phone" :value="__('Phone')" />
                                 <x-input id="phone" class="block mt-1 w-full" type="text" name="phone"
-                                    :value="old('phone')" required />
-                                    <div class="text-sm text-red-500"> {{ $errors->first('phone') }} </div>
+                                    :value="old('phone') ?? $restaurant->phone" phone />
+                                <div class="text-sm text-red-500"> {{ $errors->first('phone') }} </div>
                             </div>
                         </div>
                         <!-- Restaurant Address -->
                         <div class="my-4">
                             <x-label for="address" :value="__('Address')" />
                             <x-input id="address" class="block mt-1 w-full" type="text" name="address"
-                                :value="old('address')" required autofocus />
-                                <div class="text-sm text-red-500"> {{ $errors->first('address') }} </div>
+                                :value="old('address') ?? $restaurant->address" required autofocus />
+                            <div class="text-sm text-red-500"> {{ $errors->first('address') }} </div>
 
-                            </div>
+                        </div>
 
                         <!-- Restaurant Image -->
                         <div class="my-4">
                             <x-label for="image" :value="__('Image')" />
                             <x-input id="image" class="block mt-1 w-full" type="file" name="image"
-                                :value="old('image')" required autofocus />
-                                <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
-
-                            </div>
-                            
-                            <!-- Add Restaurant  -->
-                            <div class="flex items-center justify-start mt-4">
-                                <x-button class="ml-4">
-                                    {{ __('Update') }}
-                                </x-button>
-                            </div>
+                                :value="old('image')" />
+                            <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
                         </div>
-                    </form>
+
+                        <!-- Add Restaurant  -->
+                        <div class="flex items-center justify-start mt-4">
+                            <x-button class="ml-4">
+                                {{ __('Update') }}
+                            </x-button>
+                        </div>
                 </div>
+                </form>
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>

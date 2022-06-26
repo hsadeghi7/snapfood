@@ -57,4 +57,12 @@ class User extends Authenticatable
     public function profiles(){
         return $this->hasMany(Profile::class);
     }
+
+
+    /**
+     * Get the addresses for the user.
+     */
+    public function addresses(){
+        return $this->morphMany(Address::class, 'addressable');
+    }
 }

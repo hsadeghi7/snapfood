@@ -19,7 +19,7 @@
                                 <x-label for="name" :value="__('Restaurant Name')" />
                                 <x-input id="name" class="block mt-1 w-full" type="text" name="name"
                                     :value="old('name')" required autofocus />
-                                    <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
+                                <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
                             </div>
 
                             <!-- Restaurant Type -->
@@ -40,7 +40,7 @@
                                 <x-label for="phone" :value="__('Phone')" />
                                 <x-input id="phone" class="block mt-1 w-full" type="text" name="phone"
                                     :value="old('phone')" required />
-                                    <div class="text-sm text-red-500"> {{ $errors->first('phone') }} </div>
+                                <div class="text-sm text-red-500"> {{ $errors->first('phone') }} </div>
                             </div>
                         </div>
                         <!-- Restaurant Address -->
@@ -48,29 +48,51 @@
                             <x-label for="address" :value="__('Address')" />
                             <x-input id="address" class="block mt-1 w-full" type="text" name="address"
                                 :value="old('address')" required autofocus />
-                                <div class="text-sm text-red-500"> {{ $errors->first('address') }} </div>
+                            <div class="text-sm text-red-500"> {{ $errors->first('address') }} </div>
 
-                            </div>
+                        </div>
 
                         <!-- Restaurant Image -->
                         <div class="my-4">
                             <x-label for="image" :value="__('Image')" />
                             <x-input id="image" class="block mt-1 w-full" type="file" name="image"
                                 :value="old('image')" required autofocus />
-                                <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
+                            <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
 
-                            </div>
-                            
-                            <!-- Add Restaurant  -->
-                            <div class="flex items-center justify-start mt-4">
-                                <x-button class="ml-4">
-                                    {{ __('Add') }}
-                                </x-button>
-                            </div>
                         </div>
-                    </form>
+
+                        <!-- Restaurant Location -->
+                        <div class="my-4">
+                            <x-label for="location" :value="__('Location')" />
+                            <input type="hidden" value="" id="latitude" name="latitude">
+                            <input type="hidden" value="" id="longitude" name="longitude">
+                            <x-mapbox id="mapId" style="height: 500px; width: 500px;" 
+                            :navigationControls="true"
+                            :draggable="true"
+                            />
+
+                            <div class="text-sm text-red-500"> {{ $errors->first('latitude') }} </div>
+
+                        </div>
+
+
+                        <!-- Add Restaurant  -->
+                        <div class="flex items-center justify-start mt-4">
+                            <x-button class="ml-4">
+                                {{ __('Add') }}
+                            </x-button>
+                        </div>
                 </div>
+                </form>
             </div>
         </div>
     </div>
+    </div>
 </x-app-layout>
+
+<script>
+    marker.on('dragend', function(e) {
+        $('#longitude').val(e.target.getLngLat().lng);
+        $('#latitude').val(e.target.getLngLat().lat);
+    });
+</script>

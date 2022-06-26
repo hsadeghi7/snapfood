@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -93,15 +95,26 @@ class UserController extends Controller
         dd('destroy');
     }
 
-    public function activityToggle( Request $request)
+    public function activityToggle(Request $request)
     {
         $user = User::withTrashed()->find($request->id);
-        if(!$user->deleted_at) {
+        if (!$user->deleted_at) {
             $user->delete();
-        }else{
+        } else {
             $user->restore();
         }
         return back();
     }
+    public function userAddress()
+    {
 
+        $user = User::find(auth()->user()->id);
+        $address = new Address;
+        $address->address = Profile::whereBelongsTo(auth()->user())->first()->address;
+        $address->latitude = 354.5;
+        $address->longitude = 6354;
+
+        $user->addresses()->save($address);
+        return back();
+    }
 }

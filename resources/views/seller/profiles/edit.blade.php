@@ -9,13 +9,6 @@
             <form method="POST" action="{{ route('profiles.update', $profile) }}">
                 @csrf
                 @method('PUT')
-                <!-- Restaurant Name -->
-                {{-- <div>
-                    <x-label for="name" :value="__('Restaurant Name')" />
-
-                    <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')??$profile->name" required autofocus />
-                </div> --}}
-
                 <!-- Restaurant Address -->
                 <div class="mt-4">
                     <x-label for="address" :value="__('Address') " />
