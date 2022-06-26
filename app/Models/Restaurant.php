@@ -9,6 +9,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Restaurant extends Model
 {
     use HasFactory;
+    public const WEEK =
+    [
+        'Saturday' => 'Saturday',
+        'Sunday' => 'Sunday',
+        'Monday' => 'Monday',
+        'Tuesday' => 'Tuesday',
+        'Wednesday' => 'Wednesday',
+        'Thursday' => 'Thursday',
+        'Friday' => 'Friday',
+    ];
 
 
     /**
@@ -16,6 +26,7 @@ class Restaurant extends Model
      */
     public function categories()
     {
+
         return $this->morphToMany(Category::class, 'categorizeable');
     }
 }

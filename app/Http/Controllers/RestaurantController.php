@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Restaurant;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
+use App\Models\Category;
+use Carbon\Traits\Week;
 
 class RestaurantController extends Controller
 {
@@ -15,7 +17,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        //
+        $restaurants = Restaurant::all();
+        return view('seller.restaurants.index',compact('restaurants'));
     }
 
     /**
@@ -25,7 +28,10 @@ class RestaurantController extends Controller
      */
     public function create()
     {
-        //
+        $restaurantCategories = Category::getRestaurantCategories();
+        $week = Restaurant::WEEK;
+
+       return view('seller.restaurants.create',compact('restaurantCategories','week'));
     }
 
     /**
@@ -36,7 +42,7 @@ class RestaurantController extends Controller
      */
     public function store(StoreRestaurantRequest $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

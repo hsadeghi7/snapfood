@@ -25,11 +25,11 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|max:255',
+            // 'name'=>'required|max:255',
             'address'=>'required|max:255',
             'phone'=>'phone:IR',
             'account_number'=>'required|numeric',
-            'type'=>'required|in:'.implode(',', Category::getRestaurantCategories()),
+            // 'type'=>'required|in:'.implode(',', Category::getRestaurantCategories()),
         ];
     }
 }

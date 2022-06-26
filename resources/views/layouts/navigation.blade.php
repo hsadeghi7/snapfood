@@ -25,19 +25,25 @@
                         </x-nav-link>
                     </div>
 
-                <!-- Navigation Links for Seller -->
+                    <!-- Navigation Links for Seller -->
                 @elseif (auth()->user()->role == 'seller')
-
-                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('profiles.edit', app\models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
-                        {{ __('Edit Profile') }}
-                    </x-nav-link>
-                </div>
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('foods.create')" :active="request()->routeIs('foods.create')">
-                            {{ __('Create Food') }}
-                        </x-nav-link>
-                    </div>
+                    @if (app\models\Profile::getProfile())
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link :href="route('profiles.edit', app\models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
+                                {{ __('Edit Profile') }}
+                            </x-nav-link>
+                        </div>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link :href="route('restaurants.index')" :active="request()->routeIs('restaurants.index')">
+                                {{ __('Restaurant') }}
+                            </x-nav-link>
+                        </div>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link :href="route('foods.index')" :active="request()->routeIs('foods.index')">
+                                {{ __('Foods') }}
+                            </x-nav-link>
+                        </div>
+                    @endif
                 @endif
             </div>
 

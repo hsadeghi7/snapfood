@@ -38,4 +38,12 @@ class Category extends Model
         }
         return $restaurant;
     }
+    public static function getFoodCategories()
+    {
+        $categories = Category::where('type', 'food')->get();
+        foreach ($categories as $category) {
+            $food[] = $category->name;
+        }
+        return $food;
+    }
 }

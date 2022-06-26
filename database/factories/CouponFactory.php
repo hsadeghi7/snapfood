@@ -17,7 +17,8 @@ class CouponFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->word,
+            'percentage' => $this->faker->numberBetween(1, 100),
         ];
     }
 }

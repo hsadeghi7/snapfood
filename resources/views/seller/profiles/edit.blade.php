@@ -10,15 +10,15 @@
                 @csrf
                 @method('PUT')
                 <!-- Restaurant Name -->
-                <div>
+                {{-- <div>
                     <x-label for="name" :value="__('Restaurant Name')" />
 
                     <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')??$profile->name" required autofocus />
-                </div>
+                </div> --}}
 
-                <!-- Restaurant Name -->
+                <!-- Restaurant Address -->
                 <div class="mt-4">
-                    <x-label for="address" :value="__('Restaurant Address') " />
+                    <x-label for="address" :value="__('Address') " />
 
                     <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address') ?? $profile->address"
                         required autofocus />
@@ -41,7 +41,7 @@
                 </div>
 
                 <!-- Restaurant Type -->
-                <div class="mt-4">
+                {{-- <div class="mt-4">
                     <x-label for="type" :value="__('Restaurant Type')" />
 
                     <select id="type" name="type"
@@ -52,12 +52,12 @@
                         @endforeach
                     </select>
 
-                </div>
+                </div> --}}
 
                 <div class="flex items-center justify-end mt-4">
 
                     <x-button class="ml-4">
-                        {{ __('update restaurant INFO') }}
+                        {{ __('update profile INFO') }}
                     </x-button>
                 </div>
             </form>

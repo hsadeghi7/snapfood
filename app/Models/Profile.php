@@ -13,13 +13,18 @@ class Profile extends Model
         'user_id',
         'phone',
         'address',
-        'name',
-        'type',
+        // 'name',
+        // 'type',
         'account_number',
     ];
 
     public static function getProfile()
     {
         return Profile::where('user_id', auth()->id())->first();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

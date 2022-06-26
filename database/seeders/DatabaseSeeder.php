@@ -20,10 +20,11 @@ class DatabaseSeeder extends Seeder
             'password'=>bcrypt('Aa123456'),
             'role' => 'superAdmin',
             'is_admin'=>true
-        ]);
-        \App\Models\User::factory(10)->create();
+        ]);    
+        \App\Models\Coupon::factory(10)->create();
+        \App\Models\Category::factory(10)->create();        
 
-        
+        \App\Models\User::factory()->count(10)->hasProfiles(1)->hasFoods(5)->create();
 
     }
 }

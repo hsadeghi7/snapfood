@@ -40,11 +40,11 @@ class ProfileController extends Controller
     {
         Profile::create([
             'user_id' => auth()->id(),
-            'name' => $request->name,
+            // 'name' => $request->name,
             'address' => $request->address,
             'phone' => $request->phone,
             'account_number' => $request->account_number,
-            'type' => $request->type,
+            // 'type' => $request->type,
         ]);
         return back()->with('massage', 'Profile create successfully');
     }
@@ -83,11 +83,11 @@ class ProfileController extends Controller
     {
         // dd($request->all());
         $profile->update([
-            'name' => $request->name,
+            // 'name' => $request->name,
             'address' => $request->address,
             'phone' => $request->phone,
             'account_number' => $request->account_number,
-            'type' => $request->type,
+            // 'type' => $request->type,
         ]);
         return redirect('/')->with('message', 'Profile updated successfully');
     }

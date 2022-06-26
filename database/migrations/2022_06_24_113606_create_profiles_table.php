@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained();
             $table->string('phone');
             $table->string('address');
-            $table->string('name');
-            $table->string('type');
+            // $table->string('name');
+            // $table->string('type');
             $table->integer('account_number');
             $table->timestamps();
         });

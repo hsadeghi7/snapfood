@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Food extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'price', 'coupon', 'foodParty', 'ingredients', 'foodCategory', 'image', 'user_id', 'categoryable_type', 'categoryable_id'];
 
-
+    protected $table='foods';
 
 
     /**
@@ -19,5 +20,10 @@ class Food extends Model
     public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizeable');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

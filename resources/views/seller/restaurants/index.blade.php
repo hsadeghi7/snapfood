@@ -1,3 +1,5 @@
+<x-app-layout>
+    <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -7,12 +9,20 @@
                             {{ session('message') }}
                         </div>
                     @endif
+                    {{-- Create new coupon --}}
+                    <a href="{{ route('restaurants.create') }}">
+                        <div class="flex items-center mb-3 gap-1">
+                            <p class="text-green-500 font-bold ">
+                                Add restaurant
+                            </p>
+                        </div>
+                    </a>
 
-                    {{-- User list --}}
-                    @if (count($users) < 2)
+                    {{-- Coupon list --}}
+                    @if (empty($restaurants->first()))
                         <div
                             class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
-                            No User Found
+                            No Restaurants Found
                         </div>
                     @else
                         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -21,74 +31,77 @@
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
-                                            Name
+                                            Coupon Name
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Role
+                                            Discount percentage
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Permission
+                                            Edit
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Status
+                                            Delete
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($users as $user)
-                                        @if ($user->role !== 'superAdmin')
-                                            <tr>
-                                                <td class="px-6 py-2 whitespace-no-wrap">
-                                                    <div class="flex items-center">
+                                    @foreach ($restaurants as $restaurant)
+                                        <tr>
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="flex items-center">
+                                                </div>
+                                                <div class="ml-2">
+                                                    <div class="text-sm font-medium  text-gray-900">
+                                                        {{ $restaurant->name }}
                                                     </div>
-                                                    <div class="ml-2">
-                                                        <div class="text-sm font-medium  text-gray-900">
-                                                            {{ $user->name }}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-2 whitespace-no-wrap">
-                                                    <div class="text-sm font-medium text-gray-900">
-                                                        {{ $user->role }}
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-2 whitespace-no-wrap">
-                                                    <div class="text-sm font-medium text-gray-900">
-                                                        @if ($user->is_admin)
-                                                            <a href="{{ route('users.edit', $user) }}"
-                                                                class="font-bold text-blue-600 dark:text-blue-500 hover:underline">Admin</a>
-                                                        @else
-                                                            <a href="{{ route('users.edit', $user) }}"
-                                                                class="font-bold text-red-500 dark:text-red-500 hover:underline">Not
-                                                                Admin</a>
-                                                        @endif
-                                                    </div>
-                                                </td>
-                                                <form action="{{ route('users.activityToggle', $user) }}"
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="text-sm font-medium  text-gray-900">
+                                                    {{ $restaurant->percentage }}%
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <a href="{{ route('restaurants.edit', $restaurant->id) }}"
+                                                    class="text-sm font-bold  text-green-700  ">
+                                                    <svg class="h-5 w-5 text-blue-500" viewBox="0 0 24 24"
+                                                        stroke-width="2" stroke="currentColor" fill="none"
+                                                        stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                                        <path
+                                                            d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
+                                                        <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
+                                                        <line x1="16" y1="5" x2="19"
+                                                            y2="8" />
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                <form action="{{ route('restaurants.destroy', $restaurant->id) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <input name="id" type="text" value="{{ $user->id }}"
-                                                        hidden>
-                                                    <td class="px-6 py-4 whitespace-no-wrap">
-                                                        <button type="submit">
-                                                            @if ($user->deleted_at)
-                                                                <p class="text-red-600 font-bold">Deactive</p>
-                                                            @else
-                                                                <p class="text-green-600 font-bold">Active</p>
-                                                            @endif
-                                                        </button>
-                                                    </td>
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-sm font-bold  text-red-700">
+                                                        <svg class="h-5 w-5 text-red-500" fill="none"
+                                                            viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                    </button>
                                                 </form>
-                                            </tr>
-                                        @endif
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                             <div class="p-5">
-                                {{ $users->links() }}
+                                {{ $restaurants->links() }}
                             </div>
                         </div>
                     @endif
                 </div>
             </div>
         </div>
+    </div>
+</x-app-layout>

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
+use App\Models\Coupon;
 use App\Models\Category;
 use App\Http\Requests\StoreFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
+use GuzzleHttp\Promise\Create;
+use Illuminate\Support\Facades\Storage;
 
 class FoodController extends Controller
 {
@@ -16,10 +19,10 @@ class FoodController extends Controller
      */
     public function index()
     {
-        Food::categories();
-        $items = Category::where('morphable_type', 'food')->get();
+        // Food::categories();
+        // $items = Category::where('morphable_type', 'food')->get();
 
-        return view('seller.index', compact('items'));
+        return view('seller.foods.index');
     }
 
     /**
@@ -30,7 +33,8 @@ class FoodController extends Controller
     public function create()
     {
         $foodCategories = Category::where('type', 'food')->get();
-        return view('seller.foods.create', compact('foodCategories'));
+        $coupons = Coupon::get();
+        return view('seller.foods.create', compact('foodCategories', 'coupons'));
     }
 
     /**
@@ -41,7 +45,24 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
-        //
+        $validated = $request->validated();
+        $imagePath = Storage::disk('public')->put('images/foods/' ,$validated['image']);
+
+        Food::create(
+            [
+                'name' => $request->name,
+                'price' => $request->price,
+                'coupon' => $request->coupon,
+                'foodParty' => $request->foodParty,
+                'ingredients' => $request->ingredients,
+                'foodCategory' => $request->foodCategory,
+                'image' => $imagePath,
+                'user_id' => auth()->id(),
+                'categoryable_type'=>'food',
+                'categoryable_id'=>'8'
+            ]
+        );
+        return redirect('/')->with('message', 'Food created successfully');
     }
 
     /**
