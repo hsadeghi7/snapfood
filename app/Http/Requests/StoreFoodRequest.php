@@ -25,7 +25,7 @@ class StoreFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique|string|max:255',
+            'name'=>'required|unique:foods,name|string|max:255',
             'price'=>'required|numeric',
             'coupon'=>'numeric',
             'ingredients'=>'max:255',

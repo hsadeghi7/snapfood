@@ -70,6 +70,9 @@ class FoodController extends Controller
     public function show(Food $food)
     {
         dd($food);
+        // $timetable = WorkingHour::where('restaurant_id', $food->id)->get();
+        // $week = WorkingHour::WEEK;
+        // return view('seller.restaurants.show', compact('food', 'timetable', 'week'));
     }
 
     /**
