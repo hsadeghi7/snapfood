@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Models\Restaurant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('price');
             $table->string('coupon')->default(0);
-            $table->string('foodParty')->nullable();
+            $table->string('foodParty')->default(null);
             $table->string('ingredients');
             $table->string('foodCategory');
             $table->string('image');
-            $table->foreignIdFor(User::class)->constrained();
-            $table->boolean('is_active')->default(true);
+            $table->foreignIdFor(Restaurant::class)->constrained();
+            $table->string('restaurant_id')->default(null);
+            // $table->boolean('is_active')->default(true);
             $table->timestamps();
             $table->morphs('categoryable');
         });

@@ -78,7 +78,7 @@
 
                         <!-- Add Restaurant  -->
                         <div class="flex items-center justify-start mt-4">
-                            <x-button class="ml-4">
+                            <x-button >
                                 {{ __('Add') }}
                             </x-button>
                         </div>

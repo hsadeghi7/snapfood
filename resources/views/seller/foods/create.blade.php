@@ -4,40 +4,42 @@
             {{ __('Add foods') }}
         </h2>
     </x-slot>
-{{ $errors }}
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
+                    @if (session('message'))
+                        <div
+                            class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
+                            {{ session('message') }}
+                        </div>
+                    @endif
                     {{-- form --}}
                     <form action="{{ route('foods.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="flex justify-between gap-3">
                             {{-- Name --}}
-                            <div class="mb-6">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Food
-                                    Name</label>
-                                <input type="text" name="name" 
-                                    value="{{ request()->input('name', old('name')) }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <div class="mt-4 w-full">
+                                <x-label for="name" :value="__('Food Name')" />
+                                <x-input id="name" class="block mt-1 w-full" type="text" name="name"
+                                    :value="old('name')" required autofocus />
                                 <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
                             </div>
+
                             {{-- Price --}}
-                            <div class="mb-6">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Food
-                                    Price</label>
-                                <input type="text" name="price"
-                                    value="{{ request()->input('price', old('price')) }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <div class="mt-4 w-full">
+                                <x-label for="price" :value="__('Price ')" />
+                                <x-input id="price" class="block mt-1 w-full" type="text" name="price"
+                                    :value="old('price')" required autofocus />
                                 <div class="text-sm text-red-500"> {{ $errors->first('price') }} </div>
                             </div>
                             {{-- Food Category --}}
-                            <div class="mb-6">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Food
-                                    Category</label>
-                                <select name="foodCategory"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  pr-24 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected disabled>Category</option>
+                            <div class="mt-4 w-full">
+                                <x-label for="foodCategory" :value="__('FoodCategory')" />
+                                <select id="foodCategory" name="foodCategory"
+                                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected>Choose a Type</option>
                                     @foreach ($foodCategories as $foodCategory)
                                         <option value="{{ $foodCategory->name }}">{{ $foodCategory->name }}</option>
                                     @endforeach
@@ -45,50 +47,44 @@
                                 <div class="text-sm text-red-500"> {{ $errors->first('foodCategory') }} </div>
                             </div>
                             {{-- Discount --}}
-                            <div class="mb-6">
-                                <label
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Discount</label>
-                                <select name="coupon"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 pr-24  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected value="0">No Discount</option>
+                            <div class="mt-4 w-full">
+                                <x-label for="coupon" :value="__('Coupon')" />
+                                <select id="coupon" name="coupon"
+                                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected>Choose a Type</option>
                                     @foreach ($coupons as $coupon)
-                                        <option value="{{ $coupon->percentage }}">{{ $coupon->percentage }}
-                                        </option>
+                                        <option value="{{ $coupon->percentage }}">{{ $coupon->percentage }}</option>
                                     @endforeach
                                 </select>
                                 <div class="text-sm text-red-500"> {{ $errors->first('coupon') }} </div>
-
-                                {{-- Food Party --}}
-                            </div>
-                            <div class="mb-6">
-                                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Add to Food Party</label>
-                                <div class="flex items-center mb-4">
-                                    <input type="checkbox" name="foodParty"
-                                        class="w-6 h-6 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                </div>
                             </div>
                         </div>
                         {{-- Ingredients --}}
-                        <div class="mb-6">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Ingredients
-                            </label>
-                            <textarea type="text" name="ingredients" value="{{ request()->input('ingredients', old('ingredients')) }}"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"></textarea>
+                        <div class="mt-4 w-full">
+                            <x-label for="ingredients" :value="__('Ingredients ')" />
+                            <x-input id="ingredients" class="block mt-1 w-full" type="text" name="ingredients"
+                                :value="old('ingredients')" required autofocus />
+                            <div class="text-sm text-red-500"> {{ $errors->first('ingredients') }} </div>
                         </div>
                         {{-- Image --}}
-                        <div class="mb-6">
-                            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Upload file</label>
-                            <input name="image" type="file"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
-                        </div>
 
+                        <div class="my-4">
+                            <x-label for="image" :value="__('Image')" />
+                            <x-input id="image" class="block mt-1 w-full" type="file" name="image"
+                                required autofocus />
+                            <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
+
+                        </div>
                         {{-- Submin Form --}}
-                        <button type="submit"
-                            class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">Create</button>
+                        <div class="flex items-center justify-start mt-4">
+                            <x-button>
+                                {{ __('Create') }}
+                            </x-button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>

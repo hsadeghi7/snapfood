@@ -20,8 +20,8 @@
                         @include('admin.users.index')
                     @endif
                     @if (auth()->user()->role === 'seller')
-                        <h2 class="px-12 font-bold text-xl">Food list</h2>
-                        @include('seller.foods.index')
+                        <h2 class="px-12 font-bold text-xl">You're Seller!</h2>
+                        @include('seller.index')
                     @endif
                 </div>
             </div>

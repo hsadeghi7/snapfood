@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateFoodRequest extends FormRequest
@@ -13,7 +14,7 @@ class UpdateFoodRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->role === 'seller';
     }
 
     /**
@@ -24,7 +25,12 @@ class UpdateFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>'required|unique:foods,name|string|max:255',
+            'price'=>'required|numeric',
+            'coupon'=>'numeric',
+            'ingredients'=>'max:255',
+            'foodCategory'=>'required|in:'.implode(',', Category::getFoodCategories()),
+            'image'=>'image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

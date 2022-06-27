@@ -15,6 +15,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('seller/workingHours', WorkingHourController::class);
 
             Route::post('seller/restaurant', [RestaurantController::class, 'statusToggle'])->name('restaurant.statusToggle');
+            Route::post('seller/food', [FoodController::class, 'statusToggle'])->name('food.statusToggle');
         });
     });
 });

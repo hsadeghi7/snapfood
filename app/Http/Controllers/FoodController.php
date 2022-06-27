@@ -7,7 +7,6 @@ use App\Models\Coupon;
 use App\Models\Category;
 use App\Http\Requests\StoreFoodRequest;
 use App\Http\Requests\UpdateFoodRequest;
-use GuzzleHttp\Promise\Create;
 use Illuminate\Support\Facades\Storage;
 
 class FoodController extends Controller
@@ -19,10 +18,8 @@ class FoodController extends Controller
      */
     public function index()
     {
-        // Food::categories();
-        // $items = Category::where('morphable_type', 'food')->get();
-
-        return view('seller.foods.index');
+        $foods = Food::paginate(5);
+        return view('seller.foods.index', compact('foods'));
     }
 
     /**
@@ -46,23 +43,22 @@ class FoodController extends Controller
     public function store(StoreFoodRequest $request)
     {
         $validated = $request->validated();
-        $imagePath = Storage::disk('public')->put('images/foods/' ,$validated['image']);
-
+        $imagePath = Storage::disk('public')->put('images/foods/', $validated['image']);
         Food::create(
             [
                 'name' => $request->name,
                 'price' => $request->price,
                 'coupon' => $request->coupon,
-                'foodParty' => $request->foodParty,
                 'ingredients' => $request->ingredients,
                 'foodCategory' => $request->foodCategory,
                 'image' => $imagePath,
                 'user_id' => auth()->id(),
-                'categoryable_type'=>'food',
-                'categoryable_id'=>'8'
+                'categoryable_type' => 'food',
+                'categoryable_id' => '8'
             ]
         );
-        return redirect('/')->with('message', 'Food created successfully');
+        
+        return back()->with('message', 'Food created successfully');
     }
 
     /**
@@ -73,7 +69,7 @@ class FoodController extends Controller
      */
     public function show(Food $food)
     {
-        //
+        dd($food);
     }
 
     /**
@@ -84,7 +80,9 @@ class FoodController extends Controller
      */
     public function edit(Food $food)
     {
-        //
+        $foodCategories = Category::where('type', 'food')->get();
+        $coupons = Coupon::get();
+        return view('seller.foods.edit', compact('food', 'foodCategories', 'coupons'));
     }
 
     /**
@@ -96,7 +94,25 @@ class FoodController extends Controller
      */
     public function update(UpdateFoodRequest $request, Food $food)
     {
-        //
+        $validated = $request->validated();
+        $imagePath = $food->image;
+        if ($request->image) {
+            $imagePath = Storage::disk('public')->put('images/foods/', $validated['image']);
+        }
+        $food->update(
+            [
+                'name' => $request->name,
+                'price' => $request->price,
+                'coupon' => $request->coupon,
+                'ingredients' => $request->ingredients,
+                'foodCategory' => $request->foodCategory,
+                'image' => $imagePath,
+                'user_id' => auth()->id(),
+                'categoryable_type' => 'food',
+                'categoryable_id' => '8'
+            ]
+        );
+        return redirect('/')->with('message', 'Food updated successfully');
     }
 
     /**
@@ -107,6 +123,29 @@ class FoodController extends Controller
      */
     public function destroy(Food $food)
     {
-        //
+        $food->delete();
+        return back()->with('message', "$food->name deleted updated successfully");
+
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function statusToggle()
+    {
+        $food = Food::find($_POST['id']);
+
+        if ($food->foodParty) {
+            $food->foodParty = false;
+        } else {
+            $food->foodParty = true;
+        }
+
+        $food->save();
+
+        return back()->with('message', 'Food Party status updated successfully for ' . $food->name);
     }
 }

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Discount') }}
+            {{ __('Add foods') }}
         </h2>
     </x-slot>
 
@@ -9,29 +9,82 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-
-                    <form action="{{ route('coupon.update', $coupon) }}" method="POST">
+                    @if (session('message'))
+                        <div
+                            class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
+                            {{ session('message') }}
+                        </div>
+                    @endif
+                    {{-- form --}}
+                    <form action="{{ route('foods.update', $food) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        <div class="flex gap-3">
-                            <div class="mb-6">
-                                <input type="text" name="name"  value="{{ $coupon->name }}" hidden >
+                        <div class="flex justify-between gap-3">
+                            {{-- Name --}}
+                            <div class="mt-4 w-full">
+                                <x-label for="name" :value="__('Food Name')" />
+                                <x-input id="name" class="block mt-1 w-full" type="text" name="name"
+                                    :value="old('name')??$food->name" required autofocus />
+                                <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
                             </div>
-                            <div class="mb-6">
-                                <label
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-800">Percentage
-                                </label>
-                                <input type="text" name="percentage"
-                                    value="{{ request()->input('percentage', old('percentage')) ?? $coupon->percentage }}"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <div class="text-sm text-red-500"> {{ $errors->first('percentage') }} </div>
+
+                            {{-- Price --}}
+                            <div class="mt-4 w-full">
+                                <x-label for="price" :value="__('Price ')" />
+                                <x-input id="price" class="block mt-1 w-full" type="text" name="price"
+                                    :value="old('price')??$food->price" required autofocus />
+                                <div class="text-sm text-red-500"> {{ $errors->first('price') }} </div>
+                            </div>
+                            {{-- Food Category --}}
+                            <div class="mt-4 w-full">
+                                <x-label for="foodCategory" :value="__('FoodCategory')" />
+                                <select id="foodCategory" name="foodCategory"
+                                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected>Choose a Type</option>
+                                    @foreach ($foodCategories as $foodCategory)
+                                        <option value="{{ $foodCategory->name }}">{{ $foodCategory->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="text-sm text-red-500"> {{ $errors->first('foodCategory') }} </div>
+                            </div>
+                            {{-- Discount --}}
+                            <div class="mt-4 w-full">
+                                <x-label for="coupon" :value="__('Coupon')" />
+                                <select id="coupon" name="coupon"
+                                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected>Choose a Type</option>
+                                    @foreach ($coupons as $coupon)
+                                        <option value="{{ $coupon->percentage }}">{{ $coupon->percentage }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="text-sm text-red-500"> {{ $errors->first('coupon') }} </div>
                             </div>
                         </div>
-                        <button type="submit"
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ">Update</button>
+                        {{-- Ingredients --}}
+                        <div class="mt-4 w-full">
+                            <x-label for="ingredients" :value="__('Ingredients ')" />
+                            <x-input id="ingredients" class="block mt-1 w-full" type="text" name="ingredients"
+                                :value="old('ingredients')??$food->ingredients" required autofocus />
+                            <div class="text-sm text-red-500"> {{ $errors->first('ingredients') }} </div>
+                        </div>
+                        {{-- Image --}}
+
+                        <div class="my-4">
+                            <x-label for="image" :value="__('Image')" />
+                            <x-input id="image" class="block mt-1 w-full" type="file" name="image" />
+                            <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
+
+                        </div>
+                        {{-- Submin Form --}}
+                        <div class="flex items-center justify-start mt-4">
+                            <x-button>
+                                {{ __('Update') }}
+                            </x-button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </x-app-layout>
