@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Restaurant;
 use App\Models\WorkingHour;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
-use Illuminate\Support\Facades\Request;
 
 class RestaurantController extends Controller
 {
@@ -19,7 +20,8 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::paginate(5);
+        $restaurants = DB::table('restaurants')->where('user_id', auth()->id())->paginate(5);
+
         return view('seller.restaurants.index', compact('restaurants'));
     }
 
@@ -60,7 +62,7 @@ class RestaurantController extends Controller
                 // 'categoryable_id'=>'8'
             ]
         );
-        return redirect('/')->with('message', 'Restaurant created successfully');
+        return redirect('seller/restaurants')->with('message', 'Restaurant created successfully');
     }
 
     /**

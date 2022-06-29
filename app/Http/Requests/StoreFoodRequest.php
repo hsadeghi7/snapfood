@@ -27,7 +27,6 @@ class StoreFoodRequest extends FormRequest
         return [
             'name'=>'required|unique:foods,name|string|max:255',
             'price'=>'required|numeric',
-            'coupon'=>'numeric',
             'ingredients'=>'max:255',
             'foodCategory'=>'required|in:'.implode(',', Category::getFoodCategories()),
             'image'=>'image|mimes:jpeg,png,jpg|max:2048'

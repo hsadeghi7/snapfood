@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Models\Food;
 use App\Models\User;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\Schema;
@@ -16,19 +16,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('foods', function (Blueprint $table) {
+        Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('price');
-            $table->string('coupon')->default(null);
-            $table->string('foodParty')->default(null);
-            $table->string('ingredients');
-            $table->string('foodCategory');
-            $table->string('image');
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Restaurant::class)->constrained();
+            $table->string('coupon')->nullable();
+            $table->string('foodParty')->nullable();
+            $table->foreignIdFor(Restaurant::class);
+            $table->foreignIdFor(Food::class);
+            $table->foreignIdFor(User::class);
             $table->timestamps();
-            // $table->morphs('categoryable');
         });
     }
 
@@ -39,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('foods');
+        Schema::dropIfExists('menus');
     }
 };

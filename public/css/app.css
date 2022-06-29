@@ -736,6 +736,9 @@ select {
 .m-2 {
   margin: 0.5rem;
 }
+.m-0 {
+  margin: 0px;
+}
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -804,6 +807,15 @@ select {
 .-mr-1 {
   margin-right: -0.25rem;
 }
+.mb-16 {
+  margin-bottom: 4rem;
+}
+.-mb-16 {
+  margin-bottom: -4rem;
+}
+.-mb-12 {
+  margin-bottom: -3rem;
+}
 .block {
   display: block;
 }
@@ -861,6 +873,9 @@ select {
 .h-96 {
   height: 24rem;
 }
+.h-52 {
+  height: 13rem;
+}
 .min-h-screen {
   min-height: 100vh;
 }
@@ -893,6 +908,21 @@ select {
 }
 .w-3\/4 {
   width: 75%;
+}
+.w-\[\] {
+  width: ;
+}
+.w-\[30\] {
+  width: 30;
+}
+.w-\[30\%\] {
+  width: 30%;
+}
+.w-\[60\%\] {
+  width: 60%;
+}
+.w-\[80\%\] {
+  width: 80%;
 }
 .max-w-7xl {
   max-width: 80rem;
@@ -942,6 +972,9 @@ select {
 }
 .cursor-pointer {
   cursor: pointer;
+}
+.cursor-auto {
+  cursor: auto;
 }
 .resize {
   resize: both;
@@ -1894,8 +1927,16 @@ select {
     height: auto;
   }
 
+  .md\:h-full {
+    height: 100%;
+  }
+
   .md\:w-48 {
     width: 12rem;
+  }
+
+  .md\:w-96 {
+    width: 24rem;
   }
 
   .md\:max-w-xl {

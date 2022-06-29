@@ -1,4 +1,12 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Add item to
+            <span class="text-red-600 font-bold">{{ $restaurant->name }}</span>
+            Restaurant Menu
+        </h2>
+    </x-slot>
+
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -9,23 +17,71 @@
                             {{ session('message') }}
                         </div>
                     @endif
-                    {{-- Create new restaurant --}}
-                    <a href="{{ route('foods.create') }}">
-                        <div class="flex items-center mb-3 gap-1">
-                            <p class="text-green-500 font-bold ">
-                                Add Food
-                            </p>
+
+
+                    {{-- Create new coupon --}}
+                    {{-- form --}}
+                    <form action="{{ route('menus.store') }}" method="POST">
+                        @csrf
+                        <div class="flex justify-between gap-3">
+                            {{-- Name --}}
+                            <div class="mt-4 w-full">
+                                <x-label for="name" :value="__('Name')" />
+                                <x-input id="name" class="block mt-1 w-full" type="text" name="name"
+                                    :value="old('name')" required autofocus />
+                                <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
+                            </div>
+
+                            {{-- Food --}}
+                            <div class="mt-4 w-full">
+                                <x-label for="food" :value="__('Food')" />
+                                <select id="food" name="food_id"
+                                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected disabled>Choose a Food</option>
+                                    @foreach ($allFood as $food)
+                                        <option value="{{ $food->id }}">{{ $food->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="text-sm text-red-500"> {{ $errors->first('food') }} </div>
+                            </div>
+
+                            {{-- Discount --}}
+                            <div class="mt-4 w-full">
+                                <x-label for="coupon" :value="__('Coupon')" />
+                                <select id="coupon" name="coupon"
+                                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option selected disabled>Choose a Discount</option>
+                                    <option value="">No Discount</option>
+                                    @foreach ($coupons as $coupon)
+                                        <option value="{{ $coupon->percentage }}">{{ $coupon->percentage }}%
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="text-sm text-red-500"> {{ $errors->first('coupon') }} </div>
+                            </div>
                         </div>
-                    </a>
+
+                        <input type="hidden" value="{{ auth()->id() }}" name="user_id">
+                        <input type="hidden" value="{{ $restaurant->id }}" name="restaurant_id">
+                        {{-- Submin Form --}}
+                        <div class="flex items-center justify-start mt-4">
+                            <x-button>
+                                {{ __('Create') }}
+                            </x-button>
+                        </div>
+                    </form>
+
+
+
 
                     {{-- restaurant list --}}
-                    @if (empty($foods->first()))
+                    @if (empty($restaurant->foods->first()))
                         <div
-                            class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
-                            No Food Found
+                            class="p-4 my-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
+                            No Menu Found
                         </div>
                     @else
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg mt-4">
                             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                                 <thead
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -40,6 +96,12 @@
                                             Food Price
                                         </th>
                                         <th scope="col" class="px-6 py-3">
+                                            Food Discount
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Food Party?
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
                                             Show
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -52,7 +114,7 @@
                                 </thead>
                                 <tbody>
 
-                                    @foreach ($foods as $food)
+                                    @foreach ($restaurant->foods as $food)
                                         <tr>
                                             {{-- name --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
@@ -70,10 +132,25 @@
                                                     {{ $food->foodCategory }}
                                                 </div>
                                             </td>
+
+
+                                            {{-- Price --}}
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="text-sm font-medium  text-gray-900">
+                                                    {{ $food->price }}
+                                                </div>
+                                            </td>
+                                            {{-- Discount --}}
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="text-sm font-medium  text-gray-900">
+                                                    {{ $food->coupon }}%
+                                                </div>
+                                            </td>
                                             {{-- Food Party Toggle --}}
-                                            {{-- <form action="{{ route('food.statusToggle') }}" method="POST">
+                                            <form action="{{ route('food.statusToggle') }}" method="POST">
                                                 @csrf
-                                                <input name="id" type="text" value="{{ $food->id }}" hidden>
+                                                <input name="id" type="text" value="{{ $food->id }}"
+                                                    hidden>
                                                 <td class="px-6 py-2 whitespace-no-wrap">
                                                     <button type="submit">
                                                         @if (!$food->foodParty)
@@ -83,20 +160,7 @@
                                                         @endif
                                                     </button>
                                                 </td>
-                                            </form> --}}
-
-                                            {{-- Price --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
-                                                <div class="text-sm font-medium  text-gray-900">
-                                                    {{ $food->price }}
-                                                </div>
-                                            </td>
-                                            {{-- Discount --}}
-                                            {{-- <td class="px-6 py-2 whitespace-no-wrap">
-                                                <div class="text-sm font-medium  text-gray-900">
-                                                    {{ $food->coupon }}%
-                                                </div>
-                                            </td> --}}
+                                            </form>
                                             {{-- show --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <a href="{{ route('foods.show', $food->id) }}"
@@ -131,10 +195,12 @@
 
                                             {{-- Delete --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
-                                                <form action="{{ route('foods.destroy', $food->id) }}"
+                                                <form action="{{ route('menus.destroy', $food) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
+                                                    <input type="hidden" value="{{ $food->id }}" name="food_id">
+                                                    <input type="hidden" value="{{ $restaurant->id }}" name="restaurant_id">
                                                     <button type="submit" class="text-sm font-bold  text-red-700">
                                                         <svg class="h-6 w-6 text-red-500" fill="none"
                                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -150,10 +216,19 @@
                                 </tbody>
                             </table>
                             <div class="p-5">
-                                {{ $foods->links() }}
                             </div>
                         </div>
                     @endif
+
+
+
+
+
+
+
+
+
+
                 </div>
             </div>
         </div>

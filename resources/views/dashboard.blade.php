@@ -14,7 +14,6 @@
                         @include('admin.users.index')
                     @endif
                     @if (auth()->user()->role === 'seller')
-                        <h2 class="px-6 font-bold text-xl">Resturant Menu Managment</h2>
                         @include('seller.index')
                     @endif
                 </div>

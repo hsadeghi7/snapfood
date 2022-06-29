@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Food;
 use App\Models\Coupon;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreFoodRequest;
-use App\Http\Requests\UpdateFoodRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\UpdateFoodRequest;
 
 class FoodController extends Controller
 {
@@ -18,7 +19,8 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $foods = Food::paginate(5);
+        $foods = DB::table('foods')->where('user_id', auth()->id())->paginate(5);
+
         return view('seller.foods.index', compact('foods'));
     }
 
@@ -48,17 +50,14 @@ class FoodController extends Controller
             [
                 'name' => $request->name,
                 'price' => $request->price,
-                'coupon' => $request->coupon,
                 'ingredients' => $request->ingredients,
                 'foodCategory' => $request->foodCategory,
                 'image' => $imagePath,
                 'user_id' => auth()->id(),
-                'categoryable_type' => 'food',
-                'categoryable_id' => '8'
             ]
         );
         
-        return back()->with('message', 'Food created successfully');
+        return redirect('seller/foods')->with('message', 'Food created successfully');
     }
 
     /**
@@ -106,16 +105,13 @@ class FoodController extends Controller
             [
                 'name' => $request->name,
                 'price' => $request->price,
-                'coupon' => $request->coupon,
                 'ingredients' => $request->ingredients,
                 'foodCategory' => $request->foodCategory,
                 'image' => $imagePath,
                 'user_id' => auth()->id(),
-                'categoryable_type' => 'food',
-                'categoryable_id' => '8'
             ]
         );
-        return redirect('/')->with('message', 'Food updated successfully');
+        return redirect('seller/foods')->with('message', 'Food updated successfully');
     }
 
     /**

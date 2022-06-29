@@ -27,9 +27,9 @@
                 @endif
                 <!-- Navigation Links for Seller -->
                 @if (auth()->user()->role == 'seller')
-                    @if (app\models\Profile::getProfile())
+                    @if (App\Models\Profile::getProfile())
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                            <x-nav-link :href="route('profiles.edit', app\models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
+                            <x-nav-link :href="route('profiles.edit', App\Models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
                                 {{ __('Edit Profile') }}
                             </x-nav-link>
                         </div>
@@ -41,6 +41,11 @@
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <x-nav-link :href="route('foods.index')" :active="request()->routeIs('foods.index')">
                                 {{ __('Foods') }}
+                            </x-nav-link>
+                        </div>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link :href="route('menus.index')" :active="request()->routeIs('menus.index')">
+                                {{ __('Menus') }}
                             </x-nav-link>
                         </div>
                     @endif
@@ -115,7 +120,7 @@
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('profiles.edit', app\models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
+            <x-responsive-nav-link :href="route('profiles.edit', App\Models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
                 {{ __('Edit Profile') }}
             </x-responsive-nav-link>
         </div>

@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Coupon>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Menu>
  */
-class CouponFactory extends Factory
+class MenuFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,7 @@ class CouponFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word,
-            'percentage' => $this->faker->numberBetween(20, 80),
+            //
         ];
     }
 }

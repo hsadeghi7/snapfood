@@ -51,6 +51,22 @@ class User extends Authenticatable
         return $this->hasMany(Food::class);
     }
 
+
+        /**
+     * Get the restaurants for the user.
+     */
+    public function restaurants(){
+        return $this->hasMany(Restaurant::class);
+    }
+
+            /**
+     * Get the menus for the user.
+     */
+    // public function menus(){
+    //     return $this->hasMany(Menu::class);
+    // }
+
+
         /**
      * Get the profiles for the user.
      */
@@ -65,4 +81,6 @@ class User extends Authenticatable
     public function addresses(){
         return $this->morphMany(Address::class, 'addressable');
     }
+
+
 }

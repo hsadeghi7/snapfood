@@ -47,7 +47,7 @@
                                 <div class="text-sm text-red-500"> {{ $errors->first('foodCategory') }} </div>
                             </div>
                             {{-- Discount --}}
-                            <div class="mt-4 w-full">
+                            {{-- <div class="mt-4 w-full">
                                 <x-label for="coupon" :value="__('Coupon')" />
                                 <select id="coupon" name="coupon"
                                     class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -57,7 +57,7 @@
                                     @endforeach
                                 </select>
                                 <div class="text-sm text-red-500"> {{ $errors->first('coupon') }} </div>
-                            </div>
+                            </div> --}}
                         </div>
                         {{-- Ingredients --}}
                         <div class="mt-4 w-full">

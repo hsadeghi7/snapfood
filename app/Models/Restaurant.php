@@ -23,7 +23,7 @@ class Restaurant extends Model
 
 
     /**
-     * Get all of the category for the post.
+     * Get all of the category for the restaurant and food.
      */
     public function categories()
     {
@@ -31,11 +31,43 @@ class Restaurant extends Model
         return $this->morphToMany(Category::class, 'categorizeable');
     }
 
+
     /**
-     * Get all of the workingHour for the post.
+     * Get all of the address for the restaurant.
+     */
+
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
+
+    
+    /**
+     * .
      */
     public function workingHours()
     {
         return $this->hasMany(WorkingHour::class);
+    }
+
+    /**
+     * Get all of the restaurant for the user.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get all of the menu for the restaurant.
+     */
+    // public function menus()
+    // {
+    //     return $this->hasMany(Menu::class);
+    // }
+
+    public function foods()
+    {
+        return $this->hasMany(Food::class);
     }
 }

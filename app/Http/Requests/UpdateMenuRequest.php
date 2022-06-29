@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateFoodRequest extends FormRequest
+class UpdateMenuRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +13,7 @@ class UpdateFoodRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role === 'seller';
+        return false;
     }
 
     /**
@@ -25,11 +24,7 @@ class UpdateFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:255',
-            'price'=>'required|numeric',
-            'ingredients'=>'max:255',
-            'foodCategory'=>'required|in:'.implode(',', Category::getFoodCategories()),
-            'image'=>'image|mimes:jpeg,png,jpg|max:2048'
+            //
         ];
     }
 }
