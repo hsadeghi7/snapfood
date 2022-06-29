@@ -107,16 +107,4 @@ class UserController extends Controller
     }
 
     
-    public function userAddress()
-    {
-
-        $user = User::find(auth()->user()->id);
-        $address = new Address;
-        $address->address = Profile::whereBelongsTo(auth()->user())->first()->address;
-        $address->latitude = 354.5;
-        $address->longitude = 6354;
-
-        $user->addresses()->save($address);
-        return back();
-    }
 }

@@ -18,7 +18,6 @@ class RestaurantFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'address' => $this->faker->address,
             'phone' => $this->faker->phoneNumber,
             'type' => $this->faker->word,
             'image' => $this->faker->imageUrl,

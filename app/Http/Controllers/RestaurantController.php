@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Restaurant;
 use App\Models\WorkingHour;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
@@ -48,20 +47,24 @@ class RestaurantController extends Controller
         // dd($request->all());
         $validated = $request->validated();
         $imagePath = Storage::disk('public')->put('images/restaurants/', $validated['image']);
-        Restaurant::create(
+
+        $restaurant = Restaurant::create(
             [
                 'name' => $request->name,
-                'address' => $request->address,
                 'phone' => $request->phone,
                 'type' => $request->type,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
                 'image' => $imagePath,
                 'user_id' => auth()->id(),
-                // 'categoryable_type'=>'food',
-                // 'categoryable_id'=>'8'
+
             ]
         );
+        $restaurant->addresses()->create([
+            'address' => $request->address,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+        ]);
+
+
         return redirect('seller/restaurants')->with('message', 'Restaurant created successfully');
     }
 
@@ -73,7 +76,7 @@ class RestaurantController extends Controller
      */
     public function show(Restaurant $restaurant)
     {
-        // dd($restaurant);
+        // dd($restaurant->addresses);
         $timetable = WorkingHour::where('restaurant_id', $restaurant->id)->get();
         $week = WorkingHour::WEEK;
         return view('seller.restaurants.show', compact('restaurant', 'timetable', 'week'));
@@ -110,15 +113,17 @@ class RestaurantController extends Controller
         $restaurant->update(
             [
                 'name' => $request->name,
-                'address' => $request->address,
                 'phone' => $request->phone,
                 'type' => $request->type,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
                 'image' => $imagePath,
                 'user_id' => auth()->id(),
             ]
         );
+        $restaurant->addresses()->create([
+            'address' => $request->address,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+        ]);
         return redirect('/')->with('message', 'Restaurant updated successfully');
     }
 
@@ -131,6 +136,7 @@ class RestaurantController extends Controller
     public function destroy(Restaurant $restaurant)
     {
         $restaurant->delete();
+        $restaurant->addresses()->delete();
         return back()->with('message', 'Restaurant deleted successfully');
     }
 

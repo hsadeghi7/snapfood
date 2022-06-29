@@ -17,14 +17,12 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('address');
             $table->string('phone');
             $table->string('type');
             $table->string('image');
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(User::class);
             $table->string('is_active')->default(true);
-            $table->string('latitude')->nullable();
-            $table->string('longitude')->nullable();
+
 
             $table->timestamps();
 

@@ -17,15 +17,18 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'Admin',
             'email' => 'hassan@gmail.com',
-            'password'=>bcrypt('Aa123456'),
+            'password' => bcrypt('Aa123456'),
             'role' => 'superAdmin',
-            'is_admin'=>true
-        ]);    
+            'is_admin' => true
+        ]);
         \App\Models\Coupon::factory(10)->create();
-        \App\Models\Category::factory(10)->create();        
-        \App\Models\Restaurant::factory(3)->create();        
+        \App\Models\Category::factory(10)->create();
 
-        \App\Models\User::factory()->count(10)->hasProfiles(1)->hasFoods(5)->create();
-
+        \App\Models\User::factory()
+            ->count(10)
+            ->hasProfile(1)
+            ->hasFoods(5)
+            ->hasRestaurants(3)
+            ->create();
     }
 }

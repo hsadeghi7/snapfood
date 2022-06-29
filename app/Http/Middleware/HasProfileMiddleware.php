@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use App\Models\Category;
-use App\Models\Coupon;
 use Closure;
 use App\Models\Profile;
 use Illuminate\Http\Request;

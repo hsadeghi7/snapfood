@@ -16,11 +16,9 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
+            $table->foreignIdFor(User::class);
             $table->string('phone');
             $table->string('address');
-            // $table->string('name');
-            // $table->string('type');
             $table->integer('account_number');
             $table->timestamps();
         });

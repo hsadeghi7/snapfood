@@ -24,6 +24,8 @@ class FoodFactory extends Factory
             'image' => $this->faker->imageUrl,
             'user_id' => $this->faker->numberBetween(1, 10),
             'restaurant_id' => $this->faker->numberBetween(1, 10),
+            'coupon' => $this->faker->word,
+            'foodParty' => $this->faker->boolean(),
         ];
     }
 }

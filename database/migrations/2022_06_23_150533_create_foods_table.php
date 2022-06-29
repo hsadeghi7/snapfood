@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('ingredients');
             $table->string('foodCategory');
             $table->string('image');
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Restaurant::class)->constrained();
+            $table->foreignIdFor(User::class);
+            $table->foreignIdFor(Restaurant::class);
             $table->timestamps();
             // $table->morphs('categoryable');
         });
