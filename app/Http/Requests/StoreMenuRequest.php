@@ -24,9 +24,9 @@ class StoreMenuRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255',
             'food_id' => 'required',
             'restaurant_id' => 'required',
+            'coupon' => 'required',
         ];
     }
 }

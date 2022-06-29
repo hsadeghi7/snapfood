@@ -18,12 +18,10 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('coupon')->nullable();
-            $table->string('foodParty')->nullable();
-            $table->foreignIdFor(Restaurant::class);
-            $table->foreignIdFor(Food::class);
-            $table->foreignIdFor(User::class);
+            $table->string('foodParty')->default(false);
+            $table->string('food_id');
+            $table->morphs('menuable');
             $table->timestamps();
         });
     }

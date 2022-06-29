@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Menu;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,7 +41,10 @@ class Restaurant extends Model
     {
         return $this->morphMany(Address::class, 'addressable');
     }
-
+    public function menus()
+    {
+        return $this->morphMany(Menu::class, 'menuable');
+    }
     
     /**
      * .

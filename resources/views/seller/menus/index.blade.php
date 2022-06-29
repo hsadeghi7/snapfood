@@ -44,19 +44,14 @@
                                                 </div>
                                             </td>
 
-                                            {{-- restaurant Menu --}}
+                                            {{-- show  Menu --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
-                                            <form action="{{ route('showMenu') }}" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="restaurant" value="{{ $restaurant }}">
-                                                <button type="submit">
-                                                    <div class="flex items-center mb-3 gap-1">
-                                                        <p class="text-green-500 font-bold ">
-                                                            Show Restuarant Menu
-                                                        </p>
-                                                    </div>
-                                                </button>
-                                            </form>
+                                                <div class="flex items-center mb-3 gap-1">
+                                                    <p class="text-green-500 font-bold ">
+                                                        <a href="{{ route('menus.show', $restaurant) }}">
+                                                            Show Restuarant Menu</a>
+                                                    </p>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -67,8 +62,6 @@
                             </div>
                         </div>
                     @endif
-
-
 
                 </div>
             </div>

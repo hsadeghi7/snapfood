@@ -8,6 +8,7 @@ use App\Models\Coupon;
 use App\Models\Restaurant;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreMenuRequest;
+use Illuminate\Support\Facades\Request;
 use App\Http\Requests\UpdateMenuRequest;
 
 class MenuController extends Controller
@@ -22,7 +23,8 @@ class MenuController extends Controller
         $restaurants = auth()->user()->restaurants;
         $foods = auth()->user()->foods;
         $menus = auth()->user()->menus;
-        // dd($restaurants->first()->menu->name);
+        // dd($restaurant->menus->load('food'));
+
         return view('seller.menus.index', compact('restaurants', 'foods', 'menus'));
     }
 
@@ -45,29 +47,22 @@ class MenuController extends Controller
      * @param  \App\Http\Requests\StoreMenuRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreMenuRequest $request)
+    public function store(Request $request)
     {
-        $restaurant = Restaurant::find($request->restaurant_id);
-        $food = Food::find($request->food_id);
+       // TODO چرا وقتی ولیدیشن قرار میدم خطا میده؟؟؟
+        // $request->validate([
+        //     'food_id' => 'required|unique:menus,food_id',
+        //     'restaurant_id' => 'required',
+        //     'coupon' => 'required',
+        // ]);
+        $restaurant = Restaurant::find(request('restaurant_id'));
 
-        if (!DB::table('food_restaurant')
-            ->where([
-                ['food_id', $request->food_id],
-                ['restaurant_id', $request->restaurant_id]
-            ])
-            ->exists()) {
+        $menu = new Menu();
+        $menu->coupon = request('coupon');
+        $menu->food_id = request('food_id');
 
-            $restaurant->foods()->save($food);
-            return redirect('seller/menus')->with('message', 'Menu created successfully');
-        }
-        return redirect('seller/menus')->with('message', 'Food already exists in this restaurant');
-
-
-        // dd($food->restaurant()->get());
-        // dd($food);
-        // $menu = Menu::create($request->all());
-        // dd(Food::find($request->food_id));
-        // return back()->with('message', 'Food add to menu successfully');
+        $restaurant->menus()->save($menu);
+        return redirect('seller/menus')->with('message', 'Menu created successfully');
     }
 
     /**
@@ -76,13 +71,14 @@ class MenuController extends Controller
      * @param  \App\Models\Menu  $menu
      * @return \Illuminate\Http\Response
      */
-    public function show(Menu $menu)
+    public function show($id)
     {
-        dd($menu->food);
-        $foods = auth()->user()->foods;
-        $menus = $menu->restaurant->menus;
-        $restaurant = $menu->restaurant;
-        return view('seller.menus.show', compact('menus', 'foods', 'restaurant'));
+        $restaurant = Restaurant::where('id', $id)->first();
+        $restaurantFoods = $restaurant->menus->load('food');
+        $allFood = auth()->user()->foods;
+        $coupons = Coupon::all();
+
+        return view('seller.menus.create', compact('restaurant', 'allFood', 'coupons', 'restaurantFoods'));
     }
 
     /**
@@ -93,7 +89,7 @@ class MenuController extends Controller
      */
     public function edit(Menu $menu)
     {
-        dd($menu);
+        //
     }
 
     /**
@@ -105,7 +101,9 @@ class MenuController extends Controller
      */
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
-        //
+        $menu->foodParty = true;
+        $menu->save();
+        return redirect('seller/menus')->with('message', 'Menu updated successfully');
     }
 
     /**
@@ -116,32 +114,7 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-
-        $restaurant_id = $_POST['restaurant_id'];
-        $food_id = $_POST['food_id'];
-
-        $restaurant = Restaurant::find($restaurant_id);
-        $restaurant->foods()->detach($food_id);
-
+        Menu::destroy($menu->id);
         return redirect('seller/menus')->with('message', 'Food removed from menu successfully');
-    }
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showMenu()
-    {
-        // dd($_POST);
-        $id = json_decode($_POST['restaurant'])->id;
-        $restaurant = Restaurant::where('id', $id)->first();
-
-        $allFood = auth()->user()->foods;
-        $coupons = Coupon::all();
-
-        return view('seller.menus.create', compact('restaurant', 'allFood', 'coupons'));
     }
 }

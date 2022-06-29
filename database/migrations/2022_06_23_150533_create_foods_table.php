@@ -20,15 +20,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('price');
-            $table->string('coupon')->default(null);
-            $table->string('foodParty')->default(null);
             $table->string('ingredients');
             $table->string('foodCategory');
             $table->string('image');
             $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Restaurant::class);
             $table->timestamps();
-            // $table->morphs('categoryable');
         });
     }
 

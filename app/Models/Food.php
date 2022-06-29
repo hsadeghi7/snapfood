@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Menu;
 use App\Models\Category;
 use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ class Food extends Model
     use HasFactory;
     protected $fillable = ['name', 'price', 'ingredients', 'foodCategory', 'image', 'user_id'];
 
-    protected $table='foods';
+    protected $table = 'foods';
 
 
     /**
@@ -42,5 +43,9 @@ class Food extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function menus()
+    {
+        return $this->morphMany(Menu::class, 'menuable');
     }
 }

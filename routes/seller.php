@@ -23,3 +23,4 @@ Route::middleware('auth')->group(function () {
     });
     Route::resource('seller/profiles', ProfileController::class);
 });
+

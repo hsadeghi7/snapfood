@@ -10,27 +10,20 @@ class Menu extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'restaurant_id',
         'food_id',
-        'user_id',
         'coupon',
-        'foodParty'
+        'foodParty',
+        'menu_id',
+        'menu_type',
     ];
 
-    public function restaurant()
+    public function menuable()
     {
-        return $this->belongsTo(Restaurant::class);
+        return $this->morphTo();
     }
 
-    public function users()
+    public function food()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Food::class);
     }
-
-    public function foods()
-    {
-        return $this->belongsToMany(Food::class);
-    }
-    
 }

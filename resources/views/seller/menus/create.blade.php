@@ -18,20 +18,10 @@
                         </div>
                     @endif
 
-
-                    {{-- Create new coupon --}}
                     {{-- form --}}
                     <form action="{{ route('menus.store') }}" method="POST">
                         @csrf
                         <div class="flex justify-between gap-3">
-                            {{-- Name --}}
-                            <div class="mt-4 w-full">
-                                <x-label for="name" :value="__('Name')" />
-                                <x-input id="name" class="block mt-1 w-full" type="text" name="name"
-                                    :value="old('name')" required autofocus />
-                                <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
-                            </div>
-
                             {{-- Food --}}
                             <div class="mt-4 w-full">
                                 <x-label for="food" :value="__('Food')" />
@@ -61,7 +51,6 @@
                             </div>
                         </div>
 
-                        <input type="hidden" value="{{ auth()->id() }}" name="user_id">
                         <input type="hidden" value="{{ $restaurant->id }}" name="restaurant_id">
                         {{-- Submin Form --}}
                         <div class="flex items-center justify-start mt-4">
@@ -72,10 +61,8 @@
                     </form>
 
 
-
-
                     {{-- restaurant list --}}
-                    @if (empty($restaurant->foods->first()))
+                    @if (empty($restaurantFoods->first()))
                         <div
                             class="p-4 my-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
                             No Menu Found
@@ -105,16 +92,12 @@
                                             Show
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Edit
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
                                             Delete
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    @foreach ($restaurant->foods as $food)
+                                    @foreach ($restaurantFoods as $key => $value)
                                         <tr>
                                             {{-- name --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
@@ -122,48 +105,50 @@
                                                 </div>
                                                 <div class="ml-2">
                                                     <div class="text-sm font-medium  text-gray-900">
-                                                        {{ $food->name }}
+                                                        {{ $value->food->name }}
                                                     </div>
                                                 </div>
                                             </td>
                                             {{-- Type --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="text-sm font-medium  text-gray-900">
-                                                    {{ $food->foodCategory }}
+                                                    {{ $value->food->foodCategory }}
                                                 </div>
                                             </td>
-
 
                                             {{-- Price --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="text-sm font-medium  text-gray-900">
-                                                    {{ $food->price }}
+                                                    {{ $value->food->price }}
                                                 </div>
                                             </td>
+
                                             {{-- Discount --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="text-sm font-medium  text-gray-900">
-                                                    {{ $food->coupon }}%
+                                                    {{ $value->coupon ? ($value->coupon.' %'): 0 }}
                                                 </div>
                                             </td>
                                             {{-- Food Party Toggle --}}
-                                            <form action="{{ route('food.statusToggle') }}" method="POST">
+                                            <form action="{{ route('menus.update', $restaurantFoods[$key]->id) }}"
+                                                 method="POST">
                                                 @csrf
+                                                @method('PUT')
                                                 <input name="id" type="text" value="{{ $food->id }}"
                                                     hidden>
                                                 <td class="px-6 py-2 whitespace-no-wrap">
                                                     <button type="submit">
-                                                        @if (!$food->foodParty)
-                                                            <p class="text-green-600 font-bold">Active</p>
+                                                        @if (!$value->foodParty)
+                                                            <p class="text-red-600 font-bold">Is Deactive</p>
                                                         @else
-                                                            <p class="text-red-600 font-bold">Deactive</p>
+                                                            <p class="text-green-600 font-bold">Is Active</p>
                                                         @endif
                                                     </button>
                                                 </td>
                                             </form>
                                             {{-- show --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
-                                                <a href="{{ route('foods.show', $food->id) }}"
+                                                <a href="{{ route('foods.show', $value->food->id) }}"
                                                     class="text-sm font-bold  text-green-700  ">
                                                     <svg class="h-6 w-6 text-green-500" width="24" height="24"
                                                         viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
@@ -176,31 +161,16 @@
                                                 </a>
                                             </td>
 
-                                            {{-- Edit --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
-                                                <a href="{{ route('foods.edit', $food->id) }}"
-                                                    class="text-sm font-bold  text-green-700  ">
-                                                    <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24"
-                                                        stroke-width="2" stroke="currentColor" fill="none"
-                                                        stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" />
-                                                        <path
-                                                            d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
-                                                        <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
-                                                        <line x1="16" y1="5" x2="19"
-                                                            y2="8" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-
                                             {{-- Delete --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
-                                                <form action="{{ route('menus.destroy', $food) }}"
+                                                <form action="{{ route('menus.destroy', $restaurantFoods[$key]->id) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <input type="hidden" value="{{ $food->id }}" name="food_id">
-                                                    <input type="hidden" value="{{ $restaurant->id }}" name="restaurant_id">
+                                                    <input type="hidden" value="{{ $food->id }}"
+                                                        name="food_id">
+                                                    <input type="hidden" value="{{ $restaurant->id }}"
+                                                        name="restaurant_id">
                                                     <button type="submit" class="text-sm font-bold  text-red-700">
                                                         <svg class="h-6 w-6 text-red-500" fill="none"
                                                             viewBox="0 0 24 24" stroke="currentColor">
