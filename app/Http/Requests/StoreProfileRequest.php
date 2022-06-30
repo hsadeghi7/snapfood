@@ -25,7 +25,7 @@ class StoreProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'address'=>'required|max:255',
+            'title'=>'required|max:255',
             'phone'=>'phone:IR',
             'account_number'=>'required|numeric',
         ];

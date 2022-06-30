@@ -29,7 +29,7 @@
                                 <x-label for="type" :value="__('Restaurant Type')" />
                                 <select id="type" name="type"
                                     class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected>Choose a Type</option>
+                                    <option selected disabled>Choose a Type</option>
                                     @foreach ($restaurantCategories as $category)
                                         <option value="{{ $category }}">{{ $category }}</option>
                                     @endforeach
@@ -45,12 +45,13 @@
                                 <div class="text-sm text-red-500"> {{ $errors->first('phone') }} </div>
                             </div>
                         </div>
+
                         <!-- Restaurant Address -->
                         <div class="my-4">
-                            <x-label for="tittle" :value="__('Address')" />
-                            <x-input id="tittle" class="block mt-1 w-full" type="text" name="tittle"
-                                :value="old('tittle') ?? $restaurant->tittle" required autofocus />
-                            <div class="text-sm text-red-500"> {{ $errors->first('tittle') }} </div>
+                            <x-label for="title" :value="__('Address')" />
+                            <x-input id="title" class="block mt-1 w-full" type="text" name="title"
+                                :value="old('title') ?? $restaurant->addresses->first()->title" required autofocus />
+                            <div class="text-sm text-red-500"> {{ $errors->first('title') }} </div>
 
                         </div>
 
@@ -62,7 +63,19 @@
                             <div class="text-sm text-red-500"> {{ $errors->first('image') }} </div>
                         </div>
 
-                        <!-- Add Restaurant  -->
+                        <!-- Restaurant Location -->
+                        <div class="relative my-4" style="width:100%; height:380px" >
+                            <x-label for="location" :value="__('Location')" />
+                            <input type="hidden" value="" id="latitude" name="latitude">
+                            <input type="hidden" value="" id="longitude" name="longitude">
+                            <x-mapbox id="mapId" class="absolute" style="  height: 360px; width: 100%;" 
+                            :navigationControls="true"
+                            :draggable="true"
+                            />
+                            <div class="text-sm text-red-500"> {{ $errors->first('latitude') }} </div>
+                        </div>
+
+                        <!-- Update Restaurant  -->
                         <div class="flex items-center justify-start mt-4">
                             <x-button >
                                 {{ __('Update') }}
@@ -75,3 +88,9 @@
     </div>
     </div>
 </x-app-layout>
+<script>
+    marker.on('dragend', function(e) {
+        $('#longitude').val(e.target.getLngLat().lng);
+        $('#latitude').val(e.target.getLngLat().lat);
+    });
+</script>

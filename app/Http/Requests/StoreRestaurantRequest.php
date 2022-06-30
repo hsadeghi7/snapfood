@@ -26,7 +26,7 @@ class StoreRestaurantRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:restaurants,name|min:4|max:20',
-            'tittle' => 'required',
+            'title' => 'required',
             'phone' => 'required|phone:IR',
             'type' => 'required|in:' . implode(',', Category::getRestaurantCategories()),
             'image'=>'image|mimes:jpeg,png,jpg|max:2048',

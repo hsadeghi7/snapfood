@@ -11,9 +11,9 @@
 
                <!--  Address -->
                 <div class="mt-4">
-                    <x-label for="address" :value="__('Address')" />
+                    <x-label for="title" :value="__('Address')" />
 
-                    <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address')"
+                    <x-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title')"
                         required autofocus />
                 </div>
 
@@ -29,8 +29,8 @@
                 <div class="mt-4">
                     <x-label for="account_number" :value="__('Account Number')" />
 
-                    <x-input id="account_number" class="block mt-1 w-full" type="text" name="account_number"
-                        required />
+                    <x-input id="account_number" class="block mt-1 w-full" type="text" name="account_number" 
+                    :value="old('account_number')"  required />
                 </div>
 
 

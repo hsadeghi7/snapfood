@@ -45,10 +45,10 @@
                         </div>
                         <!-- Restaurant Address -->
                         <div class="my-4">
-                            <x-label for="tittle" :value="__('Address')" />
-                            <x-input id="tittle" class="block mt-1 w-full" type="text" name="tittle"
-                                :value="old('tittle')" required autofocus />
-                            <div class="text-sm text-red-500"> {{ $errors->first('tittle') }} </div>
+                            <x-label for="title" :value="__('Address')" />
+                            <x-input id="title" class="block mt-1 w-full" type="text" name="title"
+                                :value="old('title')" required autofocus />
+                            <div class="text-sm text-red-500"> {{ $errors->first('title') }} </div>
 
                         </div>
 
@@ -62,19 +62,16 @@
                         </div>
 
                         <!-- Restaurant Location -->
-                        <div class="my-4">
+                        <div class="relative my-4" style="width:100%; height:380px" >
                             <x-label for="location" :value="__('Location')" />
                             <input type="hidden" value="" id="latitude" name="latitude">
                             <input type="hidden" value="" id="longitude" name="longitude">
-                            <x-mapbox id="mapId" style="height: 500px; width: 500px;" 
+                            <x-mapbox id="mapId" class="absolute" style="  height: 360px; width: 100%;" 
                             :navigationControls="true"
                             :draggable="true"
                             />
-
                             <div class="text-sm text-red-500"> {{ $errors->first('latitude') }} </div>
-
                         </div>
-
 
                         <!-- Add Restaurant  -->
                         <div class="flex items-center justify-start mt-4">

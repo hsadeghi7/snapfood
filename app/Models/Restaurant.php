@@ -36,11 +36,14 @@ class Restaurant extends Model
     /**
      * Get all of the address for the restaurant.
      */
-
     public function addresses()
     {
         return $this->morphMany(Address::class, 'addressable');
     }
+
+   /**
+     * Get all of the menus-items for the restaurant.
+     */
     public function menus()
     {
         return $this->morphMany(Menu::class, 'menuable');

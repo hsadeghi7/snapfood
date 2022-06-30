@@ -26,7 +26,7 @@ class UpdateProfileRequest extends FormRequest
     {
         return [
             // 'name'=>'required|max:255',
-            'address'=>'required|max:255',
+            'title'=>'required|max:255',
             'phone'=>'phone:IR',
             'account_number'=>'required|numeric',
             // 'type'=>'required|in:'.implode(',', Category::getRestaurantCategories()),

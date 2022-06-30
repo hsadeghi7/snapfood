@@ -26,4 +26,13 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+
+        /**
+     * Get all of the address for the profiles.
+     */
+    public function addresses()
+    {
+        return $this->morphMany(Address::class, 'addressable');
+    }
 }

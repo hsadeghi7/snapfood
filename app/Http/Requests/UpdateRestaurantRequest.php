@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Category;
+use App\Models\Restaurant;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRestaurantRequest extends FormRequest
@@ -24,8 +25,11 @@ class UpdateRestaurantRequest extends FormRequest
      */
     public function rules()
     {
+        // TODO: Implement rules() method for Unique Name.
+        // $id = Restaurant::where('name', $this->name)->first()->id;
+        // dd($id );
         return [
-            'name' => 'required|unique:restaurants,name|min:4|max:20',
+            'name' => "required|min:4|max:20",
             'address' => 'required',
             'phone' => 'required|phone:IR',
             'type' => 'required|in:' . implode(',', Category::getRestaurantCategories()),

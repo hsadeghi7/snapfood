@@ -59,7 +59,7 @@ class RestaurantController extends Controller
             ]
         );
         $restaurant->addresses()->create([
-            'tittle' => $request->tittle,
+            'title' => $request->title,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
@@ -120,7 +120,7 @@ class RestaurantController extends Controller
             ]
         );
         $restaurant->addresses()->create([
-            'tittle' => $request->tittle,
+            'title' => $request->title,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);

@@ -11,9 +11,9 @@
                 @method('PUT')
                 <!-- Restaurant Address -->
                 <div class="mt-4">
-                    <x-label for="address" :value="__('Address') " />
+                    <x-label for="title" :value="__('Address')" />
 
-                    <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address') ?? $profile->address"
+                    <x-input id="title" class="block mt-1 w-full" type="text" name="title" :value="old('title') ?? $profile->addresses->first()->title"
                         required autofocus />
                 </div>
 
@@ -29,23 +29,9 @@
                 <div class="mt-4">
                     <x-label for="account_number" :value="__('Account Number')" />
 
-                    <x-input id="account_number" class="block mt-1 w-full" type="text" name="account_number" :value="old('account_number') ?? $profile->account_number"
-                        required />
+                    <x-input id="account_number" class="block mt-1 w-full" type="text" name="account_number"
+                        :value="old('account_number') ?? $profile->account_number" required />
                 </div>
-
-                <!-- Restaurant Type -->
-                {{-- <div class="mt-4">
-                    <x-label for="type" :value="__('Restaurant Type')" />
-
-                    <select id="type" name="type"
-                        class="mt-2 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option selected >Choose a Type</option>
-                        @foreach ($restaurantCategories as $category )
-                        <option value="{{ $category->name }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-
-                </div> --}}
 
                 <div class="flex items-center justify-end mt-4">
 

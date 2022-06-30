@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use App\Models\Category;
-use Illuminate\Auth\Events\Validated;
 use App\Http\Requests\StoreProfileRequest;
 use App\Http\Requests\UpdateProfileRequest;
 
@@ -38,14 +37,17 @@ class ProfileController extends Controller
      */
     public function store(StoreProfileRequest $request)
     {
-        Profile::create([
+        $profile = Profile::create([
             'user_id' => auth()->id(),
-            // 'name' => $request->name,
-            'address' => $request->address,
             'phone' => $request->phone,
             'account_number' => $request->account_number,
-            // 'type' => $request->type,
         ]);
+        $profile->addresses()->create([
+            'title' => $request->title,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+        ]);
+
         return back()->with('massage', 'Profile create successfully');
     }
 
@@ -83,12 +85,16 @@ class ProfileController extends Controller
     {
         // dd($request->all());
         $profile->update([
-            // 'name' => $request->name,
-            'address' => $request->address,
             'phone' => $request->phone,
             'account_number' => $request->account_number,
-            // 'type' => $request->type,
         ]);
+
+        $profile->addresses()->update([
+            'title' => $request->title,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
+        ]);
+
         return redirect('/')->with('message', 'Profile updated successfully');
     }
 
