@@ -63,12 +63,14 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if ($user->is_admin) {
-            $user->is_admin = false;
-        } else {
-            $user->is_admin = true;
+        if ($user->role == 'seller') {
+            if ($user->is_admin) {
+                $user->is_admin = false;
+            } else {
+                $user->is_admin = true;
+            }
+            $user->save();
         }
-        $user->save();
         return back();
     }
 
@@ -97,7 +99,9 @@ class UserController extends Controller
 
     public function activityToggle(Request $request)
     {
+
         $user = User::withTrashed()->find($request->id);
+
         if (!$user->deleted_at) {
             $user->delete();
         } else {
@@ -105,6 +109,4 @@ class UserController extends Controller
         }
         return back();
     }
-
-    
 }

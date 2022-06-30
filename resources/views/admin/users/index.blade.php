@@ -54,13 +54,16 @@
                                                 </td>
                                                 <td class="px-6 py-2 whitespace-no-wrap">
                                                     <div class="text-sm font-medium text-gray-900">
-                                                        @if ($user->is_admin)
-                                                            <a href="{{ route('users.edit', $user) }}"
-                                                                class="font-bold text-blue-600 dark:text-blue-500 hover:underline">Admin</a>
-                                                        @else
-                                                            <a href="{{ route('users.edit', $user) }}"
-                                                                class="font-bold text-red-500 dark:text-red-500 hover:underline">Not
-                                                                Admin</a>
+
+                                                        @if ($user->role == 'seller')
+                                                            @if ($user->is_admin)
+                                                                <a href="{{ route('users.edit', $user) }}"
+                                                                    class="font-bold text-blue-600 dark:text-blue-500 hover:underline">Admin</a>
+                                                            @else
+                                                                <a href="{{ route('users.edit', $user) }}"
+                                                                    class="font-bold text-red-500 dark:text-red-500 hover:underline">Not
+                                                                    Admin</a>
+                                                            @endif
                                                         @endif
                                                     </div>
                                                 </td>

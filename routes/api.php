@@ -1,7 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +19,16 @@ Route::post('buyer/register', [UserController::class, 'register']);
 Route::post('buyer/login', [UserController::class, 'login']);
 
 
-Route::middleware('auth:sanctum')->group(function(){
-    Route::post('buyer/logout', [UserController::class, 'logout']);
+Route::middleware('auth:sanctum')->prefix('buyer')->group(function(){
+    Route::post('logout', [UserController::class, 'logout']);
+
+    Route::post('profile/create',[ProfileController::class, 'createProfile']);
+    Route::put('profile/update/{profile}',[ProfileController::class, 'updateProfile']);
+    
+    Route::post('addAddress',[AddressController::class, 'addAddress']);
+    Route::put('setDefaultAddress/{address}',[AddressController::class, 'setDefaultAddress']);
+    Route::delete('deleteAddress/{address}',[AddressController::class, 'deleteAddress']);
+    Route::post('addAddress',[AddressController::class, 'addAddress']);
+    Route::get('addresses',[AddressController::class, 'addresses']);
 
 });
