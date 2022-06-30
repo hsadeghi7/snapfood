@@ -47,10 +47,10 @@
                         </div>
                         <!-- Restaurant Address -->
                         <div class="my-4">
-                            <x-label for="address" :value="__('Address')" />
-                            <x-input id="address" class="block mt-1 w-full" type="text" name="address"
-                                :value="old('address') ?? $restaurant->address" required autofocus />
-                            <div class="text-sm text-red-500"> {{ $errors->first('address') }} </div>
+                            <x-label for="tittle" :value="__('Address')" />
+                            <x-input id="tittle" class="block mt-1 w-full" type="text" name="tittle"
+                                :value="old('tittle') ?? $restaurant->tittle" required autofocus />
+                            <div class="text-sm text-red-500"> {{ $errors->first('tittle') }} </div>
 
                         </div>
 

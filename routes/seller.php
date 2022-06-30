@@ -18,7 +18,6 @@ Route::middleware('auth')->group(function () {
 
             Route::post('seller/restaurant', [RestaurantController::class, 'statusToggle'])->name('restaurant.statusToggle');
             Route::post('seller/food', [FoodController::class, 'statusToggle'])->name('food.statusToggle');
-            Route::post('seller/menu', [MenuController::class, 'showMenu'])->name('showMenu');
         });
     });
     Route::resource('seller/profiles', ProfileController::class);
