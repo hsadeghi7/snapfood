@@ -25,11 +25,8 @@ class UpdateRestaurantRequest extends FormRequest
      */
     public function rules()
     {
-        // TODO: Implement rules() method for Unique Name.
-        // $id = Restaurant::where('name', $this->name)->first()->id;
-        // dd($id );
         return [
-            'name' => "required|min:4|max:20",
+            'name' => 'required|min:4|max:20|unique:restaurants,name,'.$this->restaurant->id,
             'address' => 'required',
             'phone' => 'required|phone:IR',
             'type' => 'required|in:' . implode(',', Category::getRestaurantCategories()),

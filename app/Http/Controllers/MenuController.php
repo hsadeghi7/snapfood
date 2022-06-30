@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Food;
+
 use App\Models\Menu;
 use App\Models\Coupon;
 use App\Models\Restaurant;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreMenuRequest;
-use Illuminate\Support\Facades\Request;
 use App\Http\Requests\UpdateMenuRequest;
 
 class MenuController extends Controller
@@ -47,22 +45,15 @@ class MenuController extends Controller
      * @param  \App\Http\Requests\StoreMenuRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreMenuRequest $request)
     {
-       // TODO چرا وقتی ولیدیشن قرار میدم خطا میده؟؟؟
-        // $request->validate([
-        //     'food_id' => 'required|unique:menus,food_id',
-        //     'restaurant_id' => 'required',
-        //     'coupon' => 'required',
-        // ]);
         $restaurant = Restaurant::find(request('restaurant_id'));
-
         $menu = new Menu();
         $menu->coupon = request('coupon');
         $menu->food_id = request('food_id');
 
         $restaurant->menus()->save($menu);
-        return redirect('seller/menus')->with('message', 'Menu created successfully');
+        return back()->with('message', 'Menu created successfully');
     }
 
     /**
@@ -103,7 +94,7 @@ class MenuController extends Controller
     {
         $menu->foodParty = true;
         $menu->save();
-        return redirect('seller/menus')->with('message', 'Menu updated successfully');
+        return  back()->with('message', 'Menu updated successfully');
     }
 
     /**
@@ -115,6 +106,6 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         Menu::destroy($menu->id);
-        return redirect('seller/menus')->with('message', 'Food removed from menu successfully');
+        return back()->with('message', 'Food removed from menu successfully');
     }
 }

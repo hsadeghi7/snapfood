@@ -23,7 +23,7 @@
                                     :value="old('name') ?? $restaurant->name" required autofocus />
                                 <div class="text-sm text-red-500"> {{ $errors->first('name') }} </div>
                             </div>
-
+                            //TODO oldValues in selects does not show!!!
                             <!-- Restaurant Type -->
                             <div class="mt-4 w-full">
                                 <x-label for="type" :value="__('Restaurant Type')" />
