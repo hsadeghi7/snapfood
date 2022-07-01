@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
+use App\Models\Address;
 use App\Models\Profile;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AddressResource;
 use App\Http\Requests\ApiSetDefaultAddressRequest;
-use App\Models\Address;
+use App\Http\Requests\ApiUpdateDefaultAddressRequest;
 
 class AddressController extends Controller
 {
-
+    public function addresses()
+    {
+        $user = auth()->user();
+        $profile = $user->profile;
+        return response()->json(['addresses' => AddressResource::collection($profile->addresses)]);
+    }
     public function addAddress(ApiSetDefaultAddressRequest $request)
     {
         $profile = Profile::where('user_id', auth()->id())->get()->first();
@@ -22,7 +28,7 @@ class AddressController extends Controller
         return response()->json(['message' => 'Address added successfully']);
     }
 
-    public function updateAddress(ApiSetDefaultAddressRequest $request)
+    public function updateAddress(ApiUpdateDefaultAddressRequest $request)
     {
         $profile = Profile::find(auth()->id());
         $address = $profile->addresses()->find($request->address_id);
@@ -45,7 +51,7 @@ class AddressController extends Controller
             $address->is_default = false;
             $address->save();
         });
-   
+
         $address->is_default = true;
         $address->save();
 
@@ -56,12 +62,5 @@ class AddressController extends Controller
     {
         $address->delete();
         return response()->json(['message' => 'Address deleted successfully']);
-    }
-
-    public function addresses()
-    {
-        $user = auth()->user();
-        $profile = $user->profile;
-        return response()->json(['addresses' => $profile->addresses]);
     }
 }

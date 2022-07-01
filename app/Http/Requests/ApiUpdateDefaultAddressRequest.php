@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ApiUserRegisterRequest extends FormRequest
+class ApiUpdateDefaultAddressRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,9 @@ class ApiUserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:255',
-            'email'=>'required|email|unique:users',
-            'password'=>'required|string|min:6|confirmed',
-            'role' => 'required|string|in:buyer,seller',
+            'title' => 'string|max:255',
+            'latitude' => 'numeric',
+            'longitude' => 'numeric',
         ];
     }
 }
