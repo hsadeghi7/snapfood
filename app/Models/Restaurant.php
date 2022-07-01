@@ -41,14 +41,14 @@ class Restaurant extends Model
         return $this->morphMany(Address::class, 'addressable');
     }
 
-   /**
+    /**
      * Get all of the menus-items for the restaurant.
      */
     public function menus()
     {
         return $this->morphMany(Menu::class, 'menuable');
     }
-    
+
     /**
      * .
      */
@@ -76,5 +76,26 @@ class Restaurant extends Model
     public function foods()
     {
         return $this->hasMany(Food::class);
+    }
+
+
+    public function getIsOpenAttribute()
+    {
+        $isOpen = 'close';
+        $now = now();
+
+        foreach ($this->workingHours as $workingHour) {
+
+            if ($now->dayOfWeek == $workingHour->day) {
+                $openTime = $workingHour->open_time;
+                $closeTime = $workingHour->close_time;
+
+                if ($now->hour >= $openTime && $now->hour < $closeTime) {
+                    $isOpen = 'open';
+                }
+            }
+        }
+        
+        return $isOpen;
     }
 }

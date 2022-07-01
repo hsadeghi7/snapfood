@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\FoodController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\RestaurantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +33,9 @@ Route::middleware('auth:sanctum')->prefix('buyer')->group(function(){
     Route::post('addAddress',[AddressController::class, 'addAddress']);
     Route::get('addresses',[AddressController::class, 'addresses']);
 
+    Route::get('/restaurants', [RestaurantController::class, 'index']);
+    Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
+
+    Route::get('/restaurants/{restaurant}/foods', [RestaurantController::class, 'restaurantFoods']);
+    
 });

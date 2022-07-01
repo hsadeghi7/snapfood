@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AddressResource extends JsonResource
+class WorkingHoursResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,9 @@ class AddressResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'address' => $this->title,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'is_default' => $this->defaultAddress,
+            'day' => $this->day,
+            'open_time' => $this->open_time,
+            'close_time' => $this->close_time,
         ];
-    }
+        }
 }
