@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
+use Illuminate\Http\Client\Request;
 
 class RestaurantController extends Controller
 {
@@ -19,7 +20,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = DB::table('restaurants')->where('user_id', auth()->id())->paginate(5);
+        $restaurants = DB::table('restaurants')->where('user_id', auth()->id())->paginate(3);
 
         return view('seller.restaurants.index', compact('restaurants'));
     }
@@ -154,5 +155,19 @@ class RestaurantController extends Controller
         $restaurant->save();
 
         return back()->with('message', 'Restaurant status updated successfully');
+    }
+
+
+    public function deliveryFee(Restaurant $restaurant)
+    {
+        return view('seller.restaurants.delivery', compact('restaurant'));
+    }
+
+    public function setDeliveryFee(  Restaurant $restaurant)
+    {
+        $restaurant->delivery_fee = $_POST['deliveryFee'];
+        $restaurant->save();
+
+        return redirect('seller/restaurants')->with('message', 'Shipping fee updated successfully');
     }
 }

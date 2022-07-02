@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Food;
+use App\Models\Category;
 use App\Models\Restaurant;
 use App\Models\WorkingHour;
 use Illuminate\Http\Request;
@@ -12,10 +13,10 @@ use App\Http\Resources\AddressResource;
 use App\Http\Resources\RestaurantResource;
 use App\Http\Resources\WorkingHoursResource;
 use App\Http\Resources\OpenRestaurantResource;
+use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 
 class RestaurantController extends Controller
 {
-
     public function index(Request $request)
     {
         if (isset($request->is_open)) {
@@ -39,7 +40,7 @@ class RestaurantController extends Controller
                 'schedule' => WorkingHoursResource::collection($restaurant->workingHours),
                 'image' => $restaurant->image,
                 "score" => $restaurant->score,
-                'is_open' => $restaurant->WorkingHours->isOpen,
+                'is_open' => $restaurant->isOpen,
             ]
         ]);
     }
@@ -63,8 +64,7 @@ class RestaurantController extends Controller
 
     public function restaurantFoods(Restaurant $restaurant)
     {
-
         $foods = $restaurant->menus;
-        return response()->json(['foods' => FoodResource::collection($foods)]);
+          return response()->json(FoodResource::collection($foods));
     }
 }

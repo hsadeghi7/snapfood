@@ -14,15 +14,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/', [UserController::class, 'index'])
     ->middleware(['auth'])->middleware('hasProfile')->name('dashboard');
 //
-    Route::get('/test', [UserController::class, 'userAddress']);
+    // Route::get('/test', [UserController::class, 'userAddress']);
 //
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/seller.php';
+
+

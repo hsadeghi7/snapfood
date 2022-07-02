@@ -81,17 +81,16 @@ class Restaurant extends Model
 
     public function getIsOpenAttribute()
     {
-        $isOpen = 'close';
-        $now = now();
+        $isOpen = false;
+         $now = now();
 
         foreach ($this->workingHours as $workingHour) {
-
-            if ($now->dayOfWeek == $workingHour->day) {
+            if (strtolower(date('D', time())) == strtolower(substr($workingHour->day,0,3))) {
                 $openTime = $workingHour->open_time;
                 $closeTime = $workingHour->close_time;
 
                 if ($now->hour >= $openTime && $now->hour < $closeTime) {
-                    $isOpen = 'open';
+                    $isOpen = true;
                 }
             }
         }

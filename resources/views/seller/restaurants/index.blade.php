@@ -2,7 +2,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+                <div class="p-6 border-b border-gray-200">
                     @if (session('message'))
                         <div
                             class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
@@ -37,6 +37,9 @@
                                             Restaurant Type
                                         </th>
                                         <th scope="col" class="px-6 py-3">
+                                            Delivery Payment
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
                                             Restaurant status
                                         </th>
                                         <th scope="col" class="px-6 py-3">
@@ -66,31 +69,46 @@
                                             {{-- Type --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="text-sm font-medium  text-gray-900">
+
                                                     {{ $restaurant->type }}
                                                 </div>
                                             </td>
+                                            {{-- Delivery --}}
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <a href="{{ route('restaurants.deliveryFee', $restaurant->id) }}"
+                                                    class="text-sm font-bold  text-green-700  ">
+                                                    {{ $restaurant->delivery_fee }}
+                                                </a>
 
-                                            <form action="{{ route('restaurant.statusToggle') }}"
-                                            method="POST">
-                                            @csrf
-                                            <input name="id" type="text" value="{{ $restaurant->id }}"
-                                                hidden>
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                <button type="submit">
-                                                    @if ($restaurant->is_active)
-                                                        <p class="text-green-600 font-bold">Active</p>
-                                                    @else
-                                                        <p class="text-red-600 font-bold">Deactive</p>
-                                                    @endif
-                                                </button>
                                             </td>
-                                        </form>
-                
+                                            {{-- status --}}
+                                            <form action="{{ route('restaurant.statusToggle') }}" method="POST">
+                                                @csrf
+                                                <input name="id" type="text" value="{{ $restaurant->id }}"
+                                                    hidden>
+                                                <td class="px-6 py-4 whitespace-no-wrap">
+                                                    <button type="submit">
+                                                        @if ($restaurant->is_active)
+                                                            <p class="text-green-600 font-bold">Active</p>
+                                                        @else
+                                                            <p class="text-red-600 font-bold">Deactive</p>
+                                                        @endif
+                                                    </button>
+                                                </td>
+                                            </form>
+
                                             {{-- show --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <a href="{{ route('restaurants.show', $restaurant->id) }}"
                                                     class="text-sm font-bold  text-green-700  ">
-                                                    <svg class="h-6 w-6 text-green-500"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />  <path d="M20 12h-13l3 -3m0 6l-3 -3" /></svg>
+                                                    <svg class="h-6 w-6 text-green-500" width="24" height="24"
+                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" />
+                                                        <path
+                                                            d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                                                        <path d="M20 12h-13l3 -3m0 6l-3 -3" />
+                                                    </svg>
                                                 </a>
                                             </td>
 

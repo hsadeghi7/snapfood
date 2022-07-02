@@ -19,9 +19,14 @@ class FoodController extends Controller
      */
     public function index()
     {
-        $foods = DB::table('foods')->where('user_id', auth()->id())->paginate(5);
+        $foods = DB::table('foods')->where('user_id', auth()->id())->paginate(3);
 
-        return view('seller.foods.index', compact('foods'));
+        //food names
+        $food_names = DB::table('foods')->where('user_id', auth()->id())->pluck('name');
+        //food category
+        $food_categories = DB::table('foods')->where('user_id', auth()->id())->pluck('foodCategory');
+
+        return view('seller.foods.index', compact('foods', 'food_names', 'food_categories'));
     }
 
     /**
@@ -56,7 +61,7 @@ class FoodController extends Controller
                 'user_id' => auth()->id(),
             ]
         );
-        
+
         return redirect('seller/foods')->with('message', 'Food created successfully');
     }
 
@@ -124,7 +129,6 @@ class FoodController extends Controller
     {
         $food->delete();
         return back()->with('message', "$food->name deleted updated successfully");
-
     }
 
 
@@ -147,4 +151,14 @@ class FoodController extends Controller
 
         return back()->with('message', 'Food Party status updated successfully for ' . $food->name);
     }
+
+
+    public function getCategories()
+    {
+        $foodsCategory = Food::select('*')->where('foodCategory', $_POST['food_category'])->get();
+        return response()->json($_POST);
+    }
+
+
+  
 }

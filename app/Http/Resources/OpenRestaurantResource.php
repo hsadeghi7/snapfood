@@ -14,21 +14,32 @@ class OpenRestaurantResource extends JsonResource
      */
     public function toArray($request)
     {
-        // return $request->is_open;
-        return [$this->mergeWhen(
-            $request->is_open == $this->isOpen, 
-            [
-            'id' => $this->id,
-            'name' => $this->name,
-            'category' => $this->type,
-            'phone' => $this->phone,
-            'address' => AddressResource::collection($this->first()->addresses),
-            'schedule' => WorkingHoursResource::collection($this->workingHours),
-            'image' => $this->image,
-            "score" => $this->score,
-            'is_open' => $this->isOpen,
-            ]),
-            // 'now'=> date('Y-m-d H:i:s', time())
-    ];
+        return
+            $this->mergeWhen(
+                $this->isOpen == true,
+                [
+                    'id' => $this->id,
+                    'name' => $this->name,
+                    'category' => $this->type,
+                    'phone' => $this->phone,
+                    'address' => AddressResource::collection($this->first()->addresses),
+                    'schedule' => WorkingHoursResource::collection($this->workingHours),
+                    'image' => $this->image,
+                    "score" => $this->score,
+                    'is_open' => $this->isOpen,
+                ]
+            );
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+// 'now'=> date('Y-m-d H:i:s', time())

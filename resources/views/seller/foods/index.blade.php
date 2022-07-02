@@ -1,4 +1,5 @@
 <x-app-layout>
+    
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -9,7 +10,7 @@
                             {{ session('message') }}
                         </div>
                     @endif
-                    {{-- Create new restaurant --}}
+                    {{-- Create new Food --}}
                     <a href="{{ route('foods.create') }}">
                         <div class="flex items-center mb-3 gap-1">
                             <p class="text-green-500 font-bold ">
@@ -18,7 +19,7 @@
                         </div>
                     </a>
 
-                    {{-- restaurant list --}}
+                    {{-- Food list --}}
                     @if (empty($foods->first()))
                         <div
                             class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
@@ -31,10 +32,18 @@
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" class="px-6 py-3">
-                                            Food Name
+                                            Foods
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Food Category
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}" id="csrfToken">
+                                            <select name="food_category"
+                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+                                            onchange="categoryFunction()" id="jsCategory">
+                                                <option selected>All Category</option>
+                                                @foreach ($food_categories as $name)
+                                                    <option value="{{ $name }}">{{ $name }}</option>
+                                                @endforeach
+                                            </select>
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Food Price
@@ -56,8 +65,6 @@
                                         <tr>
                                             {{-- name --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
-                                                <div class="flex items-center">
-                                                </div>
                                                 <div class="ml-2">
                                                     <div class="text-sm font-medium  text-gray-900">
                                                         {{ $food->name }}
@@ -70,20 +77,6 @@
                                                     {{ $food->foodCategory }}
                                                 </div>
                                             </td>
-                                            {{-- Food Party Toggle --}}
-                                            {{-- <form action="{{ route('food.statusToggle') }}" method="POST">
-                                                @csrf
-                                                <input name="id" type="text" value="{{ $food->id }}" hidden>
-                                                <td class="px-6 py-2 whitespace-no-wrap">
-                                                    <button type="submit">
-                                                        @if (!$food->foodParty)
-                                                            <p class="text-green-600 font-bold">Active</p>
-                                                        @else
-                                                            <p class="text-red-600 font-bold">Deactive</p>
-                                                        @endif
-                                                    </button>
-                                                </td>
-                                            </form> --}}
 
                                             {{-- Price --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
@@ -91,13 +84,8 @@
                                                     {{ $food->price }}
                                                 </div>
                                             </td>
-                                            {{-- Discount --}}
-                                            {{-- <td class="px-6 py-2 whitespace-no-wrap">
-                                                <div class="text-sm font-medium  text-gray-900">
-                                                    {{ $food->coupon }}%
-                                                </div>
-                                            </td> --}}
-                                            {{-- show --}}
+
+                                            {{-- Show --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <a href="{{ route('foods.show', $food->id) }}"
                                                     class="text-sm font-bold  text-green-700  ">
@@ -159,3 +147,4 @@
         </div>
     </div>
 </x-app-layout>
+
