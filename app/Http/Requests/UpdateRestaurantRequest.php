@@ -27,7 +27,7 @@ class UpdateRestaurantRequest extends FormRequest
     {
         return [
             'name' => 'required|min:4|max:20|unique:restaurants,name,'.$this->restaurant->id,
-            'address' => 'required',
+            'title' => 'required',
             'phone' => 'required|phone:IR',
             'type' => 'required|in:' . implode(',', Category::getRestaurantCategories()),
             'image'=>'image|mimes:jpeg,png,jpg|max:2048',
