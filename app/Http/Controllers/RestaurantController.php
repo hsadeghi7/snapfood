@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
-use Illuminate\Http\Client\Request;
+use App\Http\Requests\UpdateRestaurantDeliveryFeeRequest;
 
 class RestaurantController extends Controller
 {
@@ -163,11 +163,11 @@ class RestaurantController extends Controller
         return view('seller.restaurants.delivery', compact('restaurant'));
     }
 
-    public function setDeliveryFee(  Restaurant $restaurant)
+    public function setDeliveryFee( UpdateRestaurantDeliveryFeeRequest $request, Restaurant $restaurant)
     {
         $restaurant->delivery_fee = $_POST['deliveryFee'];
         $restaurant->save();
 
-        return redirect('seller/restaurants')->with('message', 'Shipping fee updated successfully');
+        return redirect('seller/restaurants')->with('message', 'delivery fee updated successfully');
     }
 }

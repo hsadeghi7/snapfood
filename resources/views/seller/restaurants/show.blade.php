@@ -33,6 +33,7 @@
 
                             </p>
                             {{-- Time Table --}}
+                            TODO برای اینکه زمان بندی رستوران تکراری نباشد ولیدیشن مناسب قرار داده شود
                             <h5 class="mb-2 mt-6 text-m font-bold tracking-tight text-gray-100 dark:text-white">
                                 Restaurant Time Table</h5>
 
