@@ -14,7 +14,7 @@ class UpdateProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasRole('seller');
+        return auth()->user()->hasPermissionTo('adminPermission');
         ;
     }
 

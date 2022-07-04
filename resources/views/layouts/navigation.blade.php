@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <!-- Navigation Links for Admin -->
-                @hasallroles('admin')
+                @can('adminPermission')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                             {{ __('Category Managment') }}
@@ -23,7 +23,7 @@
                             {{ __('Coupons') }}
                         </x-nav-link>
                     </div>
-                @endhasallroles
+                @endcan
 
                 @can('fullPermission')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -34,7 +34,8 @@
                 @endcan
 
                 <!-- Navigation Links for Seller -->
-                @hasallroles('seller')
+                @can('sellerPermission')
+                
                     @if (App\Models\Profile::getProfile())
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <x-nav-link :href="route('profiles.edit', App\Models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
@@ -57,7 +58,7 @@
                             </x-nav-link>
                         </div>
                     @endif
-                @endhasallroles
+                @endcan
             </div>
 
             <!-- Settings Dropdown -->

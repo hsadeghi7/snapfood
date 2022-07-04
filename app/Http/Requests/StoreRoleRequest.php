@@ -13,7 +13,7 @@ class StoreRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role === 'superAdmin';
+        return auth()->user()->hasrole('superAdmin');
     }
 
     /**

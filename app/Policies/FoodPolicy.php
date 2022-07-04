@@ -41,7 +41,7 @@ class FoodPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('seller');
+        return $user->hasPermissionTo('adminPermission');
     }
 
     /**

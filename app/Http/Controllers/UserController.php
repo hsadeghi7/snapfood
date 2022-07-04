@@ -79,7 +79,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'role' => 'required|in:admin,seller,buyer',
+            'role' => 'required|in:' . implode(',', Role::pluck('name')->toArray()),
         ]);
 
         $user->syncRoles($request->role);

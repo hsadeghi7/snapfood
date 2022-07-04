@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 // use App\Models\Role;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
@@ -10,10 +11,10 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    public function __construct()
-    {
-        $this->authorizeResource(App\Models\Role::class, 'role');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(App\Models\Role::class, 'role');
+    // }
 
 
     /**
@@ -108,7 +109,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        // dd($role);
+        $users = User::role($role->name)->get();
+        foreach ($users as $user) {
+            $user->delete();
+        }
         $permission = Permission::where('name', $role->name)->first();
         $role->revokePermissionTo($permission);
         $role->delete();
