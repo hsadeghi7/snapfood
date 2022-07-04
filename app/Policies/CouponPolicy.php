@@ -18,7 +18,7 @@ class CouponPolicy
      */
     public function viewAny(User $user)
     {
-       return $user->is_admin;
+        return $user->hasPermissionTo('adminPermission');
     }
 
     /**
@@ -30,7 +30,7 @@ class CouponPolicy
      */
     public function view(User $user, Coupon $coupon)
     {
-        return $user->is_admin;
+        return $user->hasPermissionTo('adminPermission');
     }
 
     /**
@@ -41,7 +41,7 @@ class CouponPolicy
      */
     public function create(User $user)
     {
-        return $user->is_admin;
+        return $user->hasPermissionTo('adminPermission');
     }
 
     /**
@@ -53,7 +53,7 @@ class CouponPolicy
      */
     public function update(User $user, Coupon $coupon)
     {
-        return $user->is_admin;
+        return $user->hasPermissionTo('adminPermission');
     }
 
     /**
@@ -65,7 +65,7 @@ class CouponPolicy
      */
     public function delete(User $user, Coupon $coupon)
     {
-        return $user->is_admin;
+        return $user->hasPermissionTo('adminPermission');
     }
 
     /**
@@ -77,7 +77,7 @@ class CouponPolicy
      */
     public function restore(User $user, Coupon $coupon)
     {
-        return $user->is_admin;
+        return $user->hasPermissionTo('adminPermission');
     }
 
     /**
@@ -89,6 +89,6 @@ class CouponPolicy
      */
     public function forceDelete(User $user, Coupon $coupon)
     {
-        return $user->is_admin;
+        return $user->hasPermissionTo('adminPermission');
     }
 }

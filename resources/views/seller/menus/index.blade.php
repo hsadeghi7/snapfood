@@ -58,7 +58,7 @@
                                 </tbody>
                             </table>
                             <div class="p-5">
-                                {{-- {{ $restaurants->links() }} --}}
+
                             </div>
                         </div>
                     @endif

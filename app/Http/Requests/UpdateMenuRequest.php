@@ -13,7 +13,7 @@ class UpdateMenuRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role ==  'seller';
+        return auth()->user()->hasRole('seller');
     }
 
     /**

@@ -9,6 +9,11 @@ use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Profile::class, 'profile');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -44,8 +49,6 @@ class ProfileController extends Controller
         ]);
         $profile->addresses()->create([
             'title' => $request->title,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
         ]);
 
         return back()->with('massage', 'Profile create successfully');
@@ -71,7 +74,7 @@ class ProfileController extends Controller
     public function edit(Profile $profile)
     {
         $restaurantCategories =  Category::where('type', 'restaurant')->get();
-        return view('seller.profiles.edit', compact('profile','restaurantCategories'));
+        return view('seller.profiles.edit', compact('profile', 'restaurantCategories'));
     }
 
     /**
@@ -83,7 +86,6 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request, Profile $profile)
     {
-        // dd($request->all());
         $profile->update([
             'phone' => $request->phone,
             'account_number' => $request->account_number,

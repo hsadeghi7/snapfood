@@ -16,7 +16,7 @@ class SellerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user()->role == 'seller') {
+        if (!auth()->user()->hasRole('seller') ) {
             abort(403);
         }
         return $next($request);

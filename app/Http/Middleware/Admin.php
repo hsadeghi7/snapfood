@@ -16,7 +16,8 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user()->is_admin) {
+        $user = auth()->user();
+        if (!$user->permission('adminPermission')) {
             abort(403);
         }
         return $next($request);

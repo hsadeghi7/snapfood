@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+// use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\UpdateRoleRequest;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-
     public function __construct()
     {
-        $this->authorizeResource(Category::class, 'category');
+        $this->authorizeResource(App\Models\Role::class, 'role');
     }
 
 
@@ -24,8 +23,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        // $users = User::paginate(5);
-        // return view('admin.roles.index', compact('users'));
+        $permissions = Permission::all();
+        $roles = Role::all();
+
+        return view('admin.roles.index', compact('permissions', 'roles'));
     }
 
     /**
@@ -35,7 +36,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        $permissions = Permission::all();
+
+        return view('admin.roles.create', compact('permissions'));
     }
 
     /**
@@ -46,7 +49,21 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        //
+        $permissions = Permission::select('name')->get()->toArray();
+        $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
+
+        foreach ($request->permission as  $permission) {
+            foreach ($permissions as  $value) {
+
+                if ($value['name'] == $permission) {
+                    $permission = Permission::where('name', $value['name'])->first();
+                    if (!empty($permission)) {
+                        $permission->assignRole($role);
+                    }
+                }
+            }
+        }
+        return redirect('admin/roles')->with('message', 'Role created successfully');
     }
 
     /**
@@ -68,7 +85,7 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        dd($role);
     }
 
     /**
@@ -91,6 +108,12 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        //
+        // dd($role);
+        $permission = Permission::where('name', $role->name)->first();
+        $role->revokePermissionTo($permission);
+        $role->delete();
+        
+        return redirect('admin/roles')->with('message', 'Role deleted successfully');
+
     }
 }

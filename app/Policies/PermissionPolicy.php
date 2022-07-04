@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Food;
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class FoodPolicy
+class PermissionPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class FoodPolicy
      */
     public function viewAny(User $user)
     {
-        return auth()->id() === $user->id;
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Food  $food
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Food $food)
+    public function view(User $user, Permission $permission)
     {
-        return $user->id === $food->user_id;
+        //
     }
 
     /**
@@ -41,54 +41,54 @@ class FoodPolicy
      */
     public function create(User $user)
     {
-        return $user->hasRole('seller');
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Food  $food
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Food $food)
+    public function update(User $user, Permission $permission)
     {
-        return $user->id === $food->user_id;
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Food  $food
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Food $food)
+    public function delete(User $user, Permission $permission)
     {
-        return $user->id === $food->user_id;
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Food  $food
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Food $food)
+    public function restore(User $user, Permission $permission)
     {
-        return $user->id === $food->user_id;
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Food  $food
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Food $food)
+    public function forceDelete(User $user, Permission $permission)
     {
-        return $user->id === $food->user_id;
+        //
     }
 }

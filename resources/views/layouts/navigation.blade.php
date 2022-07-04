@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <!-- Navigation Links for Admin -->
-                @if (auth()->user()->is_admin)
+                @hasallroles('admin')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
                             {{ __('Category Managment') }}
@@ -23,10 +23,18 @@
                             {{ __('Coupons') }}
                         </x-nav-link>
                     </div>
-                @endif
+                @endhasallroles
 
-               <!-- Navigation Links for Seller -->
-                @if (auth()->user()->role == 'seller')
+                @can('fullPermission')
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
+                            {{ __('Role') }}
+                        </x-nav-link>
+                    </div>
+                @endcan
+
+                <!-- Navigation Links for Seller -->
+                @hasallroles('seller')
                     @if (App\Models\Profile::getProfile())
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <x-nav-link :href="route('profiles.edit', App\Models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
@@ -49,7 +57,7 @@
                             </x-nav-link>
                         </div>
                     @endif
-                @endif
+                @endhasallroles
             </div>
 
             <!-- Settings Dropdown -->
@@ -117,6 +125,16 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('coupons.index')" :active="request()->routeIs('coupons.index')">
                 {{ __('Coupons') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
+                {{ __('Roles') }}
+            </x-responsive-nav-link>
+        </div>
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
+                {{ __('Permission') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">

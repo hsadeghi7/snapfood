@@ -18,11 +18,9 @@ class HasProfileMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->role === 'seller') {
+        if (auth()->user()->hasRole('seller')) {
             if (!Profile::where('user_id', auth()->id())->get()->first()) {
-                return response()->view('seller.profiles.create', [
-                    'restaurantCategories' => Category::where('type', 'restaurant')->get(),
-                ]);
+                return response()->view('seller.profiles.create');
             }
         }
         return $next($request);

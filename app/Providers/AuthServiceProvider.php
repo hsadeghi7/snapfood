@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Food;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Restaurant;
+use App\Policies\FoodPolicy;
+use App\Policies\UserPolicy;
 use App\Policies\RestaurantPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -18,7 +22,14 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
-         Restaurant::class => RestaurantPolicy::class,
+        Restaurant::class => RestaurantPolicy::class,
+        Role::class => RolePolicy::class,
+        Coupon::class => CouponPolicy::class,
+        Address::class => AddressPolicy::class,
+        User::class => UserPolicy::class,
+        Food::class => FoodPolicy::class,
+
+
         //TODO اضافه کردن پالیسی ها در اینجا
     ];
 

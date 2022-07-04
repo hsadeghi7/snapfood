@@ -1,4 +1,3 @@
-<div class="flex justify-between gap-3">
 
     <div class="max-w-sm w-[80%] bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700">
         <img class="rounded-t-lg" src="https://citinewsroom.com/wp-content/uploads/2021/07/Food.jpg"
@@ -59,4 +58,3 @@
             </a>
         </div>
     </div>
-</div>

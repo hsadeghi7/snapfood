@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Address;
-use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use Spatie\Permission\Models\Role;
 class UserController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,10 +20,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = '';
-        if (auth()->user()->role === 'superAdmin') {
-            $users = User::withTrashed()->paginate(5);
-        }
+        $users = User::withTrashed()->with('roles')->paginate(4);
         return view('dashboard', compact('users'));
     }
 
@@ -63,15 +64,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if ($user->role == 'seller') {
-            if ($user->is_admin) {
-                $user->is_admin = false;
-            } else {
-                $user->is_admin = true;
-            }
-            $user->save();
-        }
-        return back();
+        $roles = Role::all();
+        return view('admin.users.edit', compact('user', 'roles'));
+
     }
 
     /**
@@ -83,7 +78,13 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        dd('update');
+        $request->validate([
+            'role' => 'required|in:admin,seller,buyer',
+        ]);
+
+        $user->syncRoles($request->role);
+
+        return redirect('/')->with('message', 'User role updated successfully');
     }
 
     /**

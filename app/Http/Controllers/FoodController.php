@@ -12,6 +12,11 @@ use App\Http\Requests\UpdateFoodRequest;
 
 class FoodController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Food::class, 'food');
+    }
+    
     /**
      * Display a listing of the resource.
      *

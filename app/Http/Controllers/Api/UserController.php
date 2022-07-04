@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 use App\Http\Requests\ApiUserLoginRequest;
 use App\Http\Requests\ApiUserRegisterRequest;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -17,8 +19,22 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role' => '$request->role',
         ]);
+
+        if (!Role::where('name', 'buyer')->first()) {
+            Role::create(
+                [
+                    'name' => 'buyer',
+                    'guard_name' => 'web',
+                ]
+            );
+        }
+
+        if (!Permission::where('name', 'buyerPermission')->first()) {
+            Permission::create(['name' => 'buyerPermission']);
+        }
+
+        $user->assignRole('buyer');
 
         $token = $user->createToken('user_token')->plainTextToken;
 

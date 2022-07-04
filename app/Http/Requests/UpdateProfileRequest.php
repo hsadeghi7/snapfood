@@ -14,7 +14,8 @@ class UpdateProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->role === 'seller';
+        return auth()->user()->hasRole('seller');
+        ;
     }
 
     /**
@@ -25,11 +26,9 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name'=>'required|max:255',
             'title'=>'required|max:255',
             'phone'=>'phone:IR',
             'account_number'=>'required|numeric',
-            // 'type'=>'required|in:'.implode(',', Category::getRestaurantCategories()),
         ];
     }
 }

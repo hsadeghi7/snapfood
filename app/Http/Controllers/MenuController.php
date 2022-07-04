@@ -11,6 +11,12 @@ use App\Http\Requests\UpdateMenuRequest;
 
 class MenuController extends Controller
 {
+
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(Menu::class, 'menu');
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -18,10 +24,10 @@ class MenuController extends Controller
      */
     public function index()
     {
+
         $restaurants = auth()->user()->restaurants;
         $foods = auth()->user()->foods;
         $menus = auth()->user()->menus;
-        // dd($restaurant->menus->load('food'));
 
         return view('seller.menus.index', compact('restaurants', 'foods', 'menus'));
     }
@@ -33,10 +39,7 @@ class MenuController extends Controller
      */
     public function create()
     {
-        $restaurants = auth()->user()->restaurants;
-        $foods = auth()->user()->foods;
-        $coupons = Coupon::all();
-        return view('seller.menus.create', compact('restaurants', 'foods', 'coupons'));
+        //
     }
 
     /**
