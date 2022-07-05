@@ -24,9 +24,9 @@ class ApiSetDefaultAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|max:255',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'title' => 'bail|required|string|max:255',
+            'latitude' => 'bail|required|numeric',
+            'longitude' => 'bail|required|numeric',
         ];
     }
 }

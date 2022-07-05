@@ -26,7 +26,7 @@ class UpdateRestaurantDeliveryFeeRequest extends FormRequest
     public function rules()
     {
         return [
-            'deliveryFee' => 'required|numeric'
+            'deliveryFee' => 'bail|required|numeric'
         ];
     }
 }

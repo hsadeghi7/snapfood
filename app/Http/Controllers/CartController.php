@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FoodOrder;
-use App\Http\Requests\StoreFoodOrderRequest;
-use App\Http\Requests\UpdateFoodOrderRequest;
+use App\Models\Cart;
+use App\Http\Requests\StoreCartRequest;
+use App\Http\Requests\UpdateCartRequest;
 
-class FoodOrderController extends Controller
+class CartController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class FoodOrderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreFoodOrderRequest  $request
+     * @param  \App\Http\Requests\StoreCartRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreFoodOrderRequest $request)
+    public function store(StoreCartRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class FoodOrderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function show(FoodOrder $foodOrder)
+    public function show(Cart $cart)
     {
         //
     }
@@ -53,10 +53,10 @@ class FoodOrderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function edit(FoodOrder $foodOrder)
+    public function edit(Cart $cart)
     {
         //
     }
@@ -64,11 +64,11 @@ class FoodOrderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateFoodOrderRequest  $request
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Http\Requests\UpdateCartRequest  $request
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateFoodOrderRequest $request, FoodOrder $foodOrder)
+    public function update(UpdateCartRequest $request, Cart $cart)
     {
         //
     }
@@ -76,10 +76,10 @@ class FoodOrderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FoodOrder $foodOrder)
+    public function destroy(Cart $cart)
     {
         //
     }

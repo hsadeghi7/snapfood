@@ -26,8 +26,8 @@ class StoreCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:categories,name|min:4|max:20',
-            'type'=> 'required|in:restaurant,food'
+            'name'=>'bail|required|unique:categories,name|min:4|max:20',
+            'type'=> 'bail|required|in:restaurant,food'
         ];
     }
 }

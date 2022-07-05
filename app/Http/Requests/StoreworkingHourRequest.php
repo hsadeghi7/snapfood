@@ -25,9 +25,9 @@ class StoreworkingHourRequest extends FormRequest
     public function rules()
     {
         return [
-            'day'=>'required|in:'.implode(',',WorkingHour::WEEK),
-            'open_time'=>'required|date_format:H:i|after:11:00|before:23:00',
-            'close_time'=>'required|date_format:H:i|after:open_time|after:11:00|before:23:00',
+            'day'=>'bail|required|in:'.implode(',',WorkingHour::WEEK),
+            'open_time'=>'bail|required|date_format:H:i|after:11:00|before:23:00',
+            'close_time'=>'bail|required|date_format:H:i|after:open_time|after:11:00|before:23:00',
         ];
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\FoodOrder;
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class FoodOrderPolicy
+class CartPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class FoodOrderPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return auth()->check();
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, FoodOrder $foodOrder)
+    public function view(User $user, Cart $cart)
     {
-        //
+        return auth()->id === $cart->user_id;
     }
 
     /**
@@ -41,54 +41,58 @@ class FoodOrderPolicy
      */
     public function create(User $user)
     {
-        //
+        return auth()->check();
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, FoodOrder $foodOrder)
+    public function update(User $user, Cart $cart)
     {
-        //
+        return auth()->id === $cart->user_id;
+
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, FoodOrder $foodOrder)
+    public function delete(User $user, Cart $cart)
     {
-        //
+        return auth()->id === $cart->user_id;
+
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, FoodOrder $foodOrder)
+    public function restore(User $user, Cart $cart)
     {
-        //
+        return auth()->id === $cart->user_id;
+
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\FoodOrder  $foodOrder
+     * @param  \App\Models\Cart  $cart
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, FoodOrder $foodOrder)
+    public function forceDelete(User $user, Cart $cart)
     {
-        //
+        return auth()->id === $cart->user_id;
+
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\ProfileController;
@@ -37,6 +38,9 @@ Route::middleware('auth:sanctum')->prefix('buyer')->group(function(){
     Route::get('/restaurants/{restaurant}', [RestaurantController::class, 'show']);
 
     Route::get('/restaurants/{restaurant}/foods', [RestaurantController::class, 'restaurantFoods']);
+    
+    Route::apiResource('/carts', CartController::class);
+    Route::post('/carts/{cart}/pay', [CartController::class, 'pay']);
     
 
 });

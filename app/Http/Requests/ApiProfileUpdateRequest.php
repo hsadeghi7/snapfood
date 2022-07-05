@@ -24,8 +24,8 @@ class ApiProfileUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'phone:IR',
-            'account_number' => 'numeric',
+            'phone' => 'bail|phone:IR',
+            'account_number' => 'bail|numeric',
         ];
     }
 }

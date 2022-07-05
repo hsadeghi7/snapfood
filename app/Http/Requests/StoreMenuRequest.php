@@ -24,9 +24,9 @@ class StoreMenuRequest extends FormRequest
     public function rules()
     {
         return [
-            'food_id' => 'required',
-            'restaurant_id' => 'required',
-            'coupon' => 'required',
+            'food_id' => 'bail|required',
+            'restaurant_id' => 'bail|required',
+            'coupon' => 'bail|required',
         ];
     }
 }

@@ -160,10 +160,9 @@ class FoodController extends Controller
 
     public function getCategories()
     {
-        $foodsCategory = Food::select('*')->where('foodCategory', $_POST['food_category'])->get();
-        return response()->json($_POST);
+        // dd($_POST);
+        $food_categories = Food::select('*')->where('foodCategory', $_POST['food_category'])->get();
+        return response()->json('$food_categories');
     }
 
-
-  
 }

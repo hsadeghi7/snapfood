@@ -24,8 +24,8 @@ class ApiProfileCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'required|phone:IR',
-            'account_number' => 'required|numeric',
+            'phone' => 'bail|required|phone:IR',
+            'account_number' => 'bail|required|numeric',
             
         ];
     }

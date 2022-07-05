@@ -25,11 +25,11 @@ class UpdateFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|string|max:255',
-            'price'=>'required|numeric',
+            'name'=>'bail|required|string|max:255',
+            'price'=>'bail|required|numeric',
             'ingredients'=>'max:255',
-            'foodCategory'=>'required|in:'.implode(',', Category::getFoodCategories()),
-            'image'=>'image|mimes:jpeg,png,jpg|max:2048'
+            'foodCategory'=>'bail|required|in:'.implode(',', Category::getFoodCategories()),
+            'image'=>'bail|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

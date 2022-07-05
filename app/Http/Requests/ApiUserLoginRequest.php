@@ -24,8 +24,8 @@ class ApiUserLoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'=>'required|email',
-            'password'=>'required',
+            'email'=>'bail|required|email',
+            'password'=>'bail|required',
         ];
     }
 }

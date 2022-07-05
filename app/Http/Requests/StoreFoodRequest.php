@@ -25,11 +25,11 @@ class StoreFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:foods,name|string|max:255',
-            'price'=>'required|numeric',
-            'ingredients'=>'max:255',
-            'foodCategory'=>'required|in:'.implode(',', Category::getFoodCategories()),
-            'image'=>'image|mimes:jpeg,png,jpg|max:2048'
+            'name'=>'bail|required|unique:foods,name|string|max:255',
+            'price'=>'bail|required|numeric',
+            'ingredients'=>'bail|max:255',
+            'foodCategory'=>'bail|required|in:'.implode(',', Category::getFoodCategories()),
+            'image'=>'bail|image|mimes:jpeg,png,jpg|max:2048'
         ];
     }
 }

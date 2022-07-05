@@ -25,8 +25,8 @@ class UpdateCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:categories,name|min:4|max:20|alpha',
-            'type'=> 'required|in:restaurant,food'
+            'name'=>'bail|required|unique:categories,name|min:4|max:20|alpha',
+            'type'=> 'bail|required|in:restaurant,food'
         ];
     }
 }

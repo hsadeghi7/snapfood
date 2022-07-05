@@ -25,11 +25,11 @@ class StoreRestaurantRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:restaurants,name|min:4|max:20',
+            'name' => 'bail|required|unique:restaurants,name|min:4|max:20',
             'title' => 'required',
-            'phone' => 'required|phone:IR',
-            'type' => 'required|in:' . implode(',', Category::getRestaurantCategories()),
-            'image'=>'image|mimes:jpeg,png,jpg|max:2048',
+            'phone' => 'bail|required|phone:IR',
+            'type' => 'bail|required|in:' . implode(',', Category::getRestaurantCategories()),
+            'image'=>'bail|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }

@@ -26,9 +26,9 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required|max:255',
+            'title'=>'bail|required|max:255',
             'phone'=>'phone:IR',
-            'account_number'=>'required|numeric',
+            'account_number'=>'bail|required|numeric',
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ApiUserRegisterRequest extends FormRequest
+class UpdateCartRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class ApiUserRegisterRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -24,9 +24,9 @@ class ApiUserRegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'bail|required|string|max:255',
-            'email'=>'bail|required|email|unique:users',
-            'password'=>'bail|required|string|min:6|confirmed',
+            'menu_id' => 'bail|required|exists:menus,id',
+            'quantity' => 'bail|integer|min:1',
+
         ];
     }
 }

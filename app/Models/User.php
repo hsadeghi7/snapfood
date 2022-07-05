@@ -11,8 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles
-;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -48,30 +47,25 @@ class User extends Authenticatable
     /**
      * Get the foods for the user.
      */
-    public function foods(){
+    public function foods()
+    {
         return $this->hasMany(Food::class);
     }
 
 
-        /**
+    /**
      * Get the restaurants for the user.
      */
-    public function restaurants(){
+    public function restaurants()
+    {
         return $this->hasMany(Restaurant::class);
     }
 
-            /**
-     * Get the menus for the user.
-     */
-    // public function menus(){
-    //     return $this->hasMany(Menu::class);
-    // }
-
-
-        /**
+    /**
      * Get the profiles for the user.
      */
-    public function profile(){
+    public function profile()
+    {
         return $this->hasOne(Profile::class);
     }
 
@@ -79,9 +73,16 @@ class User extends Authenticatable
     /**
      * Get the addresses for the user.
      */
-    public function addresses(){
+    public function addresses()
+    {
         return $this->morphMany(Address::class, 'addressable');
     }
 
-
+    /**
+     * Get the carts for the user.
+     */
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

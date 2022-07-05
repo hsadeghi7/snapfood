@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Cart;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Menu extends Model
 {
@@ -25,5 +26,10 @@ class Menu extends Model
     public function food()
     {
         return $this->belongsTo(Food::class);
+    }
+
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class);
     }
 }

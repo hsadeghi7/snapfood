@@ -16,7 +16,7 @@ class SellerMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->user()->hasPermissionTo('adminPermission') ) {
+        if (!auth()->user()->hasPermissionTo('sellerPermission') ) {
             abort(403);
         }
         return $next($request);

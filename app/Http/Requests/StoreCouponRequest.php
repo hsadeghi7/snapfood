@@ -24,8 +24,8 @@ class StoreCouponRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'required|unique:coupons,name|min:5|max:20',
-            'percentage'=>'required|numeric|min:0|max:100',
+            'name'=>'bail|required|unique:coupons,name|min:5|max:20',
+            'percentage'=>'bail|required|numeric|min:0|max:100',
         ];
     }
 }

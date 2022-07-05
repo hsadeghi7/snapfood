@@ -26,9 +26,9 @@ class StoreProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>'required|max:255',
-            'phone'=>'phone:IR',
-            'account_number'=>'required|numeric',
+            'title'=>'bail|required|max:255',
+            'phone'=>'bail|phone:IR',
+            'account_number'=>'bail|required|numeric',
         ];
     }
 }

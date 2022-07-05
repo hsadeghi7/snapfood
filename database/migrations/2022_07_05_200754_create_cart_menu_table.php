@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Food;
-use App\Models\Restaurant;
+use App\Models\Cart;
+use App\Models\Menu;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -15,12 +15,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('food_restaurant', function (Blueprint $table) {
+        Schema::create('cart_menu', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Food::class);
-            $table->foreignIdFor(Restaurant::class);
-            $table->string('coupon')->nullable();
-            $table->boolean('foodParty')->default(false);
+            $table->foreignIdFor(Cart::class);
+            $table->foreignIdFor(Menu::class);
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('food_restaurant');
+        Schema::dropIfExists('cart_menu');
     }
 };

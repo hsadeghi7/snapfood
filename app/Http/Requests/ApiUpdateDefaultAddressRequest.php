@@ -24,9 +24,9 @@ class ApiUpdateDefaultAddressRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'string|max:255',
-            'latitude' => 'numeric',
-            'longitude' => 'numeric',
+            'title' => 'bail|string|max:255',
+            'latitude' => 'bail|numeric',
+            'longitude' => 'bail|numeric',
         ];
     }
 }

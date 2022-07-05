@@ -24,7 +24,7 @@ class UpdateCouponRequest extends FormRequest
     public function rules()
     {
         return [
-            'percentage'=>'required|numeric|min:0|max:100',
+            'percentage'=>'bail|required|numeric|min:0|max:100',
         ];
     }
 }

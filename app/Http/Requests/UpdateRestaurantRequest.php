@@ -26,11 +26,11 @@ class UpdateRestaurantRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|min:4|max:20|unique:restaurants,name,'.$this->restaurant->id,
+            'name' => 'bail|required|min:4|max:20|unique:restaurants,name,'.$this->restaurant->id,
             'title' => 'required',
-            'phone' => 'required|phone:IR',
-            'type' => 'required|in:' . implode(',', Category::getRestaurantCategories()),
-            'image'=>'image|mimes:jpeg,png,jpg|max:2048',
+            'phone' => 'bail|required|phone:IR',
+            'type' => 'bail|required|in:' . implode(',', Category::getRestaurantCategories()),
+            'image'=>'bail|image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 }
