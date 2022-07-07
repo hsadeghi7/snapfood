@@ -4,14 +4,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    @if (session('message'))
-                        <div
-                            class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
-                            {{ session('message') }}
-                        </div>
-                    @endif
 
-                        {{-- Create new Food --}}
+                    {{-- Create new Food --}}
                         <a href="{{ route('foods.create') }}">
                             <div class="flex items-center mb-3 gap-1">
                                 <p class="text-green-500 font-bold ">

@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
+use App\Models\Menu;
+use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreFoodRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateFoodRequest;
-use Illuminate\Http\Request;
 
 class FoodController extends Controller
 {
@@ -61,8 +63,8 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
-        $validated = $request->validated();
-        $imagePath = Storage::disk('public')->put('images/foods/', $validated['image']);
+
+        $imagePath = Storage::disk('public')->put('images/foods/', $request->image);
         Food::create(
             [
                 'name' => $request->name,
@@ -139,6 +141,8 @@ class FoodController extends Controller
      */
     public function destroy(Food $food)
     {
+        Menu::where('food_id', $food->id)->delete();
+        $food->menus->delete();
         $food->delete();
         return back()->with('message', "$food->name deleted updated successfully");
     }

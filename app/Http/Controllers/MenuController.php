@@ -95,9 +95,13 @@ class MenuController extends Controller
      */
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
-        $menu->foodParty = true;
+        if ($menu->foodParty) {
+            $menu->foodParty = false;
+        } else {
+            $menu->foodParty = true;
+        }
         $menu->save();
-        return  back()->with('message', 'Menu updated successfully');
+        return  back()->with("message", "FoodParty updated successfully for ".$menu->food->name);
     }
 
     /**
@@ -109,6 +113,6 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         Menu::destroy($menu->id);
-        return back()->with('message', 'Food removed from menu successfully');
+        return back()->with('message', $menu->food->name.' removed from menu successfully');
     }
 }

@@ -20,7 +20,10 @@
                                             Role
                                         </th>
                                         <th scope="col" class="px-6 py-3">
-                                            Edit Permission
+                                            Permissions
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Edit Role
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Status
@@ -46,6 +49,16 @@
                                                     <div class="text-sm font-medium text-gray-900">
                                                         @foreach ($user->roles as $role)
                                                             <p> {{ $role->name }}</p>
+                                                        @endforeach
+                                                    </div>
+                                                </td>
+                                                {{-- Permissions --}}
+                                                <td class="px-6 py-2 whitespace-no-wrap">
+                                                    <div class="text-sm font-medium text-gray-900">
+                                                        @foreach ($user->roles as $role)
+                                                            @foreach ($role->permissions as $permission)
+                                                                <p> {{ $permission->name }}</p>
+                                                            @endforeach
                                                         @endforeach
                                                     </div>
                                                 </td>

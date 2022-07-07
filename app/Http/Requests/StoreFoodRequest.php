@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Category;
+use App\Rules\FoodUniqueNameRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFoodRequest extends FormRequest
@@ -14,7 +15,7 @@ class StoreFoodRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasPermissionTo('adminPermission');
+        return auth()->user()->hasPermissionTo('sellerPermission');
     }
 
     /**
@@ -25,7 +26,7 @@ class StoreFoodRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>'bail|required|unique:foods,name|string|max:255',
+            'name'=>['bail','required','unique:foods,name','string','max:255', new FoodUniqueNameRule($this)],
             'price'=>'bail|required|numeric',
             'ingredients'=>'bail|max:255',
             'foodCategory'=>'bail|required|in:'.implode(',', Category::getFoodCategories()),

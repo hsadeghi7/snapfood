@@ -11,12 +11,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
-                    @if (session('message'))
-                        <div
-                            class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800">
-                            {{ session('message') }}
-                        </div>
-                    @endif
 
                     {{-- form --}}
                     <form action="{{ route('menus.store') }}" method="POST">
@@ -33,6 +27,7 @@
                                     @endforeach
                                 </select>
                                 <div class="text-sm text-red-500"> {{ $errors->first('food') }} </div>
+                                <div class="text-sm text-red-500"> {{ $errors->first('food_id') }} </div>
                             </div>
 
                             {{-- Discount --}}

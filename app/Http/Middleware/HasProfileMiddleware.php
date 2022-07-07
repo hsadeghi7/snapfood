@@ -18,7 +18,7 @@ class HasProfileMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->hasPermissionTo('adminPermission')) {
+        if (auth()->user()->hasPermissionTo('sellerPermission')) {
             if (!Profile::where('user_id', auth()->id())->get()->first()) {
                 return response()->view('seller.profiles.create');
             }

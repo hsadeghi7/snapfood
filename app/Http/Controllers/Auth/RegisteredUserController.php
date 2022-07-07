@@ -60,7 +60,6 @@ class RegisteredUserController extends Controller
             Permission::create(['name' => 'sellerPermission']);
         }
 
-
         $user->assignRole('seller');
 
         event(new Registered($user));

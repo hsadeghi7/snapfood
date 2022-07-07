@@ -51,7 +51,6 @@ class RestaurantController extends Controller
      */
     public function store(StoreRestaurantRequest $request)
     {
-        // dd($request->all());
         $validated = $request->validated();
         $imagePath = Storage::disk('public')->put('images/restaurants/', $validated['image']);
 
@@ -70,7 +69,6 @@ class RestaurantController extends Controller
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
         ]);
-
 
         return redirect('seller/restaurants')->with('message', 'Restaurant created successfully');
     }
@@ -142,8 +140,10 @@ class RestaurantController extends Controller
      */
     public function destroy(Restaurant $restaurant)
     {
-        $restaurant->delete();
+        $restaurant->menus()->delete();
+        $restaurant->workingHours()->delete();
         $restaurant->addresses()->delete();
+        $restaurant->delete();
         return back()->with('message', 'Restaurant deleted successfully');
     }
 

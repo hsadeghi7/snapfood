@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\MenuUniqueNameRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreMenuRequest extends FormRequest
@@ -24,7 +25,7 @@ class StoreMenuRequest extends FormRequest
     public function rules()
     {
         return [
-            'food_id' => 'bail|required',
+            'food_id' => ['bail','required', new MenuUniqueNameRule($this)],
             'restaurant_id' => 'bail|required',
             'coupon' => 'bail|required',
         ];

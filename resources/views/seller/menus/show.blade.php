@@ -76,8 +76,7 @@
                                                 </div>
                                             </td>
                                             <td class="px-6 py-1 whitespace-no-wrap">
-                                                <form action="{{ route('menus.destroy', $menu) }}"
-                                                    method="POST">
+                                                <form action="{{ route('menus.destroy', $menu) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="text-sm font-bold  text-red-700">
