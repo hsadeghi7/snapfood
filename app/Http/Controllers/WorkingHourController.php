@@ -46,7 +46,6 @@ class WorkingHourController extends Controller
             'restaurant_id' => $request->restaurant_id,
         ]);
 
-
         return back()->with('message','Working Hour Created Successfully');
     }
 

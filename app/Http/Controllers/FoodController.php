@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreFoodRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateFoodRequest;
+use Illuminate\Http\Request;
 
 class FoodController extends Controller
 {
@@ -16,15 +17,21 @@ class FoodController extends Controller
     {
         $this->authorizeResource(Food::class, 'food');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $foods = DB::table('foods')->where('user_id', auth()->id())->paginate(3);
+        $foods = Food::where('user_id', auth()->id())->paginate(3);
+
+        if ($request->has('food_category') && $request->food_category != 'all') {
+            $foods = Food::where('user_id', auth()->id())
+                ->where('foodCategory', $request->food_category)
+                ->paginate(3);
+        }
 
         //food names
         $food_names = DB::table('foods')->where('user_id', auth()->id())->pluck('name');
@@ -160,9 +167,9 @@ class FoodController extends Controller
 
     public function getCategories()
     {
+        // dd(request('food_category'));
         // dd($_POST);
-        $food_categories = Food::select('*')->where('foodCategory', $_POST['food_category'])->get();
-        return response()->json('$food_categories');
+        $food_categories = Food::select('*')->where('foodCategory', request('data'))->get();
+        return response()->json($food_categories);
     }
-
 }
