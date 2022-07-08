@@ -17,7 +17,7 @@ class Cart extends Model
      */ 
     protected $fillable = [
         'user_id',
-        'food_id',
+        'menu_id',
         'quantity',
     ];
 
@@ -32,7 +32,7 @@ class Cart extends Model
     /**
      * Get the menu for the cart.
      */
-    public function menus()
+    public function menus()//food
     {
         return $this->belongsToMany(Menu::class);
     }

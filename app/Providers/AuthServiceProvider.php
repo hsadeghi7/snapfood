@@ -2,11 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
 use App\Models\Food;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Address;
 use App\Models\Restaurant;
+use App\Policies\CartPolicy;
 use App\Policies\FoodPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\RestaurantPolicy;
@@ -28,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
         Address::class => AddressPolicy::class,
         User::class => UserPolicy::class,
         Food::class => FoodPolicy::class,
+        Cart::class => CartPolicy::class,
 
 
         //TODO اضافه کردن پالیسی ها در اینجا

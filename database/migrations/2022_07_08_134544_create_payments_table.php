@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Menu;
+use App\Models\Cart;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -15,16 +15,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('payments', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(User::class);
-            $table->foreignIdFor(Menu::class);
-            $table->integer('quantity');
-            // $table->string('total_price')->nullable();
-            // $table->boolean('is_pay')->default(false);
-            $table->softDeletes();
+            $table->string('cart_data');
+            $table->string('total_price');
             $table->timestamps();
         });
+
     }
 
     /**
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('payments');
     }
 };

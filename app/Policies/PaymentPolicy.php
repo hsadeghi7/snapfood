@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Cart;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CartPolicy
+class PaymentPolicy
 {
     use HandlesAuthorization;
 
@@ -18,19 +18,19 @@ class CartPolicy
      */
     public function viewAny(User $user)
     {
-        return auth()->check();
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\Payment  $payment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Cart $cart)
+    public function view(User $user, Payment $payment)
     {
-        return auth()->id() == $cart->user_id;
+        //
     }
 
     /**
@@ -41,58 +41,54 @@ class CartPolicy
      */
     public function create(User $user)
     {
-        return auth()->check();
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\Payment  $payment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Cart $cart)
+    public function update(User $user, Payment $payment)
     {
-        return auth()->id() == $cart->user_id;
-
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\Payment  $payment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Cart $cart)
+    public function delete(User $user, Payment $payment)
     {
-        return auth()->id() == $cart->user_id;
-
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\Payment  $payment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Cart $cart)
+    public function restore(User $user, Payment $payment)
     {
-        return auth()->id() == $cart->user_id;
-
+        //
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Cart  $cart
+     * @param  \App\Models\Payment  $payment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Cart $cart)
+    public function forceDelete(User $user, Payment $payment)
     {
-        return auth()->id() == $cart->user_id;
-
+        //
     }
 }
