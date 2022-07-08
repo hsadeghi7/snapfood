@@ -142,7 +142,7 @@ class FoodController extends Controller
     public function destroy(Food $food)
     {
         Menu::where('food_id', $food->id)->delete();
-        $food->menus->delete();
+        $food->menus()->delete();
         $food->delete();
         return back()->with('message', "$food->name deleted updated successfully");
     }

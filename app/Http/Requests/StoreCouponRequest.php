@@ -13,7 +13,7 @@ class StoreCouponRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->is_admin;
+        return true;
     }
 
     /**

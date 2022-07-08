@@ -13,7 +13,7 @@ class UpdateSellerProfileRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->hasPermissionTo('adminPermission');
+        return auth()->user()->hasPermissionTo('sellerPermission');
         ;
     }
 
