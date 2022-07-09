@@ -18,7 +18,7 @@ class CouponFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'percentage' => $this->faker->numberBetween(20, 80),
+            'percentage' => $this->faker->numberBetween(10, 50),
         ];
     }
 }

@@ -9,7 +9,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Http\Resources\CartResource;
-use Illuminate\Support\Facades\Redis;
 
 class CartController extends Controller
 {
@@ -17,7 +16,6 @@ class CartController extends Controller
     {
         $this->authorizeResource(Cart::class, 'cart');
     }
-
 
     /**
      * Display a listing of the resource.

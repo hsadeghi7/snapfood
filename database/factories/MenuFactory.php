@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Coupon;
+use App\Models\Food;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +20,12 @@ class MenuFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'coupon'=>Coupon::select()->get()->random()->percentage,
+            'food_id'=>Food::select()->get()->random()->id,
+            'foodParty'=>$this->faker->boolean,
+            'menuable_type'=>Restaurant::class,
+            'menuable_id'=>Restaurant::select()->get()->random()->id,
+
         ];
     }
 }

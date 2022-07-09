@@ -12,24 +12,17 @@ use App\Http\Requests\UpdateMenuRequest;
 class MenuController extends Controller
 {
 
-    // public function __construct()
-    // {
-    //     $this->authorizeResource(Menu::class, 'menu');
-    // }
-
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-
         $restaurants = auth()->user()->restaurants;
         $foods = auth()->user()->foods;
-        $menus = auth()->user()->menus;
-
-        return view('seller.menus.index', compact('restaurants', 'foods', 'menus'));
+  
+        return view('seller.menus.index', compact('restaurants', 'foods'));
     }
 
     /**

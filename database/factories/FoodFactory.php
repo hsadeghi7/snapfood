@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,9 +22,9 @@ class FoodFactory extends Factory
             'name' => $this->faker->word,
             'price' => $this->faker->numberBetween(1, 100),
             'ingredients' => $this->faker->text,
-            'foodCategory' => $this->faker->word,
+            'foodCategory' => Category::select('name')->where('type', 'food')->get()->random()->name,
             'image' => $this->faker->imageUrl,
-            'user_id' => $this->faker->numberBetween(1, 10),
+            'user_id' => User::select('id')->get()->random()->id,
         ];
     }
 }

@@ -36,7 +36,7 @@
                                 <select id="coupon" name="coupon"
                                     class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                     <option selected disabled>Choose a Discount</option>
-                                    <option value="">No Discount</option>
+                                    <option value="0">No Discount</option>
                                     @foreach ($coupons as $coupon)
                                         <option value="{{ $coupon->percentage }}">{{ $coupon->percentage }}%
                                         </option>

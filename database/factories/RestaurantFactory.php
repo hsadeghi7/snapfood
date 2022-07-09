@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,10 +20,10 @@ class RestaurantFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'phone' => $this->faker->phoneNumber,
-            'type' => $this->faker->word,
+            'phone' => '09121234567',
+            'type' => Category::select('name')->where('type', 'restaurant')->get()->random()->name,
             'image' => $this->faker->imageUrl,
-            'user_id' => $this->faker->numberBetween(1, 10),
+            'user_id' => User::select('id')->get()->random()->id,
         ];
     }
 }

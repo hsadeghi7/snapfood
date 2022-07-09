@@ -94,4 +94,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+ 
+    /**
+     * Get the menus for the user.
+     */
+    public function menus()
+    {
+        return $this->hasMany(Menu::class);
+    }
 }
