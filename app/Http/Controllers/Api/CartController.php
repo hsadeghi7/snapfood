@@ -138,7 +138,6 @@ class CartController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
     public function pay()
     {
         $cart = Cart::where('user_id', auth()->id())->first();

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -29,10 +30,10 @@ class Menu extends Model
         return $this->belongsTo(Food::class);
     }
 
-    // public function carts()
-    // {
-    //     return $this->belongsToMany(Cart::class);
-    // }
+    public function restaurant()
+    {
+        return $this->belongsTo(Restaurant::class);
+    }
 
     public function cartItems()
     {
@@ -40,9 +41,5 @@ class Menu extends Model
     }
 
 
-    // public function getMenuPriceAttribute()
-    // {
-    //     return $this->food->price * $this->coupon;
-    // }
 
 }

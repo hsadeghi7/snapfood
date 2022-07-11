@@ -64,16 +64,18 @@ class RestaurantController extends Controller
 
     public function restaurantFoods(Restaurant $restaurant)
     {
-        $restaurantFoods = $restaurant->menus->load('food');
+        $restaurantFoods = $restaurant->menus->each->food;
         $categories = $restaurantFoods->pluck('food.foodCategory')->unique();
 
-        $foodByCategory = [];
+        // $foodByCategory = [];
 
-        foreach ($categories as  $category) {
-            $foodByCategory[$category] = $restaurantFoods->where('food.foodCategory', $category);
-        }
+        // foreach ($categories as  $category) {
+        //     $foodByCategory[$category] = $restaurantFoods->where('food.foodCategory', $category);
+        // }
+
+        // return  $categories;
 
         // return response()->json($foodByCategory);
-        return response()->json( FoodResource::collection($foodByCategory));
+        return response()->json(FoodResource::collection($restaurantFoods));
     }
 }

@@ -49,9 +49,6 @@ class Restaurant extends Model
         return $this->morphMany(Menu::class, 'menuable');
     }
 
-    /**
-     * .
-     */
     public function workingHours()
     {
         return $this->hasMany(WorkingHour::class);

@@ -105,8 +105,8 @@ class MenuController extends Controller
      */
     public function destroy(Menu $menu)
     {
-        $menu->carts()->forceDelete();
-        $menu->carts()->detach();
+        $menu->cartItems()->forceDelete();
+
         $menu->delete();
         
         return back()->with('message', $menu->food->name.' removed from menu successfully');

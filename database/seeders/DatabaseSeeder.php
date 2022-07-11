@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
         $users->each(function ($user) {
             $user->restaurants()->each(function ($restaurant) {
                 $restaurant->menus()->saveMany(
-                    Menu::factory(1)->create(
+                    Menu::factory(4)->create(
                         [
                             'coupon' => Coupon::select()->get()->random()->percentage,
                             'food_id' => $restaurant->user->foods()->get()->random()->id,
