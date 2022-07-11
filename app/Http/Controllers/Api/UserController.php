@@ -18,7 +18,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
         ]);
 
         if (!Role::where('name', 'buyer')->first()) {
@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $user = User::where('email', $request->email)->first();
 
-        if (!$user || Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'Invalid input'
             ], 401);

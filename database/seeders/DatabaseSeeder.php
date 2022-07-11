@@ -13,6 +13,7 @@ use App\Models\Restaurant;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RoleSeeder;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,7 +32,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Admin',
             'email' => 'hassan@gmail.com',
-            'password' => bcrypt('Aa123456'),
+            'password' => Hash::make('Aa123456'),
 
         ])
             ->assignRole('superAdmin')
@@ -40,7 +41,7 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Buyer',
             'email' => 'buyer@gmail.com',
-            'password' => bcrypt('123456'),
+            'password' => Hash::make('password'),
 
         ])
             ->assignRole('buyer');

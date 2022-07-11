@@ -17,17 +17,19 @@ class OpenRestaurantResource extends JsonResource
         return
             $this->mergeWhen(
                 $this->isOpen == true,
-                [
-                    'id' => $this->id,
-                    'name' => $this->name,
-                    'category' => $this->type,
-                    'phone' => $this->phone,
-                    'address' => AddressResource::collection($this->first()->addresses),
-                    'schedule' => WorkingHoursResource::collection($this->workingHours),
-                    'image' => $this->image,
-                    "score" => $this->score,
-                    'is_open' => $this->isOpen,
-                ]
+                function () {
+                    return [
+                        'id' => $this->id,
+                        'name' => $this->name,
+                        'category' => $this->type,
+                        'phone' => $this->phone,
+                        'address' => AddressResource::collection($this->first()->addresses),
+                        'schedule' => WorkingHoursResource::collection($this->workingHours),
+                        'image' => $this->image,
+                        "score" => $this->score,
+                        'is_open' => $this->isOpen,
+                    ];
+                }
             );
     }
 }

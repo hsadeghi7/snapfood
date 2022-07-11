@@ -94,7 +94,7 @@ class CartController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function delete(Cart $cart)
     {
@@ -105,7 +105,7 @@ class CartController extends Controller
         }
 
         if ($cart->quantity == 1) {
-            return $cart;
+            return response()->json(CartResource::collection($cart));
         }
 
         $cart->update([
@@ -113,6 +113,7 @@ class CartController extends Controller
         ]);
 
         $cart = $cart->menus->load('food')->load('menuable')->load('carts');
-        return response()->json(CartResource::collection($cart), 200);
+        return response()->json(CartResource::collection($cart));
+
     }
 }

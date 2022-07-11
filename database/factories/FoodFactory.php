@@ -20,7 +20,7 @@ class FoodFactory extends Factory
     {
         return [
             'name' => $this->faker->word,
-            'price' => $this->faker->numberBetween(1, 100),
+            'price' => $this->faker->numberBetween(100, 200),
             'ingredients' => $this->faker->text,
             'foodCategory' => Category::select('name')->where('type', 'food')->get()->random()->name,
             'image' => $this->faker->imageUrl,
