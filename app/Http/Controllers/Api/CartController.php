@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
 use App\Http\Resources\CartResource;
+use App\Models\CartItem;
 
 class CartController extends Controller
 {
@@ -20,100 +21,144 @@ class CartController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    
+
     public function index()
     {
-        $carts = Cart::where('user_id', auth()->id())->get();
-
-        $cartWithRelations = [];
-        foreach ($carts as  $cart) {
-            $cartWithRelations[] = $cart->menus->load('food')->load('menuable')->load('carts')[0];
-        }
-
-        return response()->json(CartResource::collection($cartWithRelations));
+        $cart = Cart::where('user_id', auth()->id())->first();
+        $cartItems = $cart->cartItems;
+        $cartItems->load('menu');
+        return response()->json(CartResource::collection($cartItems));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreCartRequest $request)
     {
-        $cart = Cart::where('user_id', auth()->id())
+        $cart = Cart::where('user_id', auth()->id())->first();
+        $cart ?? $cart = Cart::create(['user_id' => auth()->id()]);
+
+        $cartItem = CartItem::where('cart_id', $cart->id)
             ->where('menu_id', $request->menu_id)
             ->first();
 
-        $menu = Menu::find($request->menu_id);
-
-        if (!$cart) {
-            $cart = Cart::create([
-                'user_id' => auth()->id(),
+        if ($cartItem) {
+            $cartItem->quantity += $request->quantity;
+            $cartItem->save();
+        } else {
+            $cartItem = CartItem::create([
+                'cart_id' => $cart->id,
                 'menu_id' => $request->menu_id,
                 'quantity' => $request->quantity,
             ]);
-            $menu->carts()->attach($cart->id);
-        } else {
-            $cart->update([
-                'quantity' => $cart->quantity + $request->quantity,
-            ]);
         }
 
-        $cart = $cart->menus->load('food')->load('menuable')->load('carts');
-
+        $cart = $cart->cartItems->load('menu');
         return response()->json(CartResource::collection($cart), 200);
     }
 
     /**
-     * Update the specified resource in storage.
+     * AddItem the specified resource in cartItems.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Cart  $cart
-     * @return \Illuminate\Http\Response
+     * @param  \App\Models\CartItem  $cart
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Cart $cart)
+    public function addItem(CartItem $cartItem)
     {
-        if (!$cart) {
+        if (!$cartItem) {
             return response()->json([
-                'message' => 'Cart not found'
+                'message' => 'CartItem not found'
             ], 404);
         }
 
-        $cart->update([
-            'quantity' => $cart->quantity + 1,
+        $cartItem->update([
+            'quantity' => $cartItem->quantity + 1,
         ]);
 
-        $cart = $cart->menus->load('food')->load('menuable')->load('carts');
+        $cart = $cartItem->cart;
+        $cart = $cart->cartItems->load('menu');
         return response()->json(CartResource::collection($cart), 200);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * RemoveItem the specified resource in cartItems.
      *
-     * @param  \App\Models\Cart  $cart
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\CartItem  $cart
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete(Cart $cart)
+    public function removeItem(CartItem $cartItem)
     {
+        if (!$cartItem) {
+            return response()->json([
+                'message' => 'CartItem not found'
+            ], 404);
+        }
+
+        if ($cartItem->quantity > 1) {
+            $cartItem->update([
+                'quantity' => $cartItem->quantity - 1,
+            ]);
+        } else {
+            $cartItem->forceDelete();
+        }
+
+        $cart = $cartItem->cart;
+        $cart = $cart->cartItems->load('menu');
+        return response()->json(CartResource::collection($cart), 200);
+    }
+
+    /**
+     * Delete Cart.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete()
+    {
+        $cart = Cart::where('user_id', auth()->id())->first();
+        if (!$cart) {
+            return response()->json([
+                'message' => 'Cart not found'
+            ], 404);
+        }
+        $cart->cartItems->each->forceDelete();
+        $cart->forceDelete();
+        return response()->json([
+            'message' => 'Cart deleted'
+        ], 200);
+    }
+
+    /** 
+     * Pay the Cart.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+    public function pay()
+    {
+        $cart = Cart::where('user_id', auth()->id())->first();
         if (!$cart) {
             return response()->json([
                 'message' => 'Cart not found'
             ], 404);
         }
 
-        if ($cart->quantity == 1) {
-            return response()->json(CartResource::collection($cart));
-        }
+        $cartItems = $cart->cartItems->load('menu');
+        $totalPayment = 0;
 
-        $cart->update([
-            'quantity' => $cart->quantity - 1,
-        ]);
+        $cartItems->each(function ($cartItem) use (&$totalPayment) {
+            $totalPayment += $cartItem->menu->food->price * $cartItem->menu->coupon * $cartItem->quantity;
+        });
 
-        $cart = $cart->menus->load('food')->load('menuable')->load('carts');
-        return response()->json(CartResource::collection($cart));
-
+        $cart->delete();
+        return response()->json([
+            'message' => 'Cart Payed',
+            'totalPayment' => $totalPayment
+        ], 200);
     }
 }

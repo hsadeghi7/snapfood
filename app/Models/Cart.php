@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\CartItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -17,8 +19,6 @@ class Cart extends Model
      */ 
     protected $fillable = [
         'user_id',
-        'menu_id',
-        'quantity',
     ];
 
     /**
@@ -30,10 +30,10 @@ class Cart extends Model
     }
 
     /**
-     * Get the menu for the cart.
+     * Get the cart items for the cart.
      */
-    public function menus()//food
+    public function cartItems()
     {
-        return $this->belongsToMany(Menu::class);
+        return $this->hasMany(CartItem::class);
     }
 }

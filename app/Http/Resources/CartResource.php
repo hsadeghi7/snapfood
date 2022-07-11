@@ -15,12 +15,12 @@ class CartResource extends JsonResource
     public function toArray($request)
     {
         return
-            ['cartItem ' . $this->carts[0]->id =>  [
-                'food' => $this->food->name,
-                'restaurant' => $this->menuable->name,
-                'price' => $this->food->price * $this->coupon,
-                'quantity' => $this->carts[0]->quantity,
-                'cartItemPrice' => $this->food->price * $this->coupon * $this->carts[0]->quantity,
-            ]];
+            [
+                'food' => $this->menu->food->name,
+                'restaurant' => $this->menu->menuable->name,
+                'unit_price' => $this->menu->food->price * $this->menu->coupon,
+                'quantity' => $this->quantity,
+                'cartItemPrice' => $this->menu->food->price * $this->menu->coupon * $this->quantity,
+            ];
     }
 }

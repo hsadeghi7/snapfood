@@ -20,8 +20,6 @@ class CartFactory extends Factory
     {
         return [
             'user_id' => User::select()->get()->random()->id,
-            'menu_id' => Menu::select()->get()->random()->id,
-            'quantity' => $this->faker->numberBetween(1, 10),
         ];
         
     }

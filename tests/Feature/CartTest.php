@@ -24,10 +24,7 @@ class CartTest extends TestCase
 
         $response->assertJsonStructure(['user_token']);
         $this->token = $response->json()['user_token'];
-    }
-
-    public function test_set_cart()
-    {
+        
         $response = $this->post(
             'api/buyer/carts',
             [
@@ -37,84 +34,40 @@ class CartTest extends TestCase
             [
                 'Authorization' => 'Bearer ' . $this->token,
                 'Accept' => 'application/json',
-                'user_id' => 2
+            ]
+        );
+    }
 
+
+    public function test_get_cart()
+    {
+        $response = $this->get(
+            '/api/buyer/carts',
+            [
+                'Authorization' => 'Bearer ' . $this->token,
+                'Accept' => 'application/json',
             ]
         );
         $response->assertStatus(200);
     }
 
 
-    // public function test_get_cart()
-    // {
-    //     $response = $this->get('/api/buyer/carts');
-    //     $response->assertStatus(200);
-    // }
+    public function test_remove_cart()
+    {
 
-    // public function test_add_item_to_cart()
-    // {
-    //     $response = $this->put('/api/buyer/carts', []);
-    //     $response->assertStatus(200);
-    // }
+        $response = $this->delete(
+            '/api/buyer/carts/' ,
+            [],
+            [
+                'Authorization' => 'Bearer ' . $this->token,
+                'Accept' => 'application/json',
+            ]
+        );
 
-    // public function test_remove_item_from_cart()
-    // {
-    //     $cart = Cart::firstOrCreate(
-    //         ['user_id' => 2],
-    //         ['menu_id' => 1, 'quantity' => 2]
-    //     );
-
-    //     $response = $this->delete(
-    //         '/api/buyer/carts/' . $cart->id,
-    //         [],
-    //         [
-    //             'Authorization' => 'Bearer ' . $this->token,
-    //             'Accept' => 'application/json',
-    //             'user_id' => 2
-
-    //         ]
-    //     );
-
-    //     $response->assertStatus(200);
-    //     $this->assertDatabaseHas('carts', ['id' => $cart->id, 'quantity' => $cart->quantity - 1]);
-    // }
+        $response->assertStatus(200);
+    }
 
 
-    // public function test_remove_item_from_cart()
-    // {
-    //     $id = Cart::all()->last()->id + 1;
-    //     $response = $this->delete(
-    //         '/api/buyer/carts/' . $id,
-    //         [],
-    //         [
-    //             'Authorization' => 'Bearer ' . $this->token,
-    //             'Accept' => 'application/json',
-    //             'user_id' => 2
 
-    //         ]
-    //     );
-    //     $response->assertStatus(404);
-
-    // }
-
-    //     DB::beginTransaction();
-    // try {
-    // DB::insert(...);
-    // DB::insert(...);
-    // DB::insert(...);
-    // DB::commit();
-    // // all good
-    // } catch (\Exception $e) {
-    // DB::rollback();
-    // // something went wrong
-    // }
-
-    // public function FunctionName()
-    // {
-    //     DB::transaction(function () {
-    //         DB::update('update users set votes = 1');
-
-    //         DB::delete('delete from posts');
-    //     });
-    // }
+   
 }

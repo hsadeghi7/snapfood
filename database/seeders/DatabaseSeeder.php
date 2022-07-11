@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Address;
+use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Restaurant;
 use Illuminate\Database\Seeder;
@@ -17,11 +18,7 @@ use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
+
     public function run()
     {
         $this->call(RoleSeeder::class);
@@ -46,7 +43,7 @@ class DatabaseSeeder extends Seeder
         ])
             ->assignRole('buyer');
 
-
+        //seller seeder
         $users = User::factory(10)
             ->hasProfile(1)
             ->hasFoods(5)
@@ -60,7 +57,7 @@ class DatabaseSeeder extends Seeder
         $users->each(function ($user) {
             $user->restaurants()->each(function ($restaurant) {
                 $restaurant->menus()->saveMany(
-                    Menu::factory(1)->hasCarts()->create(
+                    Menu::factory(1)->create(
                         [
                             'coupon' => Coupon::select()->get()->random()->percentage,
                             'food_id' => $restaurant->user->foods()->get()->random()->id,
@@ -69,7 +66,7 @@ class DatabaseSeeder extends Seeder
                             'menuable_id' => $restaurant->user->restaurants()->get()->random()->id,
 
                         ],
-                        
+
                     )
                 );
             });
@@ -86,23 +83,21 @@ class DatabaseSeeder extends Seeder
                 $profile->Addresses()->saveMany(Address::factory(1)->create());
             });
         });
-       
-        // $users = User::factory(10)
-        //     ->hasAddresses(1)
-        //     ->create();
-        // foreach ($users as $user) {
-        //     $user->assignRole('buyer');
-        // }
-        // $users->each(function ($user) {
-        //     $user->carts()->saveMany(
-        //         Cart::factory(1)->hasMenus(1)->create(
-        //             [
-        //                 'user_id' => $user->id,
-        //                 'menu_id' => Menu::select()->get()->random()->id,
-        //                 'quantity' => '3',
-        //             ]
-        //         )
-        //     );
-        // });
+
+        //Buyer Seeder
+        $users = User::factory(10)
+            ->hasAddresses(1)
+            ->hasCarts(1)
+            ->create();
+
+        foreach ($users as $user) {
+            $user->assignRole('buyer');
+        }
+
+        $users->each(function ($user) {
+            $user->carts->each(function ($cart) {
+                $cart->cartItems()->saveMany(CartItem::factory(3)->create());
+            });
+        });
     }
 }

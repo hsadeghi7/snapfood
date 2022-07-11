@@ -15,10 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cart_menu', function (Blueprint $table) {
+        Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Cart::class);
             $table->foreignIdFor(Menu::class);
+            $table->unsignedBigInteger('quantity');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_menu');
+        Schema::dropIfExists('cart_items');
     }
 };
