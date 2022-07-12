@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use App\Http\Requests\ApiUserLoginRequest;
+use App\Notifications\RegisterNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Requests\ApiUserRegisterRequest;
 
 class UserController extends Controller
@@ -38,6 +40,7 @@ class UserController extends Controller
 
         $token = $user->createToken('user_token')->plainTextToken;
 
+        Notification::send($user, new RegisterNotification($user));
         return response()->json([
             'message' => 'User created successfully',
             'data' => $user,

@@ -63,8 +63,11 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
+        //TODO بردن عکس ها روی سرورهای ابری
 
         $imagePath = Storage::disk('public')->put('images/foods/', $request->image);
+
+        // dd(  $imagePath);
         Food::create(
             [
                 'name' => $request->name,

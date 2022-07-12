@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use Spatie\Permission\Models\Permission;
+use App\Notifications\RegisterNotification;
+use Illuminate\Support\Facades\Notification;
 
 class RegisteredUserController extends Controller
 {
@@ -64,7 +66,9 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
+        Notification::send($user, new RegisterNotification($user));
         Auth::login($user);
+
 
         return redirect(RouteServiceProvider::HOME);
     }

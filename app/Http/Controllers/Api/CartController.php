@@ -4,12 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Cart;
 use App\Models\Menu;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
+use App\Mail\SuccessfulPaymentMail;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CartResource;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\UpdateCartRequest;
-use App\Http\Resources\CartResource;
-use App\Models\CartItem;
+use App\Notifications\PaymentNotification;
+use Illuminate\Support\Facades\Notification;
 
 class CartController extends Controller
 {
@@ -151,13 +155,32 @@ class CartController extends Controller
         $totalPayment = 0;
 
         $cartItems->each(function ($cartItem) use (&$totalPayment) {
-            $totalPayment += $cartItem->menu->food->price * $cartItem->menu->coupon * $cartItem->quantity;
+            $totalPayment += $cartItem->menu->food->price * $cartItem->menu->coupon * $cartItem->quantity * 0.01;
         });
 
+        $foods = [];
+        foreach ($cartItems as $cartItem) {
+            $foods[] =  [
+                'name' => $cartItem->menu->food->name,
+                'quantity' => $cartItem->quantity,
+                'price' => $cartItem->menu->food->price,
+                'coupon' => $cartItem->menu->coupon . '%',
+                'total' => $cartItem->menu->food->price * $cartItem->menu->coupon * $cartItem->quantity * .01,
+            ];
+        }
         $cart->delete();
+        
+        $paymentData = [
+            'totalPayment' => 'Total Payment: '.$totalPayment,
+            'cartItems' => $foods,
+        ];
+
+        Notification::send(auth()->user(), new PaymentNotification($paymentData));
+
         return response()->json([
             'message' => 'Cart Payed',
             'totalPayment' => $totalPayment
         ], 200);
     }
+    //TODO Send Notification to User
 }
