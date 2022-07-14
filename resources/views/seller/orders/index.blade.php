@@ -50,7 +50,7 @@
                                                 <div class="ml-2">
                                                     <div class="text-sm font-medium text-gray-900">
                                                         @foreach ($order->cart->cartItems as $item)
-                                                            <span> {{ $item->menu->food->name }}</span>-
+                                                            -<span> {{ $item->menu->food->name }}</span><br>
                                                         @endforeach
                                                     </div>
                                                 </div>
@@ -59,7 +59,7 @@
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="ml-2">
                                                     <div class="text-sm font-medium  text-gray-900">
-                                                        {{ $order->cart->totalPayment($order->cart) }}
+                                                        {{ $order->cart->totalPayment($order->cart)/count($orders) }}
                                                     </div>
                                                 </div>
                                             </td>

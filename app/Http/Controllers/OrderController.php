@@ -61,7 +61,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return $order->load('cart.cartItems.menu.food');
+        $items = $order->load('cart.cartItems.menu.food')->cart->cartItems;
+        // return $items;
+        return view('seller.orders.show', compact('items'));
+
     }
 
     /**
