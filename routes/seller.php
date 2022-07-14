@@ -4,6 +4,7 @@ use App\Models\Restaurant;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\WorkingHourController;
@@ -19,10 +20,13 @@ Route::middleware('auth')->group(function () {
             Route::resource('seller/workingHours', WorkingHourController::class);
             Route::resource('seller/menus', MenuController::class);
 
+            Route::resource('seller/orders', OrderController::class);
+            
             Route::post('seller/restaurant', [RestaurantController::class, 'statusToggle'])->name('restaurant.statusToggle');
             Route::post('seller/food', [FoodController::class, 'statusToggle'])->name('food.statusToggle');
             Route::get('seller/restaurants/delivery/{restaurant}', [RestaurantController::class, 'deliveryFee'])->name('restaurants.deliveryFee');
             Route::post('seller/restaurants/delivery/{restaurant}', [RestaurantController::class, 'setDeliveryFee'])->name('restaurants.setDeliveryFee');
+
         });
     });
 });

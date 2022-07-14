@@ -3,24 +3,22 @@
 namespace App\Observers;
 
 use App\Models\Cart;
-use App\Mail\SuccessfulPaymentMail;
-use Illuminate\Support\Facades\Mail;
+use App\Models\Restaurant;
 use App\Notifications\PaymentNotification;
 use Illuminate\Support\Facades\Notification;
 
-class CartObserver
+class RestaurantPaymentObserver
 {
-
-        /**
-     * Handle events after all transactions are committed.
-     *
-     * @var bool
-     */
-    public $afterCommit = true;
-
-
-    public function payed(Cart $cart)
+    public function payed(Restaurant $restaurant)
     {
+        $cart = Cart::where('user_id', auth()->id())
+            ->where('restaurant_id', $restaurant->id)
+            ->where('status', 'paid')
+            ->last();
+        if (!$cart) {
+            return;
+        }
+
         $paymentData = [
             'totalPayment' => 'Total Payment: ' . $cart->totalPayment($cart),
             'cartItems' => $cart->cartItemsDetails($cart),

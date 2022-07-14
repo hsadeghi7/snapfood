@@ -9,6 +9,7 @@ use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
 use App\Http\Requests\StoreFoodRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdateFoodRequest;
@@ -23,7 +24,7 @@ class FoodController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index(Request $request)
     {
@@ -34,11 +35,11 @@ class FoodController extends Controller
                 ->where('foodCategory', $request->food_category)
                 ->paginate(3);
         }
-
+        //TODO توی صفحه بندی وقتی صفحه رفرش میشه دسته بندی ها دوباره بهم میخوره چکار کنیم که با رفرش شدن صفحه بازم اون دسته بندی قبلی برقرار باشه؟
         //food names
-        $food_names = DB::table('foods')->where('user_id', auth()->id())->pluck('name');
+        $food_names =  Food::where('user_id', auth()->id())->pluck('name');
         //food category
-        $food_categories = DB::table('foods')->where('user_id', auth()->id())->pluck('foodCategory');
+        $food_categories = Food::where('user_id', auth()->id())->pluck('foodCategory')->unique();
 
         return view('seller.foods.index', compact('foods', 'food_names', 'food_categories'));
     }
@@ -46,7 +47,7 @@ class FoodController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
@@ -65,9 +66,7 @@ class FoodController extends Controller
     {
         //TODO بردن عکس ها روی سرورهای ابری
 
-        $imagePath = Storage::disk('public')->put('images/foods/', $request->image);
-
-        // dd(  $imagePath);
+        $imagePath = Storage::disk('public')->put('/', $request->image);
         Food::create(
             [
                 'name' => $request->name,
@@ -100,7 +99,7 @@ class FoodController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Food  $food
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function edit(Food $food)
     {
@@ -150,7 +149,6 @@ class FoodController extends Controller
         return back()->with('message', "$food->name deleted updated successfully");
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
@@ -171,12 +169,4 @@ class FoodController extends Controller
         return back()->with('message', 'Food Party status updated successfully for ' . $food->name);
     }
 
-
-    public function getCategories()
-    {
-        // dd(request('food_category'));
-        // dd($_POST);
-        $food_categories = Food::select('*')->where('foodCategory', request('data'))->get();
-        return response()->json($food_categories);
-    }
 }

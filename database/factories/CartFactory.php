@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Menu;
+use App\Models\Restaurant;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,7 +20,7 @@ class CartFactory extends Factory
     {
         return [
             'user_id' => User::select()->get()->random()->id,
+            'restaurant_id' => Restaurant::select()->get()->random()->restaurant_id,
         ];
-        
     }
 }

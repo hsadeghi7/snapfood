@@ -2,36 +2,31 @@
 
 namespace App\Models;
 
-use App\Models\Restaurant;
+use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class WorkingHour extends Model
+class Order extends Model
 {
     use HasFactory;
-    public const WEEK =
-    [
-        'Saturday',
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday'
-    ];
+
     protected $fillable = [
+        'user_id',
         'restaurant_id',
-        'day',
-        'open_time',
-        'close_time',
+        'cart_id',
+        'is_archived',
+        'status',
     ];
 
+    public function cart()
+    {
+        return $this->belongsTo(Cart::class);
+    }
 
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
     }
-
-
 
 }

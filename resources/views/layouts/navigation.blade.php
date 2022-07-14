@@ -15,7 +15,7 @@
                 @can('adminPermission')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.index')">
-                            {{ __('Category Managment') }}
+                            {{ __('Category') }}
                         </x-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -55,6 +55,11 @@
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <x-nav-link :href="route('menus.index')" :active="request()->routeIs('menus.index')">
                                 {{ __('Menus') }}
+                            </x-nav-link>
+                        </div>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.index')">
+                                {{ __('Orders') }}
                             </x-nav-link>
                         </div>
                     @endif
@@ -156,6 +161,11 @@
             <x-responsive-nav-link :href="route('foods.index')" :active="request()->routeIs('foods.index')">
                 {{ __('Foods') }}
             </x-responsive-nav-link>
+        </div>
+        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+            <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.index')">
+                {{ __('Orders') }}
+            </x-nav-link>
         </div>
 
 

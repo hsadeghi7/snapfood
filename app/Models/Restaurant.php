@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Cart;
 use App\Models\Menu;
+use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -62,27 +64,28 @@ class Restaurant extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get all of the menu for the restaurant.
-     */
-    // public function menus()
-    // {
-    //     return $this->hasMany(Menu::class);
-    // }
 
     public function foods()
     {
         return $this->hasMany(Food::class);
     }
 
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
     public function getIsOpenAttribute()
     {
         $isOpen = false;
-         $now = now();
-
+        $now = now();
         foreach ($this->workingHours as $workingHour) {
-            if (strtolower(date('D', time())) == strtolower(substr($workingHour->day,0,3))) {
+            if (strtolower(date('D', time())) == strtolower(substr($workingHour->day, 0, 3))) {
                 $openTime = $workingHour->open_time;
                 $closeTime = $workingHour->close_time;
 
@@ -91,7 +94,7 @@ class Restaurant extends Model
                 }
             }
         }
-        
+
         return $isOpen;
     }
 }

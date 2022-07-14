@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AddressController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\RestaurantController;
 
@@ -44,8 +45,8 @@ Route::middleware('auth:sanctum')->prefix('buyer')->group(function(){
     Route::post('/carts', [CartController::class, 'store']);
     Route::put('/carts/add/{cartItem}', [CartController::class, 'addItem']);
     Route::put('/carts/remove/{cartItem}', [CartController::class, 'removeItem']);
-    Route::delete('/carts', [CartController::class, 'delete']);
-    Route::post('/carts/pay', [CartController::class, 'pay']);
+    Route::delete('/carts/{restaurant}', [CartController::class, 'delete']);
+    Route::post('/carts/pay/{restaurant}', [PaymentController::class, 'pay']);
     
 });
 

@@ -2,20 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Cart;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Payment extends Model
 {
     use HasFactory;
+    protected $observables = ['payed'];
+
     protected $fillable = [
-        'user_id',
-        'cart_data',
+        'cart_id',
         'total_price',
     ];
 
-    public function user()
+    public function cart()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(Cart::class);
+    }
+
+    
+    /**
+     * set the payed observer to pay method
+     *
+     * @return void
+     */
+    public function makePay()
+    {
+        $this->fireModelEvent('payed');
     }
 }

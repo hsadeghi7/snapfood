@@ -28,7 +28,7 @@ class Profile extends Model
     }
 
 
-        /**
+    /**
      * Get all of the address for the profiles.
      */
     public function addresses()

@@ -24,16 +24,6 @@ class Food extends Model
         return $this->morphToMany(Category::class, 'categorizeable');
     }
 
-    // public function user()
-    // {
-    //     return $this->belongsTo(User::class);
-    // }
-
-    // public function menus()
-    // {
-    //     return $this->belongsToMany(Menu::class);
-    // }
-
 
     public function restaurant()
     {

@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Menu;
 use App\Models\Coupon;
 use App\Models\Restaurant;
+use Illuminate\Contracts\View\View;
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
 
@@ -15,7 +16,7 @@ class MenuController extends Controller
      /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
@@ -39,7 +40,7 @@ class MenuController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreMenuRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return 
      */
     public function store(StoreMenuRequest $request)
     {
@@ -84,7 +85,7 @@ class MenuController extends Controller
      *
      * @param  \App\Http\Requests\UpdateMenuRequest  $request
      * @param  \App\Models\Menu  $menu
-     * @return \Illuminate\Http\Response
+     * @return 
      */
     public function update(UpdateMenuRequest $request, Menu $menu)
     {
@@ -101,7 +102,7 @@ class MenuController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Menu  $menu
-     * @return \Illuminate\Http\Response
+     * @return 
      */
     public function destroy(Menu $menu)
     {

@@ -16,11 +16,12 @@ class CartResource extends JsonResource
     {
         return
             [
+                'id' => $this->id,
                 'food' => $this->menu->food->name,
                 'restaurant' => $this->menu->menuable->name,
-                'unit_price' => $this->menu->food->price * $this->menu->coupon,
+                'unit_price' => $this->menu->food->price * (100-$this->menu->coupon)*0.01,
                 'quantity' => $this->quantity,
-                'cartItemPrice' => $this->menu->food->price * $this->menu->coupon * $this->quantity,
+                'cartItemPrice' => $this->menu->food->price * (100-$this->menu->coupon) * $this->quantity*0.01,
             ];
     }
 }

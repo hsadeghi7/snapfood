@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Menu;
+use App\Models\Cart;
 use App\Models\Restaurant;
-use App\Models\User;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -16,11 +15,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('carts', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->foreignIdFor(User::class);
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(Restaurant::class);
-            $table->string('status')->default('pending');
+            $table->foreignIdFor(Cart::class);
+            $table->string('status');
+            $table->boolean('is_archived')->default(false);
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('carts');
+        Schema::dropIfExists('orders');
     }
 };

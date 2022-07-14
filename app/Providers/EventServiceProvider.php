@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Cart;
+use App\Models\Payment;
 use App\Observers\CartObserver;
+use App\Observers\RestaurantPaymentObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -30,6 +32,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Cart::observe(CartObserver::class);
+        Payment::observe(RestaurantPaymentObserver::class);
     }
 
     /**
