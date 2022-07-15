@@ -6,7 +6,6 @@
                     <div
                         class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-3xl hover:bg-gray-100 ">
                         {{-- Orders --}}
-
                         <table>
                             <thead>
                                 <tr>
@@ -47,13 +46,10 @@
                                     </tr>
                                 {{-- @endforeach --}}
                             </tbody>
-
                         </table>
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </x-app-layout>

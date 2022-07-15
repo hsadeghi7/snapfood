@@ -10,7 +10,7 @@
                             <div class="flex gap-3">
                                 <select name="restaurant_id"
                                     class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 border-2 rounded-md">
-                                    <option selected value="all">Select Restaurant</option>
+                                    <option selected disabled>Select Restaurant</option>
                                     @foreach ($restaurants as $restaurant)
                                         <option value="{{ $restaurant->id }}">{{ $restaurant->name }}
                                         </option>
@@ -32,20 +32,29 @@
                                             Items
                                         </th>
                                         <th scope="col" class="px-6 py-3">
+                                            Quantity
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Items price
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Discount
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Sum price
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
                                             Total payment
                                         </th>
                                         <th scope="col" class="px-6 py-3">
                                             Status
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Order details
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($orders as $order)
                                         <tr>
-                                            {{-- Order --}}
+                                            {{-- Order Items --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="ml-2">
                                                     <div class="text-sm font-medium text-gray-900">
@@ -55,11 +64,54 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            {{-- Items --}}
+                                            {{-- Quantity --}}
                                             <td class="px-6 py-2 whitespace-no-wrap">
                                                 <div class="ml-2">
                                                     <div class="text-sm font-medium  text-gray-900">
-                                                        {{ $order->cart->totalPayment($order->cart)/count($orders) }}
+                                                        @foreach ($order->cart->cartItems as $item)
+                                                            <span> {{ $item->quantity }}</span><br>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {{-- Items Price --}}
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="ml-2">
+                                                    <div class="text-sm font-medium  text-gray-900">
+                                                        @foreach ($order->cart->cartItems as $item)
+                                                            <span>
+                                                                {{ $item->menu->food->price }}</span>$<br>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {{-- Items Discount --}}
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="ml-2">
+                                                    <div class="text-sm font-medium  text-gray-900">
+                                                        @foreach ($order->cart->cartItems as $item)
+                                                            <span>
+                                                                {{ $item->menu->coupon }}</span>%<br>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {{-- Sum Price --}}
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="ml-2">
+                                                    <div class="text-sm font-medium  text-gray-900">
+                                                        @foreach ($order->cart->cartItems as $item)
+                                                            <span>
+                                                                {{ $item->menu->food->price * (100 - $item->menu->coupon) * 0.01 * $item->quantity }}</span>$<br>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            {{-- total Payments --}}
+                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                                <div class="ml-2">
+                                                    <div class="text-sm font-medium  text-gray-900">
+                                                        {{ $order->cart->totalPayment($order->cart) / count($orders) }}$
                                                     </div>
                                                 </div>
                                             </td>
@@ -78,20 +130,7 @@
                                                     </div>
                                                 </td>
                                             </form>
-                                            {{-- Order details --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
-                                                <a href="{{ route('orders.show', $order->id) }}"
-                                                    class="text-sm font-bold  text-green-700  ">
-                                                    <svg class="h-6 w-6 text-green-500" width="24" height="24"
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" />
-                                                        <path
-                                                            d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
-                                                        <path d="M20 12h-13l3 -3m0 6l-3 -3" />
-                                                    </svg>
-                                                </a>
-                                            </td>
+
                                         </tr>
                                     @endforeach
                                 </tbody>

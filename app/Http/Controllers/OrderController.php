@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
-use Illuminate\Contracts\View\View;
-use App\Http\Requests\StoreOrderRequest;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
+use App\Notifications\OrderDeliveryNotification;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
@@ -20,6 +22,13 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        $restaurant = Restaurant::where('id', $request->restaurant_id)
+            ->where('user_id', auth()->id())
+            ->get();
+        if ($restaurant->isEmpty() && $request->restaurant_id) {
+            return abort(403);
+        }
+
         $restaurants = Restaurant::where('user_id', auth()->id())->get();
         $orders = '';
         if ($request->restaurant_id) {
@@ -33,52 +42,6 @@ class OrderController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreOrderRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreOrderRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Order $order)
-    {
-        $items = $order->load('cart.cartItems.menu.food')->cart->cartItems;
-        // return $items;
-        return view('seller.orders.show', compact('items'));
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\UpdateOrderRequest  $request
@@ -87,37 +50,37 @@ class OrderController extends Controller
      */
     public function update(UpdateOrderRequest $request, Order $order)
     {
+        $restaurant = Restaurant::where('id', $order->restaurant->id)
+            ->where('user_id', auth()->id())
+            ->get();
+        if ($restaurant->isEmpty()) {
+            return abort(403);
+        }
+
         if ($order->status == 'received') {
             $order->status = 'accepted';
             $order->save();
-            return back()->with('success', 'Order Accepted');
+            return back()->with('message', 'Order Accepted');
         }
         if ($order->status == 'accepted') {
             $order->status = 'pending';
             $order->save();
-            return back()->with('success', 'Order Pending');
+            return back()->with('message', 'Order Pending');
         }
         if ($order->status == 'pending') {
             $order->status = 'preparing';
             $order->save();
-            return back()->with('success', 'Order Preparing');
+            return back()->with('message', 'Order Preparing');
         }
         if ($order->status == 'preparing') {
             $order->status = 'completed';
             $order->is_archived = true;
             $order->save();
-            return back()->with('success', 'Order Completed');
-        }
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Order  $order
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Order $order)
-    {
-        //
+            //send notification to user
+            Notification::send(auth()->user(), new OrderDeliveryNotification($order));
+            return redirect('seller/orders?restaurant_id=' . $order->restaurant->id)
+                ->with('message', 'Order Completed');
+        }
     }
 }

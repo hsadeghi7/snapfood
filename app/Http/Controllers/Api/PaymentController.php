@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Cart;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Restaurant;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use App\Notifications\PaymentNotification;
+use Illuminate\Support\Facades\Notification;
 
 class PaymentController extends Controller
 {
@@ -45,10 +47,17 @@ class PaymentController extends Controller
                 'restaurant_id' => $cart->restaurant_id,
                 'status' => 'received',
             ]);
-            // $cart->makePay();
+
+            //send successful payment email to user
+            $paymentData = [
+                'totalPayment' => 'Total Payment: ' . $cart->totalPayment($cart),
+                'cartItems' => $cart->cartItemsDetails($cart),
+            ];
+            Notification::send(auth()->user(), new PaymentNotification($paymentData));
         });
-
-
+        
+        
+        // $cart->makePay();
         return response()->json([
             'message' => 'Cart Payed',
             'totalPayment' => $totalPrice

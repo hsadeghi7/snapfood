@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PaymentNotification extends Notification
+class OrderDeliveryNotification extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,8 @@ class PaymentNotification extends Notification
      *
      * @return void
      */
-    public function __construct(private $invoice){}
-
-
+    public function __construct(private $order){}
+    
     /**
      * Get the notification's delivery channels.
      *
@@ -39,8 +38,7 @@ class PaymentNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line($this->invoice['totalPayment'])
-            ->line(json_encode($this->invoice['cartItems']))
+            ->line('Your order was delivered at'.date('Y-m-d H:i'))
             ->action('SnapFood', url('http://127.0.0.1:8000/'))
             ->line('Thank you for using our Restaurant!');
     }

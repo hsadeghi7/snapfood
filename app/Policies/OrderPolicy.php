@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Order;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Restaurant;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class OrderPolicy
@@ -18,7 +19,7 @@ class OrderPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return Restaurant::where('user_id', auth()->id())->exists();
     }
 
     /**
