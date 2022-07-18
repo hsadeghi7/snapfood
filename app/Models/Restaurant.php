@@ -17,6 +17,7 @@ class Restaurant extends Model
         'address',
         'phone',
         'type',
+        'score',
         'image',
         'user_id',
         'is_active',

@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Cart;
-use App\Models\Food;
+
 use App\Models\Menu;
 use App\Models\User;
 use App\Models\Coupon;
@@ -13,7 +12,6 @@ use App\Models\Category;
 use App\Models\Restaurant;
 use Illuminate\Database\Seeder;
 use Database\Seeders\RoleSeeder;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder

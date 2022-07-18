@@ -20,7 +20,7 @@ class CartFactory extends Factory
     {
         return [
             'user_id' => User::select()->get()->random()->id,
-            'restaurant_id' => Restaurant::select()->get()->random()->restaurant_id,
+            'restaurant_id' => Restaurant::select()->get()->random()->id,
         ];
     }
 }

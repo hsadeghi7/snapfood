@@ -21,6 +21,7 @@ class RestaurantFactory extends Factory
         return [
             'name' => $this->faker->word,
             'phone' => '09121234567',
+            'score'=>random_int(3,5),
             'type' => Category::select('name')->where('type', 'restaurant')->get()->random()->name,
             'image' => $this->faker->imageUrl,
             'user_id' => User::select('id')->get()->random()->id,

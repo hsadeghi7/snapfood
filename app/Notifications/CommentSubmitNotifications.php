@@ -2,12 +2,13 @@
 
 namespace App\Notifications;
 
+use App\Models\Restaurant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class RegisterNotification extends Notification implements ShouldQueue
+class CommentSubmitNotifications extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -16,9 +17,8 @@ class RegisterNotification extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(private $comment)
     {
-        //
     }
 
     /**
@@ -41,9 +41,12 @@ class RegisterNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('You Registered Successfully!')
-                    ->action('SnapFood', url('http://127.0.0.1:8000/'))
-                    ->line('Thank you for using our application!');
+            ->line('Your comment submitted successfully!')
+            ->line("restaurant: " . Restaurant::find($this->comment->restaurant_id)->name)
+            ->line("comment: " . $this->comment->body)
+            ->line("score: " . $this->comment->score)
+            ->action('SnapFood', url('http://127.0.0.1:8000/'))
+            ->line('Thank you for using our Restaurant!');
     }
 
     /**
@@ -56,14 +59,6 @@ class RegisterNotification extends Notification implements ShouldQueue
     {
         return [
             //
-        ];
-    }
-    public function toDatabase($notifiable)
-    {
-        return [
-            'user_name' => $this->payment->cart->user->name,
-            'status' => $this->payment->status,
-            'price' => $this->payment->totalPrice,
         ];
     }
 }

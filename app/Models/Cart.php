@@ -66,6 +66,12 @@ class Cart extends Model
         return $this->hasOne(Order::class);
     }
 
+    public function comments()
+    {
+          return $this->hasMany(Comments::class,);
+    }
+
+
     /**
      * Get the total price of the cart.
      */

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Jobs\RegisterNotificationJob;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
@@ -66,9 +67,8 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Notification::send($user, new RegisterNotification($user));
         Auth::login($user);
-
+        RegisterNotificationJob::dispatch($user);
 
         return redirect(RouteServiceProvider::HOME);
     }

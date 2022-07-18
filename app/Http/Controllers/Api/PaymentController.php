@@ -9,8 +9,10 @@ use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Jobs\PaymentNotificationJob;
 use App\Notifications\PaymentNotification;
 use Illuminate\Support\Facades\Notification;
+
 
 class PaymentController extends Controller
 {
@@ -53,7 +55,7 @@ class PaymentController extends Controller
                 'totalPayment' => 'Total Payment: ' . $cart->totalPayment($cart),
                 'cartItems' => $cart->cartItemsDetails($cart),
             ];
-            Notification::send(auth()->user(), new PaymentNotification($paymentData));
+            Notification::send(auth()->user(), new PaymentNotification($this->paymentData));
         });
         
         

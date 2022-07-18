@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone');
             $table->string('type');
+            $table->string('score');
             $table->string('delivery_fee')->default(0);
             $table->string('image');
             $table->foreignIdFor(User::class);

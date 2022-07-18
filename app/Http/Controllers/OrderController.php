@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Payment;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use App\Jobs\DeliveredNotificationJob;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
-use App\Notifications\OrderDeliveryNotification;
 use Illuminate\Support\Facades\Notification;
+use App\Notifications\OrderDeliveryNotification;
 
 class OrderController extends Controller
 {
@@ -78,7 +77,7 @@ class OrderController extends Controller
             $order->save();
 
             //send notification to user
-            Notification::send(auth()->user(), new OrderDeliveryNotification($order));
+            Notification::send(auth()->user(), new OrderDeliveryNotification($this->order));
             return redirect('seller/orders?restaurant_id=' . $order->restaurant->id)
                 ->with('message', 'Order Completed');
         }
