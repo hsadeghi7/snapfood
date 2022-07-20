@@ -23,7 +23,7 @@ return new class extends Migration
             $table->foreignIdFor(Cart::class);
             $table->integer('parent_id')->nullable();
             $table->text('body');
-            $table->string('score');
+            $table->string('score')->nullable();
             $table->boolean('is_approve')->nullable();
             $table->softDeletes();
             $table->timestamps();

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Restaurant;
 use App\Models\WorkingHour;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRestaurantRequest;
 use App\Http\Requests\UpdateRestaurantRequest;
@@ -22,7 +23,7 @@ class RestaurantController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
@@ -34,7 +35,7 @@ class RestaurantController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function create()
     {
@@ -77,21 +78,24 @@ class RestaurantController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Restaurant  $restaurant
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function show(Restaurant $restaurant)
     {
-        // dd($restaurant->addresses);
-        $timetable = WorkingHour::where('restaurant_id', $restaurant->id)->get();
+        $comments = $restaurant
+            ->load('comments', 'comments.user', 'comments.replies', 'comments.replies.user')
+            ->comments;
+
+            $timetable = WorkingHour::where('restaurant_id', $restaurant->id)->get();
         $week = WorkingHour::WEEK;
-        return view('seller.restaurants.show', compact('restaurant', 'timetable', 'week'));
+        return view('seller.restaurants.show', compact('restaurant', 'timetable', 'week', 'comments'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Restaurant  $restaurant
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function edit(Restaurant $restaurant)
     {
@@ -169,7 +173,7 @@ class RestaurantController extends Controller
         return view('seller.restaurants.delivery', compact('restaurant'));
     }
 
-    public function setDeliveryFee( UpdateRestaurantDeliveryFeeRequest $request, Restaurant $restaurant)
+    public function setDeliveryFee(UpdateRestaurantDeliveryFeeRequest $request, Restaurant $restaurant)
     {
         $restaurant->delivery_fee = $_POST['deliveryFee'];
         $restaurant->save();

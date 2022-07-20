@@ -3,84 +3,50 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
-use App\Http\Requests\StoreCommentRequest;
-use App\Http\Requests\UpdateCommentRequest;
+use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Validated;
+use App\Http\Requests\ReplyStoreRequest;
+use App\Models\Restaurant;
 
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreCommentRequest  $request
+     * @param  \App\Http\Requests\ReplyStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(ReplyStoreRequest $request)
     {
-        //
+        $restaurant = Restaurant::find($request->restaurant_id);
+        if ($restaurant) {
+            Comment::create([
+                'user_id' => auth()->id(),
+                'restaurant_id' => $request->restaurant_id,
+                'parent_id' => $request->comment_id,
+                'body' => $request->body,
+                'cart_id' => $request->cart_id,
+            ]);
+            return redirect()->back()->with('message', 'Comment replied successfully');
+        }
+        return abort(403, 'Unauthorized action');
     }
 
     /**
-     * Display the specified resource.
+     * Show the form for updating the specified resource.
      *
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function update(Comment $comment, $action)
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
+        $comment->update([
+            'is_approve' => $action == 'approve' ? true : false,
+        ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCommentRequest  $request
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCommentRequest $request, Comment $comment)
-    {
-        //
-    }
+        $message = $action == 'approve' ? 'Comment approved successfully' : 'Comment disapproved successfully';
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Comment $comment)
-    {
-        //
+        return redirect()->back()->with('message', $message);
     }
 }

@@ -2,7 +2,66 @@
     <div class="py-6">
         <div class="w-full mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200 flex justify-center">
+
+                {{-- Create Time Table for Restaurant --}}
+                <div>
+                    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class=" bg-white border-b border-gray-200">
+                                <p class="text-green-700 font-bold text-m "> Add Time Table </p>
+
+                                <!-- Restaurant Time Table Store Form -->
+                                <form action="{{ route('workingHours.store') }}" method="POST">
+                                    @csrf
+                                    <div class="flex justify-between gap-3">
+
+                                        <!-- Restaurant Day -->
+                                        <div class="mt-4 w-full">
+                                            <x-label for="day" :value="__('Week Day')" />
+                                            <select id="day" name="day"
+                                                class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                <option selected disabled>Choose a Day</option>
+                                                @foreach ($week as $day)
+                                                    <option value="{{ $day }}">
+                                                        {{ $day }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="text-sm text-red-500">
+                                                {{ $errors->first('day') }} </div>
+                                        </div>
+
+                                        <!-- Open Time -->
+                                        <div class="mt-4 w-full">
+                                            <x-label for="open_time" :value="__('Open_time')" />
+                                            <x-input id="open_time" class="block mt-1 w-full" type="time"
+                                                name="open_time" :value="old('open_time')" required />
+                                            <div class="text-sm text-red-500">
+                                                {{ $errors->first('open_time') }} </div>
+                                        </div>
+                                        <!-- Close Time -->
+                                        <div class="mt-4 w-full">
+                                            <x-label for="close_time" :value="__('Close_time')" />
+                                            <x-input id="close_time" class="block mt-1 w-full" type="time"
+                                                name="close_time" :value="old('close_time')" required />
+                                            <div class="text-sm text-red-500">
+                                                {{ $errors->first('close_time') }} </div>
+                                        </div>
+                                    </div>
+                                    {{-- restaurant Id --}}
+                                    <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}">
+                                    <!-- Add Restaurant  -->
+                                    <div class="flex items-center justify-start mt-2">
+                                        <x-button class="ml-4">
+                                            {{ __('Add') }}
+                                        </x-button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-2 bg-white border-b border-gray-200 flex justify-center">
                     <div
                         class="flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-3xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
                         {{-- Restaurant image --}}
@@ -28,10 +87,6 @@
                                 </svg>
                             @endif
 
-                            {{-- Status Toggle --}}
-
-
-                            </p>
                             {{-- Time Table --}}
                             <h5 class="mb-2 mt-6 text-m font-bold tracking-tight text-gray-100 dark:text-white">
                                 Restaurant Time Table</h5>
@@ -94,62 +149,54 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                {{-- Comments --}}
 
-    {{-- Create Time Table for Restaurant --}}
-    <div>
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <p class="text-green-700 font-bold text-m "> Add Time Table </p>
-
-                    <!-- Restaurant Time Table Store Form -->
-                    <form action="{{ route('workingHours.store') }}" method="POST">
-                        @csrf
-                        <div class="flex justify-between gap-3">
-
-                            <!-- Restaurant Day -->
-                            <div class="mt-4 w-full">
-                                <x-label for="day" :value="__('Week Day')" />
-                                <select id="day" name="day"
-                                    class="mt-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected disabled>Choose a Day</option>
-                                    @foreach ($week as $day)
-                                        <option value="{{ $day }}">{{ $day }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="text-sm text-red-500"> {{ $errors->first('day') }} </div>
+                <div class="py-6">
+                    <div class="p-6 bg-white border-b border-gray-200 ">
+                        @foreach ($comments as $comment)
+                            <div class="flex gap-3 ">
+                                @if (!$comment->parent_id)
+                                    <p class="text-black font-bold">
+                                        {{ $comment->user->name . ': ' . $comment->body }}</p>
+                                    @if ($comment->is_approve === null)
+                                        <x-button class="h-6">
+                                            <a
+                                                href="{{ route('comments.update', ['comment' => $comment->id, 'action' => 'delete']) }}">
+                                                {{ __('Disaprove') }}</a>
+                                        </x-button>
+                                        <x-button class="h-6">
+                                            <a
+                                                href="{{ route('comments.update', ['comment' => $comment->id, 'action' => 'approve']) }}">
+                                                {{ __('Aprove') }}</a>
+                                        </x-button>
+                                    @endif
+                                @endif
                             </div>
-
-                            <!-- Open Time -->
-                            <div class="mt-4 w-full">
-                                <x-label for="open_time" :value="__('Open_time')" />
-                                <x-input id="open_time" class="block mt-1 w-full" type="time" name="open_time"
-                                    :value="old('open_time')" required />
-                                <div class="text-sm text-red-500"> {{ $errors->first('open_time') }} </div>
-                            </div>
-                            <!-- Close Time -->
-                            <div class="mt-4 w-full">
-                                <x-label for="close_time" :value="__('Close_time')" />
-                                <x-input id="close_time" class="block mt-1 w-full" type="time" name="close_time"
-                                    :value="old('close_time')" required />
-                                <div class="text-sm text-red-500"> {{ $errors->first('close_time') }} </div>
-                            </div>
-                        </div>
-                        {{-- restaurant Id --}}
-                        <input type="hidden" name="restaurant_id" value="{{ $restaurant->id }}">
-                        <!-- Add Restaurant  -->
-                        <div class="flex items-center justify-start mt-4">
-                            <x-button class="ml-4">
-                                {{ __('Add') }}
-                            </x-button>
-                        </div>
+                            <p class="text-black ml-6 mb-4">
+                                @if ($comment->is_approve === 1)
+                                    @if ($comment->replies->count() > 0)
+                                        <span class="ml-12 text-gray-600">
+                                            {{ $comment->replies->first()->body }}</span>
+                                    @else
+                                        <form action="{{ route('comments.store') }}" method="POST"
+                                            class="flex gap-3 my-4">
+                                            @csrf
+                                            <input type="hidden" value="{{ $restaurant->id }}" name="restaurant_id">
+                                            <input type="hidden" value="{{ $comment->id }}" name="comment_id">
+                                            <input type="hidden" value="{{ $comment->cart_id }}" name="cart_id">
+                                            <x-input class="block mt-1 w-full" type="text" name="body"
+                                                placeholder="Reply" :value="old('close_time')" />
+                                            <x-button class="h-8">
+                                                {{ __('Reply') }}
+                                            </x-button>
+                                        </form>
+                                    @endif
+                                @endif
+                        @endforeach
+                    </div>
                 </div>
-                </form>
             </div>
         </div>
     </div>
-    </div>
+
 </x-app-layout>

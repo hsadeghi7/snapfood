@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Models\Food;
 use App\Models\Category;
 use App\Models\Restaurant;
-use App\Models\WorkingHour;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FoodResource;
@@ -13,7 +12,6 @@ use App\Http\Resources\AddressResource;
 use App\Http\Resources\RestaurantResource;
 use App\Http\Resources\WorkingHoursResource;
 use App\Http\Resources\OpenRestaurantResource;
-use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 
 class RestaurantController extends Controller
 {
@@ -67,15 +65,6 @@ class RestaurantController extends Controller
         $restaurantFoods = $restaurant->menus->each->food;
         $categories = $restaurantFoods->pluck('food.foodCategory')->unique();
 
-        // $foodByCategory = [];
-
-        // foreach ($categories as  $category) {
-        //     $foodByCategory[$category] = $restaurantFoods->where('food.foodCategory', $category);
-        // }
-
-        // return  $categories;
-
-        // return response()->json($foodByCategory);
         return response()->json(FoodResource::collection($restaurantFoods));
     }
 }

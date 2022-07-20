@@ -8,7 +8,6 @@ use App\Models\Payment;
 use App\Models\CartItem;
 use App\Models\Restaurant;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
