@@ -31,11 +31,15 @@
                             {{ __('Role') }}
                         </x-nav-link>
                     </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('comments.index')" :active="request()->routeIs('comments.index')">
+                            {{ __('Coments') }}
+                        </x-nav-link>
+                    </div>
                 @endcan
 
                 <!-- Navigation Links for Seller -->
                 @can('sellerPermission')
-                
                     @if (App\Models\Profile::getProfile())
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <x-nav-link :href="route('profiles.edit', App\Models\Profile::getProfile())" :active="request()->routeIs('profiles.edit')">
@@ -60,6 +64,11 @@
                         <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                             <x-nav-link :href="route('orders.index')" :active="request()->routeIs('orders.index')">
                                 {{ __('Orders') }}
+                            </x-nav-link>
+                        </div>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.index')">
+                                {{ __('Reports') }}
                             </x-nav-link>
                         </div>
                     @endif

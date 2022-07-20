@@ -156,10 +156,8 @@
                         @foreach ($comments as $comment)
                             <div class="flex gap-3 ">
                                 @if (!$comment->parent_id)
-                                    @if ($comment->is_approve != false)
-                                        <p class="text-black font-bold">
-                                            {{ $comment->user->name . ': ' . $comment->body }}</p>
-                                    @endif
+                                    <p class="text-black font-bold">
+                                        {{ $comment->user->name . ': ' . $comment->body }}</p>
                                     @if ($comment->is_approve === null)
                                         <x-button class="h-6">
                                             <a
@@ -183,8 +181,7 @@
                                         <form action="{{ route('comments.store') }}" method="POST"
                                             class="flex gap-3 my-4">
                                             @csrf
-                                            <input type="hidden" value="{{ $restaurant->id }}"
-                                                name="restaurant_id">
+                                            <input type="hidden" value="{{ $restaurant->id }}" name="restaurant_id">
                                             <input type="hidden" value="{{ $comment->id }}" name="comment_id">
                                             <input type="hidden" value="{{ $comment->cart_id }}" name="cart_id">
                                             <x-input class="block mt-1 w-full" type="text" name="body"

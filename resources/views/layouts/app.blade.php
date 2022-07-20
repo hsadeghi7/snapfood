@@ -53,11 +53,7 @@
         @endif
 
         <!-- Page Content -->
-        <main
-            style="background-image:
-        url('https://stravopys.com/assets/landing/images/en/hero-6305a292f14c22bb3a9aa815ca80d0dc.webp');
-         background-repeat: no-repeat;
-         background-size: cover;">
+        <main>
             {{ $slot }}
         </main>
     </div>

@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Restaurant;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RestaurantController;
@@ -32,8 +32,8 @@ Route::middleware('auth')->group(function () {
                 ->name('comments.store');
             Route::get('seller/comments/{comment}/{action}', [CommentController::class, 'update'])
                 ->name('comments.update');
-            // Route::resource('seller/comments', CommentController::class);
 
+            Route::resource('seller/reports', ReportController::class);
         });
     });
 });
