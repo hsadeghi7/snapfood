@@ -2,85 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Report;
+use App\Models\Order;
+use App\Models\Restaurant;
+use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use App\Http\Requests\ShowDataRequest;
 use App\Http\Requests\StoreReportRequest;
-use App\Http\Requests\UpdateReportRequest;
 
 class ReportController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreReportRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreReportRequest $request)
-    {
-        //
+        $restaurants = Restaurant::where('user_id', auth()->id())->get();
+        return view('seller.reports.index', compact('restaurants'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
+     * @param  ShowDataRequest  $request
+     * @return View
      */
-    public function show(Report $report)
+    public function showData(ShowDataRequest $request)
     {
-        //
-    }
+        $restaurant = Restaurant::where('id', $request->restaurant_id)
+            ->where('user_id', auth()->id());
+        if (!$restaurant) {
+            return abort('unAuthorize', 403);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Report $report)
-    {
-        //
-    }
+        $timePeriod = time() - $request->time_period * 24 * 60 * 60;
+        $timePeriod = date("Y-m-d H:i:s", $timePeriod);
+        $orders = Order::where('restaurant_id', $request->restaurant_id)
+            ->where('is_archived', true)
+            ->where('created_at', '>', $timePeriod)
+            ->with('cart', 'cart.cartItems', 'cart.cartItems.menu', 'cart.cartItems.menu.food', 'cart.user')
+            ->get();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateReportRequest  $request
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateReportRequest $request, Report $report)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Report $report)
-    {
-        //
+            $restaurants = Restaurant::where('user_id', auth()->id())->get();
+        return view('seller.reports.index', compact('restaurants', 'orders'));
     }
 }

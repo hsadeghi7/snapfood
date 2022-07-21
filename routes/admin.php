@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/admin/comments', [CommentController::class, 'index'])->name('comments.index');
             Route::get('/admin/comments/{comment}', [CommentController::class, 'restore'])->name('comments.restore');
             Route::delete('/admin/comments/{comment}', [CommentController::class, 'delete'])->name('comments.delete');
+
+            
         });
     });
 });

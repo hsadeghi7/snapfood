@@ -2,154 +2,134 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 border-b border-gray-200">
-
-                    {{-- Create new restaurant --}}
-                    <a href="{{ route('restaurants.create') }}">
-                        <div class="flex items-center mb-3 gap-1">
-                            <p class="text-green-500 font-bold ">
-                                Add restaurant
-                            </p>
+                <div class="p-6 border-b border-gray-200 ">
+                    <form action="{{ route('reports.showData') }}" method="POST" class="flex gap-3">
+                        @csrf
+                        <div>
+                            <select name="time_period"
+                                class="h-8 py-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-1/4  dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option disabled selected>Select Time Period</option>
+                                <option value="0">Today</option>
+                                <option value="1">Yesterday</option>
+                                <option value="7">Last 7 Days</option>
+                                <option value="30">Last 30 Days</option>
+                                <option value="180">Last 180 Days</option>
+                                <option value="365">Last 365 Days</option>
+                            </select>
+                            <div class="text-xs text-red-500"> {{ $errors->first('time_period') }} </div>
                         </div>
-                    </a>
 
-                    {{-- restaurant list --}}
-                    @if (empty($restaurants->first()))
-                        <div
-                            class="p-4 mb-4 text-sm text-blue-700 bg-blue-100 rounded-lg dark:bg-blue-200 dark:text-blue-800">
-                            No Restaurants Found
+                        <div>
+                            <select name="restaurant_id"
+                                class="h-8 py-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-1/4  dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option disabled selected>Select Restaurant</option>
+                                @foreach ($restaurants as $restaurant)
+                                    <option value="{{ $restaurant->id }}">{{ $restaurant->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="text-xs text-red-500"> {{ $errors->first('restaurant_id') }} </div>
                         </div>
-                    @else
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                                <thead
-                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+
+                        <x-button class="h-8">
+                            {{ __('Get Data') }}
+                        </x-button>
+                    </form>
+                </div>
+                {{-- Reports --}}
+                @isset($orders)
+                    <div class="p-6">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead>
                                     <tr>
-                                        <th scope="col" class="px-6 py-3">
-                                            Restaurant Name
+                                        <th
+                                            class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            User
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Restaurant Type
+                                        <th
+                                            class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Foods
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Delivery Payment
+                                        <th
+                                            class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Quantity
                                         </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Restaurant status
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Show
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Edit
-                                        </th>
-                                        <th scope="col" class="px-6 py-3">
-                                            Delete
+                                        <th
+                                            class="px-6 py-3 border-b border-gray-200 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Total Price
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach ($restaurants as $restaurant)
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    @php
+                                        $totalPrice = 0;
+                                    @endphp
+                                    @foreach ($orders as $order)
                                         <tr>
-                                            {{-- name --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
                                                 <div class="flex items-center">
-                                                </div>
-                                                <div class="ml-2">
-                                                    <div class="text-sm font-medium  text-gray-900">
-                                                        {{ $restaurant->name }}
+                                                    <div class="flex-shrink-0">
+                                                        <div class="text-sm leading-5 font-medium text-gray-900">
+                                                            {{ $order->cart->user->name }}
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            {{-- Type --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
-                                                <div class="text-sm font-medium  text-gray-900">
-
-                                                    {{ $restaurant->type }}
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="text-sm leading-5 font-medium text-gray-900">
+                                                            @foreach ($order->cart->cartItems as $cartItem)
+                                                                <p>-{{ $cartItem->menu->food->name }}</p>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </td>
-                                            {{-- Delivery --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
-                                                <a href="{{ route('restaurants.deliveryFee', $restaurant->id) }}"
-                                                    class="text-sm font-bold  text-green-700  ">
-                                                    {{ $restaurant->delivery_fee }}
-                                                </a>
-
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="text-sm leading-5 font-medium text-gray-900">
+                                                            @foreach ($order->cart->cartItems as $cartItem)
+                                                                <p>{{ $cartItem->quantity }}</p>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
-                                            {{-- status --}}
-                                            <form action="{{ route('restaurant.statusToggle') }}" method="POST">
-                                                @csrf
-                                                <input name="id" type="text" value="{{ $restaurant->id }}"
-                                                    hidden>
-                                                <td class="px-6 py-4 whitespace-no-wrap">
-                                                    <button type="submit">
-                                                        @if ($restaurant->is_active)
-                                                            <p class="text-green-600 font-bold">Active</p>
-                                                        @else
-                                                            <p class="text-red-600 font-bold">Deactive</p>
-                                                        @endif
-                                                    </button>
-                                                </td>
-                                            </form>
-
-                                            {{-- show --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
-                                                <a href="{{ route('restaurants.show', $restaurant->id) }}"
-                                                    class="text-sm font-bold  text-green-700  ">
-                                                    <svg class="h-6 w-6 text-green-500" width="24" height="24"
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" />
-                                                        <path
-                                                            d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
-                                                        <path d="M20 12h-13l3 -3m0 6l-3 -3" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-
-                                            {{-- Edit --}}
-                                            <td class="px-6 py-2 whitespace-no-wrap">
-                                                <a href="{{ route('restaurants.edit', $restaurant->id) }}"
-                                                    class="text-sm font-bold  text-green-700  ">
-                                                    <svg class="h-6 w-6 text-blue-500" viewBox="0 0 24 24"
-                                                        stroke-width="2" stroke="currentColor" fill="none"
-                                                        stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" />
-                                                        <path
-                                                            d="M9 7 h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" />
-                                                        <path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" />
-                                                        <line x1="16" y1="5" x2="19"
-                                                            y2="8" />
-                                                    </svg>
-                                                </a>
-                                            </td>
-
-                                            {{-- Delete --}}
-                                            <td class="px-6 py-4 whitespace-no-wrap">
-                                                <form action="{{ route('restaurants.destroy', $restaurant->id) }}"
-                                                    method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-sm font-bold  text-red-700">
-                                                        <svg class="h-6 w-6 text-red-500" fill="none"
-                                                            viewBox="0 0 24 24" stroke="currentColor">
-                                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                                stroke-width="2"
-                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                        </svg>
-                                                    </button>
-                                                </form>
+                                            <td class="px-6 py-4 whitespace-no-wrap border-b border-gray-200">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0">
+                                                        <div class="text-sm leading-5 font-medium text-gray-900">
+                                                            @foreach ($order->cart->cartItems as $cartItem)
+                                                                <p>{{ $cartItem->item_price }}</p>
+                                                                @php
+                                                                    $totalPrice += $cartItem->item_price;
+                                                                @endphp
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <th class="px-6 py-3 border-b text-xs  uppercase font-bold tracking-wider">
+                                            SuM
+                                        </th>
+                                        <th class="py-3 border-b ">
+                                        </th>
+                                        <th class="py-3 border-b ">
+                                        </th>
+                                        <th class="px-6 py-3 border-b text-xs font-bold">
+                                            {{ $totalPrice }}
+                                        </th>
+                                    </tr>
                                 </tbody>
                             </table>
-                            <div class="p-5">
-                                {{ $restaurants->links() }}
-                            </div>
                         </div>
-                    @endif
-                </div>
+                    </div>
+                @endisset
             </div>
         </div>
     </div>

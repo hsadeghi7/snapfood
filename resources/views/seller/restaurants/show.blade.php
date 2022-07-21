@@ -187,6 +187,8 @@
                                             <input type="hidden" value="{{ $comment->cart_id }}" name="cart_id">
                                             <x-input class="block mt-1 w-full" type="text" name="body"
                                                 placeholder="Reply" :value="old('close_time')" />
+                                                <div class="text-sm text-red-500">
+                                                    {{ $errors->first('body') }} </div>
                                             <x-button class="h-8">
                                                 {{ __('Reply') }}
                                             </x-button>

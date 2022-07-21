@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreReportRequest extends FormRequest
+class ShowDataRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class StoreReportRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreReportRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'restaurant_id' => 'bail|required|exists:restaurants,id',
+            'time_period' => 'bail|required|integer|min:0|max:365',
         ];
     }
 }

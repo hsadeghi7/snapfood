@@ -33,7 +33,8 @@ Route::middleware('auth')->group(function () {
             Route::get('seller/comments/{comment}/{action}', [CommentController::class, 'update'])
                 ->name('comments.update');
 
-            Route::resource('seller/reports', ReportController::class);
+            Route::get('seller/reports', [ReportController::class, 'index'])->name('reports.index');
+            Route::post('seller/reports', [ReportController::class, 'showData'])->name('reports.showData');
         });
     });
 });
