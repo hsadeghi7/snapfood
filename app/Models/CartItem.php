@@ -24,6 +24,7 @@ class CartItem extends Model
         'menu_id',
         'quantity',
         'items_price',
+        'item_price'
     ];
 
     /**

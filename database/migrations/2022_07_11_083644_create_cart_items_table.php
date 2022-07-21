@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreignIdFor(Cart::class);
             $table->foreignIdFor(Menu::class);
             $table->unsignedBigInteger('quantity');
+            $table->unsignedBigInteger('item_price');
             $table->timestamps();
         });
     }

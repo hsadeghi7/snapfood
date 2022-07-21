@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\CartItem;
 use App\Models\Restaurant;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Jobs\PaymentNotificationJob;
 use App\Notifications\PaymentNotification;
 use Illuminate\Support\Facades\Notification;
 
@@ -34,31 +33,40 @@ class PaymentController extends Controller
                 'message' => 'Cart not found'
             ], 404);
         }
-
+        
         $totalPrice = $cart->totalPayment($cart);
         DB::transaction(function () use ($cart, $totalPrice) {
             $cart->status = 'paid';
             $cart->save();
+            $cartItemsDetails = $cart->cartItemsDetails($cart);
 
             Payment::create([
                 'cart_id' => $cart->id,
                 'total_price' => $totalPrice,
             ]);
+
             Order::create([
                 'cart_id' => $cart->id,
                 'restaurant_id' => $cart->restaurant_id,
                 'status' => 'received',
             ]);
+            //set CartItems price in cartItem Table
+            foreach ($cartItemsDetails as  $item) {
+                $cartItem = CartItem::find($item['cart_item_id']);
+
+                $cartItem->item_price = $item['total'];
+                $cartItem->save();
+            }
 
             //send successful payment email to user
             $paymentData = [
                 'totalPayment' => 'Total Payment: ' . $cart->totalPayment($cart),
-                'cartItems' => $cart->cartItemsDetails($cart),
+                'cartItems' => $cartItemsDetails,
             ];
-            Notification::send(auth()->user(), new PaymentNotification($this->paymentData));
+            Notification::send(auth()->user(), new PaymentNotification($paymentData));
         });
-        
-        
+
+
         // $cart->makePay();
         return response()->json([
             'message' => 'Cart Payed',

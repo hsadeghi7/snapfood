@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PhpParser\Comment;
 use App\Models\Category;
 use App\Models\Restaurant;
 use App\Models\WorkingHour;
@@ -83,10 +84,16 @@ class RestaurantController extends Controller
     public function show(Restaurant $restaurant)
     {
         $comments = $restaurant
-            ->load('comments', 'comments.user', 'comments.replies', 'comments.replies.user')
-            ->comments;
+            ->with([
+                'comments' =>
+                fn ($comment) => $comment->whereNot('is_approve',  0),
+                'comments.user', 'comments.replies', 'comments.replies.user'
+            ])
+            ->where('id', $restaurant->id)
+            ->first()->comments;
+        // return $comments;
 
-            $timetable = WorkingHour::where('restaurant_id', $restaurant->id)->get();
+        $timetable = WorkingHour::where('restaurant_id', $restaurant->id)->get();
         $week = WorkingHour::WEEK;
         return view('seller.restaurants.show', compact('restaurant', 'timetable', 'week', 'comments'));
     }

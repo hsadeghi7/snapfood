@@ -93,6 +93,7 @@ class Cart extends Model
         $foods = [];
         foreach ($cartItems as $cartItem) {
             $foods[] =  [
+                'cart_item_id'=>$cartItem->id,
                 'name' => $cartItem->menu->food->name,
                 'quantity' => $cartItem->quantity,
                 'price' => $cartItem->menu->food->price,

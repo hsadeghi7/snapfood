@@ -156,10 +156,8 @@
                         @foreach ($comments as $comment)
                             <div class="flex gap-3 ">
                                 @if (!$comment->parent_id)
-                                    @if ($comment->is_approve != false)
-                                        <p class="text-black font-bold">
-                                            {{ $comment->user->name . ': ' . $comment->body }}</p>
-                                    @endif
+                                    <p class="text-black font-bold">
+                                        {{ $comment->user->name . ': ' . $comment->body }}</p>
                                     @if ($comment->is_approve === null)
                                         <x-button class="h-6">
                                             <a

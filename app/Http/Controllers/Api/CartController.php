@@ -60,7 +60,7 @@ class CartController extends Controller
             'user_id' => auth()->id(),
             'restaurant_id' => $restaurantId
         ]);
-
+// return $cart->cartItemsDetails($cart);
         $cartItem = CartItem::where('cart_id', $cart->id)
             ->where('menu_id', $request->menu_id)
             ->first();
