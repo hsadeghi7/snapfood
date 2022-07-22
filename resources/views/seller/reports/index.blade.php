@@ -9,12 +9,11 @@
                             <select name="time_period"
                                 class="h-8 py-1 bg-gray-50 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-1/4  dark:bg-white dark:border-gray-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option disabled selected>Select Time Period</option>
-                                <option value="0">Today</option>
-                                <option value="1">Yesterday</option>
-                                <option value="7">Last 7 Days</option>
-                                <option value="30">Last 30 Days</option>
-                                <option value="180">Last 180 Days</option>
-                                <option value="365">Last 365 Days</option>
+                                <option value="1">Last day</option>
+                                <option value="7">Last week</option>
+                                <option value="30">Last month</option>
+                                <option value="180">Last 3 month</option>
+                                <option value="365">Last year</option>
                             </select>
                             <div class="text-xs text-red-500"> {{ $errors->first('time_period') }} </div>
                         </div>
@@ -36,7 +35,7 @@
                     </form>
                 </div>
                 {{-- Reports --}}
-                @isset($orders)
+                @if(!empty($orders))
                     <div class="p-6">
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-200">
@@ -129,7 +128,7 @@
                             </table>
                         </div>
                     </div>
-                @endisset
+                @endif
             </div>
         </div>
     </div>

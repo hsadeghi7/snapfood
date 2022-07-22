@@ -77,7 +77,7 @@ class OrderController extends Controller
             $order->save();
 
             //send notification to user
-            Notification::send(auth()->user(), new OrderDeliveryNotification($this->order));
+            Notification::send(auth()->user(), new OrderDeliveryNotification($order));
             return redirect('seller/orders?restaurant_id=' . $order->restaurant->id)
                 ->with('message', 'Order Completed');
         }

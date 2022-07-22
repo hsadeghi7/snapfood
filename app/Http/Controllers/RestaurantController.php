@@ -85,9 +85,7 @@ class RestaurantController extends Controller
     {
         $comments = $restaurant
             ->with([
-                'comments' =>
-                fn ($comment) => $comment->whereNot('is_approve',  0),
-                'comments.user', 'comments.replies', 'comments.replies.user'
+                'comments', 'comments.user', 'comments.replies', 'comments.replies.user'
             ])
             ->where('id', $restaurant->id)
             ->first()->comments;

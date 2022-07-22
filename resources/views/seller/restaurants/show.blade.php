@@ -155,22 +155,25 @@
                     <div class="p-6 bg-white border-b border-gray-200 ">
                         @foreach ($comments as $comment)
                             <div class="flex gap-3 ">
-                                @if (!$comment->parent_id)
-                                    <p class="text-black font-bold">
-                                        {{ $comment->user->name . ': ' . $comment->body }}</p>
-                                    @if ($comment->is_approve === null)
-                                        <x-button class="h-6">
-                                            <a
-                                                href="{{ route('comments.update', ['comment' => $comment->id, 'action' => 'delete']) }}">
-                                                {{ __('Disaprove') }}</a>
-                                        </x-button>
-                                        <x-button class="h-6">
-                                            <a
-                                                href="{{ route('comments.update', ['comment' => $comment->id, 'action' => 'approve']) }}">
-                                                {{ __('Aprove') }}</a>
-                                        </x-button>
+                                {{-- @if ($comment->is_approve === true || $comment->is_approve === null) --}}
+                                    @if (!$comment->parent_id)
+                                        <p class="text-black font-bold">
+                                            {{ $comment->user->name . ': ' . $comment->body }}</p>
+                                        @if ($comment->is_approve === null)
+                                            <x-button class="h-6">
+                                                <a
+                                                    href="{{ route('comments.update', ['comment' => $comment->id, 'action' => 'delete']) }}">
+                                                    {{ __('Disaprove') }}</a>
+                                            </x-button>
+                                            <x-button class="h-6">
+                                                <a
+                                                    href="{{ route('comments.update', ['comment' => $comment->id, 'action' => 'approve']) }}">
+                                                    {{ __('Aprove') }}</a>
+                                            </x-button>
+                                        @endif
                                     @endif
-                                @endif
+                                {{-- @endif --}}
+
                             </div>
                             <p class="text-black ml-6 mb-4">
                                 @if ($comment->is_approve === 1)
@@ -187,8 +190,8 @@
                                             <input type="hidden" value="{{ $comment->cart_id }}" name="cart_id">
                                             <x-input class="block mt-1 w-full" type="text" name="body"
                                                 placeholder="Reply" :value="old('close_time')" />
-                                                <div class="text-sm text-red-500">
-                                                    {{ $errors->first('body') }} </div>
+                                            <div class="text-sm text-red-500">
+                                                {{ $errors->first('body') }} </div>
                                             <x-button class="h-8">
                                                 {{ __('Reply') }}
                                             </x-button>

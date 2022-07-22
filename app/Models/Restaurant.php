@@ -104,4 +104,24 @@ class Restaurant extends Model
 
         return $isOpen;
     }
+
+    public  function nearestRestaurant(int $nearestDistant)
+    {
+        $user_address = User::where('id', 4)
+            ->first()->addresses->where('is_default', true)->first();
+
+        $flag = false;
+        $latRestaurant = $this->addresses->first()->latitude;
+        $lngRestaurant = $this->addresses->first()->longitude;
+
+        $latUser = $user_address->latitude;
+        $lngUser = $user_address->longitude;
+
+        $distance = pow(pow(($latRestaurant - $latUser), 2) + pow(($lngRestaurant - $lngUser), 2), 0.5);
+
+        if ($distance < $nearestDistant) {
+            $flag = true;
+        }
+        return $flag;
+    }
 }

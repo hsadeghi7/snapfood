@@ -10,8 +10,6 @@ use App\Http\Requests\ApiProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
-
-
     public function createProfile(ApiProfileCreateRequest $request)
     {
         $profile = Profile::create([
@@ -33,6 +31,4 @@ class ProfileController extends Controller
 
         return response()->json(['message' => 'Profile update successfully']);
     }
-
-
 }

@@ -7,7 +7,6 @@ use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\ShowDataRequest;
-use App\Http\Requests\StoreReportRequest;
 
 class ReportController extends Controller
 {
@@ -18,8 +17,9 @@ class ReportController extends Controller
      */
     public function index()
     {
+        $orders = '';
         $restaurants = Restaurant::where('user_id', auth()->id())->get();
-        return view('seller.reports.index', compact('restaurants'));
+        return view('seller.reports.index', compact('restaurants', 'orders'));
     }
 
     /**
@@ -45,6 +45,7 @@ class ReportController extends Controller
             ->get();
 
             $restaurants = Restaurant::where('user_id', auth()->id())->get();
+
         return view('seller.reports.index', compact('restaurants', 'orders'));
     }
 }

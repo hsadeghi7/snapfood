@@ -25,16 +25,14 @@ class CommentController extends Controller
 
     public function store(StoreCommentRequest $request)
     {
-        $request->validated();
         $cart = Cart::find($request->cart_id);
         $userId = $cart->user_id;
         $restaurantId = $cart->restaurant_id;
 
-        if ($userId !== auth()->id) {
+        if ($userId !== auth()->id()) {
             return response()
                 ->json(['message' => 'You are not authorized to comment this restaurant'], 401);
         }
-
         $comment = Comment::create([
             'body' => request('body'),
             'score' => request('score'),
@@ -42,7 +40,7 @@ class CommentController extends Controller
             'cart_id' => $request->cart_id,
             'restaurant_id' => $restaurantId,
         ]);
-        Notification::send(auth()->user(), new CommentSubmitNotifications($this->comment));
+        Notification::send(auth()->user(), new CommentSubmitNotifications($comment));
 
         return response()->json([
             'message' => 'comment created successfully',

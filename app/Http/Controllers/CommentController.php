@@ -17,7 +17,6 @@ class CommentController extends Controller
     public function index()
     {
         $comments = Comment::where('is_approve', 0)->with('restaurant')->paginate(5);
-
         return view('admin.comments.index', compact('comments'));
     }
 
