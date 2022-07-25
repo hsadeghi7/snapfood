@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Traits\HasPermissions;
 
 class StoreBannerRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class StoreBannerRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->hasPermissionTo('fullPermission');
     }
 
     /**
@@ -24,7 +26,7 @@ class StoreBannerRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'image' => 'bail|required|mimes:jpeg,png,jpg|max:8192',
         ];
     }
 }

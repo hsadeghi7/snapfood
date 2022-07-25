@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+
 class UserController extends Controller
 {
 
@@ -20,8 +22,9 @@ class UserController extends Controller
      */
     public function index()
     {
+        $banner = Banner::where('is_active', true)->first();
         $users = User::withTrashed()->with('roles')->paginate(4);
-        return view('dashboard', compact('users'));
+        return view('dashboard', compact('users', 'banner'));
     }
 
     /**
@@ -66,7 +69,6 @@ class UserController extends Controller
     {
         $roles = Role::all();
         return view('admin.users.edit', compact('user', 'roles'));
-
     }
 
     /**

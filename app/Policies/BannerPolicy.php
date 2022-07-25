@@ -18,7 +18,7 @@ class BannerPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasPermissionTo('fullPermission');
     }
 
     /**
@@ -30,7 +30,8 @@ class BannerPolicy
      */
     public function view(User $user, Banner $banner)
     {
-        //
+        return $user->hasPermissionTo('fullPermission');
+
     }
 
     /**
@@ -41,7 +42,8 @@ class BannerPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->hasPermissionTo('fullPermission');
+
     }
 
     /**
@@ -53,7 +55,8 @@ class BannerPolicy
      */
     public function update(User $user, Banner $banner)
     {
-        //
+        return $user->hasPermissionTo('fullPermission');
+
     }
 
     /**
@@ -65,7 +68,8 @@ class BannerPolicy
      */
     public function delete(User $user, Banner $banner)
     {
-        //
+        return $user->hasPermissionTo('fullPermission');
+
     }
 
     /**
@@ -77,7 +81,8 @@ class BannerPolicy
      */
     public function restore(User $user, Banner $banner)
     {
-        //
+        return $user->hasPermissionTo('fullPermission');
+
     }
 
     /**
@@ -89,6 +94,7 @@ class BannerPolicy
      */
     public function forceDelete(User $user, Banner $banner)
     {
-        //
+        return $user->hasPermissionTo('fullPermission');
+
     }
 }

@@ -44,7 +44,6 @@ class CategoryPolicy
     public function create(User $user)
     {
         return $user->hasPermissionTo('adminPermission');
-
     }
 
     /**
@@ -57,7 +56,6 @@ class CategoryPolicy
     public function update(User $user, Category $category)
     {
         return $user->hasPermissionTo('adminPermission');
-
     }
 
     /**

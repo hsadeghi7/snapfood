@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BannerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -10,20 +11,20 @@ use App\Http\Controllers\PermissionController;
 
 Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
-        Route::middleware('hasProfile')->group(function () {
+        Route::middleware('hasProfile')->prefix('admin')->group(function () {
 
-            Route::resource('/admin/users', UserController::class);
-            Route::resource('/admin/categories', CategoryController::class);
-            Route::resource('/admin/coupons', CouponController::class);
-            Route::resource('/admin/roles', RoleController::class);
-            Route::resource('/admin/permissions', PermissionController::class);
-            Route::post('/admin/users', [UserController::class, 'activityToggle'])->name('users.activityToggle');
+            Route::resource('/users', UserController::class);
+            Route::resource('/categories', CategoryController::class);
+            Route::resource('/coupons', CouponController::class);
+            Route::resource('/roles', RoleController::class);
+            Route::resource('/permissions', PermissionController::class);
+            Route::post('/users', [UserController::class, 'activityToggle'])->name('users.activityToggle');
 
-            Route::get('/admin/comments', [CommentController::class, 'index'])->name('comments.index');
-            Route::get('/admin/comments/{comment}', [CommentController::class, 'restore'])->name('comments.restore');
-            Route::delete('/admin/comments/{comment}', [CommentController::class, 'delete'])->name('comments.delete');
+            Route::get('/comments', [CommentController::class, 'index'])->name('comments.index');
+            Route::get('/comments/{comment}', [CommentController::class, 'restore'])->name('comments.restore');
+            Route::delete('/comments/{comment}', [CommentController::class, 'delete'])->name('comments.delete');
 
-            
+            Route::resource('/banners', BannerController::class);
         });
     });
 });

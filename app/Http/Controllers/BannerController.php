@@ -3,29 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\Banner;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBannerRequest;
 use App\Http\Requests\UpdateBannerRequest;
 
 class BannerController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Banner::class, 'banner');
+    }
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return view('admin.banners.index', [
+            'banners' => Banner::paginate(3),
+        ]);
     }
 
     /**
@@ -36,30 +35,19 @@ class BannerController extends Controller
      */
     public function store(StoreBannerRequest $request)
     {
-        //
+        // dd($request->all());
+        $validated = $request->validated();
+        $imagePath = Storage::disk('public')->put('images/banners/', $validated['image']);
+
+        Banner::create(
+            [
+                'image' => $imagePath,
+                'is_active' => false
+            ]
+        );
+        return back()->with('message', 'Banner created successfully');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Banner  $banner
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Banner $banner)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Banner  $banner
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Banner $banner)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -70,7 +58,15 @@ class BannerController extends Controller
      */
     public function update(UpdateBannerRequest $request, Banner $banner)
     {
-        //
+        Banner::all()->each(function ($banner) {
+            $banner->is_active = false;
+            $banner->save();
+        });
+
+        $banner->update([
+            'is_active' => true,
+        ]);
+        return back()->with('message', 'Banner updated successfully');
     }
 
     /**
@@ -81,6 +77,7 @@ class BannerController extends Controller
      */
     public function destroy(Banner $banner)
     {
-        //
+        $banner->delete();
+        return back()->with('message', 'Banner deleted successfully');
     }
 }

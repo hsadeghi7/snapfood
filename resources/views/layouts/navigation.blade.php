@@ -36,6 +36,11 @@
                             {{ __('Coments') }}
                         </x-nav-link>
                     </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('banners.index')" :active="request()->routeIs('banners.index')">
+                            {{ __('Banners') }}
+                        </x-nav-link>
+                    </div>
                 @endcan
 
                 <!-- Navigation Links for Seller -->
