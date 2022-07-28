@@ -24,12 +24,7 @@ return new class extends Migration
             $table->string('image');
             $table->foreignIdFor(User::class);
             $table->string('is_active')->default(true);
-
-
             $table->timestamps();
-
-            // $table->morphs('categoryable');
-
         });
     }
 

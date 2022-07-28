@@ -31,9 +31,6 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
         Food::class => FoodPolicy::class,
         Cart::class => CartPolicy::class,
-
-
-        //TODO اضافه کردن پالیسی ها در اینجا
     ];
 
     /**

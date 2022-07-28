@@ -6,8 +6,6 @@ use App\Models\Order;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
-use App\Jobs\DeliveredNotificationJob;
-use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\OrderDeliveryNotification;
@@ -36,7 +34,7 @@ class OrderController extends Controller
                 ->get()
                 ->load('cart.cartItems.menu.food');
         }
-        // return $orders->first()->cart->cartItems->first()->menu->food->name;
+
         return view('seller.orders.index', compact('restaurants', 'orders'));
     }
 
@@ -56,30 +54,26 @@ class OrderController extends Controller
             return abort(403);
         }
 
-        if ($order->status == 'received') {
-            $order->status = 'accepted';
-            $order->save();
-            return back()->with('message', 'Order Accepted');
-        }
-        if ($order->status == 'accepted') {
-            $order->status = 'pending';
-            $order->save();
-            return back()->with('message', 'Order Pending');
-        }
-        if ($order->status == 'pending') {
-            $order->status = 'preparing';
-            $order->save();
-            return back()->with('message', 'Order Preparing');
-        }
-        if ($order->status == 'preparing') {
-            $order->status = 'completed';
-            $order->is_archived = true;
-            $order->save();
-
-            //send notification to user
-            Notification::send(auth()->user(), new OrderDeliveryNotification($order));
-            return redirect('seller/orders?restaurant_id=' . $order->restaurant->id)
-                ->with('message', 'Order Completed');
+        switch ($order->status) {
+            case 'received':
+                $order->status = 'accepted';
+                $order->save();
+                return back()->with('message', 'Order Accepted');
+            case 'accepted':
+                $order->status = 'pending';
+                $order->save();
+                return back()->with('message', 'Order Pending');
+            case 'pending':
+                $order->status = 'preparing';
+                $order->save();
+                return back()->with('message', 'Order Preparing');
+            case 'preparing':
+                $order->status = 'completed';
+                $order->is_archived = true;
+                $order->save();
+                Notification::send(auth()->user(), new OrderDeliveryNotification($order));
+                return redirect('seller/orders?restaurant_id=' . $order->restaurant->id)
+                    ->with('message', 'Order Completed');
         }
     }
 }

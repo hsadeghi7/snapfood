@@ -6,7 +6,6 @@ use PhpParser\Comment;
 use App\Models\Category;
 use App\Models\Restaurant;
 use App\Models\WorkingHour;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreRestaurantRequest;
@@ -28,7 +27,7 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = DB::table('restaurants')->where('user_id', auth()->id())->paginate(3);
+        $restaurants = Restaurant::where('user_id', auth()->id())->paginate(3);
 
         return view('seller.restaurants.index', compact('restaurants'));
     }
@@ -41,7 +40,6 @@ class RestaurantController extends Controller
     public function create()
     {
         $restaurantCategories = Category::getRestaurantCategories();
-
         return view('seller.restaurants.create', compact('restaurantCategories'));
     }
 
@@ -89,7 +87,6 @@ class RestaurantController extends Controller
             ])
             ->where('id', $restaurant->id)
             ->first()->comments;
-        // return $comments;
 
         $timetable = WorkingHour::where('restaurant_id', $restaurant->id)->get();
         $week = WorkingHour::WEEK;
@@ -156,7 +153,6 @@ class RestaurantController extends Controller
         return back()->with('message', 'Restaurant deleted successfully');
     }
 
-
     public function statusToggle()
     {
         $restaurant = Restaurant::find($_POST['id']);
@@ -172,12 +168,10 @@ class RestaurantController extends Controller
         return back()->with('message', 'Restaurant status updated successfully');
     }
 
-
     public function deliveryFee(Restaurant $restaurant)
     {
         return view('seller.restaurants.delivery', compact('restaurant'));
     }
-
     public function setDeliveryFee(UpdateRestaurantDeliveryFeeRequest $request, Restaurant $restaurant)
     {
         $restaurant->delivery_fee = $_POST['deliveryFee'];

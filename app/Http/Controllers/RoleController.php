@@ -11,12 +11,6 @@ use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->authorizeResource(App\Models\Role::class, 'role');
-    // }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -68,17 +62,6 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Role $role)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Role  $role
@@ -87,18 +70,6 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         dd($role);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateRoleRequest  $request
-     * @param  \App\Models\Role  $role
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateRoleRequest $request, Role $role)
-    {
-        //
     }
 
     /**
@@ -116,8 +87,7 @@ class RoleController extends Controller
         $permission = Permission::where('name', $role->name)->first();
         $role->revokePermissionTo($permission);
         $role->delete();
-        
-        return redirect('admin/roles')->with('message', 'Role deleted successfully');
 
+        return redirect('admin/roles')->with('message', 'Role deleted successfully');
     }
 }

@@ -9,10 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Category extends Model
 {
     use HasFactory;
-
-
     protected $fillable = ['name', 'type'];
-
     public static function getRestaurantCategories()
     {
         $categories = Category::where('type', 'restaurant')->get();

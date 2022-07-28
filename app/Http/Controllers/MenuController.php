@@ -12,7 +12,6 @@ use App\Http\Requests\UpdateMenuRequest;
 
 class MenuController extends Controller
 {
-
      /**
      * Display a listing of the resource.
      *

@@ -26,12 +26,8 @@ class WorkingHour extends Model
         'close_time',
     ];
 
-
     public function restaurant()
     {
         return $this->belongsTo(Restaurant::class);
     }
-
-
-
 }

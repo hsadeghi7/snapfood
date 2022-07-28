@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
 use App\Models\Address;
-use App\Models\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AddressResource;
 use App\Http\Requests\ApiSetDefaultAddressRequest;
-use App\Http\Requests\ApiUpdateDefaultAddressRequest;
 
 class AddressController extends Controller
 {
@@ -29,17 +26,6 @@ class AddressController extends Controller
         return response()->json(['message' => 'Address added successfully']);
     }
 
-    // public function updateAddress(ApiUpdateDefaultAddressRequest $request)
-    // {
-    //     $profile = Profile::find(auth()->id());
-    //     $address = $profile->addresses()->find($request->address_id);
-    //     $address->update([
-    //         'title' => $request->title,
-    //         'latitude' => $request->latitude,
-    //         'longitude' => $request->longitude,
-    //     ]);
-    //     return response()->json(['message' => 'Address updated successfully']);
-    // }
     public function setDefaultAddress(Address $address)
     {
         $user = auth()->user();
@@ -54,7 +40,6 @@ class AddressController extends Controller
         $address->save();
         return response()->json(['message' => 'Address set as default successfully']);
     }
-
     public function deleteAddress(Address $address)
     {
         $address->delete();

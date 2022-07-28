@@ -41,9 +41,9 @@ class RegisterNotification extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('You Registered Successfully!')
-                    ->action('SnapFood', url('http://127.0.0.1:8000/'))
-                    ->line('Thank you for using our application!');
+            ->line('You Registered Successfully!')
+            ->action('SnapFood', url('http://127.0.0.1:8000/'))
+            ->line('Thank you for using our application!');
     }
 
     /**

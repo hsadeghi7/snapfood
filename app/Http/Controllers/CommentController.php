@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use Illuminate\View\View;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReplyStoreRequest;
@@ -74,7 +75,6 @@ class CommentController extends Controller
      */
     public function delete(Comment $comment)
     {
-
         if (auth()->user()->hasRole('superAdmin')) {
             $comment->delete();
             return redirect()->back()->with('message', 'Comment deleted successfully');

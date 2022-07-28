@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Banner;
 use App\Models\User;
+use App\Models\Banner;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -18,52 +19,20 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function index()
     {
         $banner = Banner::where('is_active', true)->first();
-        $users = User::withTrashed()->with('roles')->paginate(4);
+        $users = User::withTrashed()->with('roles')->where('id','<>', '1')->paginate(4);
         return view('dashboard', compact('users', 'banner'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @return View
      */
     public function edit(User $user)
     {
@@ -89,18 +58,7 @@ class UserController extends Controller
         return redirect('/')->with('message', 'User role updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        dd('destroy');
-    }
-
-    public function activityToggle(Request $request)
+   public function activityToggle(Request $request)
     {
 
         $user = User::withTrashed()->find($request->id);

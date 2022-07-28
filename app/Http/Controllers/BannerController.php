@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Banner;
 use Illuminate\View\View;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBannerRequest;
 use App\Http\Requests\UpdateBannerRequest;
@@ -15,6 +14,7 @@ class BannerController extends Controller
     {
         $this->authorizeResource(Banner::class, 'banner');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,7 +35,6 @@ class BannerController extends Controller
      */
     public function store(StoreBannerRequest $request)
     {
-        // dd($request->all());
         $validated = $request->validated();
         $imagePath = Storage::disk('public')->put('images/banners/', $validated['image']);
 
@@ -45,9 +44,8 @@ class BannerController extends Controller
                 'is_active' => false
             ]
         );
-        return back()->with('message', 'Banner created successfully');
+        return redirect('/admin/banners')->with('message', 'Banner created successfully');
     }
-
 
     /**
      * Update the specified resource in storage.
@@ -66,7 +64,7 @@ class BannerController extends Controller
         $banner->update([
             'is_active' => true,
         ]);
-        return back()->with('message', 'Banner updated successfully');
+        return redirect('/admin/banners')->with('message', 'Banner updated successfully');
     }
 
     /**
@@ -78,6 +76,6 @@ class BannerController extends Controller
     public function destroy(Banner $banner)
     {
         $banner->delete();
-        return back()->with('message', 'Banner deleted successfully');
+        return redirect('/admin/banners')->with('message', 'Banner deleted successfully');
     }
 }

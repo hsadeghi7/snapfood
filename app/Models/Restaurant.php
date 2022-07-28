@@ -86,7 +86,6 @@ class Restaurant extends Model
     {
         return $this->hasMany(Comment::class);
     }
-
     public function getIsOpenAttribute()
     {
         $isOpen = false;
@@ -104,7 +103,6 @@ class Restaurant extends Model
 
         return $isOpen;
     }
-
     public  function nearestRestaurant(int $nearestDistant)
     {
         $user_address = User::where('id', 4)

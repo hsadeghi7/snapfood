@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'title',
         'latitude',
@@ -21,12 +20,11 @@ class Address extends Model
     {
         return $this->morphTo();
     }
-
     public function getDefaultAddressAttribute()
     {
         if ($this->is_default) {
             return 'Default Address';
         }
-        return;
+        return false;
     }
 }

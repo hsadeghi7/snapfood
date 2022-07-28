@@ -20,7 +20,6 @@ class Payment extends Model
     {
         return $this->hasOne(Cart::class);
     }
-
     
     /**
      * set the payed observer to pay method

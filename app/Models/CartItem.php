@@ -13,7 +13,6 @@ class CartItem extends Model
 {
     use HasFactory;
 
-
     /**
      * The attributes that are mass assignable.
      *
@@ -43,8 +42,7 @@ class CartItem extends Model
         return $this->belongsTo(Menu::class);
     }
 
-   
-    /**
+       /**
      * Get the restaurant of the cart item.
      */
     public function cartItemRestaurant()  

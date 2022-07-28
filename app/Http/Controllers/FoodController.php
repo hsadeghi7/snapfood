@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Food;
 use App\Models\Menu;
-use App\Models\User;
 use App\Models\Coupon;
 use App\Models\Category;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\View\View;
 use App\Http\Requests\StoreFoodRequest;
 use Illuminate\Support\Facades\Storage;
@@ -35,7 +33,6 @@ class FoodController extends Controller
                 ->where('foodCategory', $request->food_category)
                 ->paginate(3);
         }
-        //TODO توی صفحه بندی وقتی صفحه رفرش میشه دسته بندی ها دوباره بهم میخوره چکار کنیم که با رفرش شدن صفحه بازم اون دسته بندی قبلی برقرار باشه؟
         //food names
         $food_names =  Food::where('user_id', auth()->id())->pluck('name');
         //food category
@@ -64,7 +61,7 @@ class FoodController extends Controller
      */
     public function store(StoreFoodRequest $request)
     {
-        //TODO بردن عکس ها روی سرورهای ابری
+        //TODO upload image to cloud storage
 
         $imagePath = Storage::disk('public')->put('/', $request->image);
         Food::create(
@@ -77,7 +74,6 @@ class FoodController extends Controller
                 'user_id' => auth()->id(),
             ]
         );
-
         return redirect('seller/foods')->with('message', 'Food created successfully');
     }
 
@@ -89,10 +85,7 @@ class FoodController extends Controller
      */
     public function show(Food $food)
     {
-        dd($food);
-        // $timetable = WorkingHour::where('restaurant_id', $food->id)->get();
-        // $week = WorkingHour::WEEK;
-        // return view('seller.restaurants.show', compact('food', 'timetable', 'week'));
+        return $food;
     }
 
     /**

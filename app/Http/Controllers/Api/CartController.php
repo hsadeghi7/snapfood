@@ -7,12 +7,10 @@ use App\Models\Menu;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Mail\SuccessfulPaymentMail;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CartResource;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreCartRequest;
-use App\Http\Requests\UpdateCartRequest;
 use App\Models\Restaurant;
 use App\Notifications\PaymentNotification;
 use Illuminate\Support\Facades\Notification;
@@ -36,7 +34,7 @@ class CartController extends Controller
             ->where('status', 'pending')
             ->first();
         $cartItems = $cart->cartItems->load('menu');
-        // return $cart->load('cartItems', 'cartItems.menu', 'cartItems.menu.food', 'cartItems.menu.menuable');
+
         return response()->json(CartResource::collection($cartItems));
     }
 
@@ -60,11 +58,9 @@ class CartController extends Controller
             'user_id' => auth()->id(),
             'restaurant_id' => $restaurantId
         ]);
-// return $cart->cartItemsDetails($cart);
         $cartItem = CartItem::where('cart_id', $cart->id)
             ->where('menu_id', $request->menu_id)
             ->first();
-        // return $cart;
 
         DB::transaction(function () use ($request, $cart, $cartItem, $restaurantId) {
             if ($cartItem) {

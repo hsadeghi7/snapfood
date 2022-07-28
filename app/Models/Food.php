@@ -15,7 +15,6 @@ class Food extends Model
 
     protected $table = 'foods';
 
-
     /**
      * Get all of the category for the post.
      */
@@ -23,7 +22,6 @@ class Food extends Model
     {
         return $this->morphToMany(Category::class, 'categorizeable');
     }
-
 
     public function restaurant()
     {
